@@ -43,7 +43,7 @@ The primary goal is to determine the most effective modeling techniques by evalu
 The project follows a clear, sequential pipeline from raw data to a final trained ensemble model.
 
 
-```plaintext
+```
 +------------------+      +------------------------+      +------------------------------+
 |    Raw Data      |  --> |   02_preprocess.py     |  --> |    processed_data.parquet    |
 |    (CSV files)   |      | (Clean & Feature Eng.) |      |     (Ready for Training)     |
@@ -86,9 +86,6 @@ The project follows a clear, sequential pipeline from raw data to a final traine
 ```
 
 
-Generated code
----
-
 ## 🧠 Models Implemented
 
 A diverse set of models was chosen to cover different forecasting paradigms.
@@ -119,29 +116,28 @@ A diverse set of models was chosen to cover different forecasting paradigms.
 
 ## 📁 Project Structure
 
-
 .
 ├── data/
-│ ├── energy_dataset.csv # Raw energy generation and price data
-│ ├── weather_features.csv # Raw weather data for Spanish cities
-│ └── processed_data.parquet # Final, cleaned, and feature-engineered dataset
+│   ├── energy_dataset.csv          # Raw energy generation and price data
+│   ├── weather_features.csv        # Raw weather data for Spanish cities
+│   └── processed_data.parquet      # Final, cleaned, and feature-engineered dataset
 │
-├── models/ # Directory where all trained models are saved
+├── models/                        # Directory where all trained models are saved
 │
-├── reports/ # Output directory for EDA plots and analysis
+├── reports/                       # Output directory for EDA plots and analysis
 │
-├── 01_eda.py # Script for Exploratory Data Analysis
-├── 02_preprocess.py # Script for data cleaning and feature engineering
-├── 03_train_autoformer.py # Training script for the Autoformer model
-├── 03_train_bayesian_lstm.py # Training script for the Bayesian Bi-LSTM
-├── 03_train_lightgbm.py # Training script for LightGBM (point & quantile)
+├── 01_eda.py                     # Script for Exploratory Data Analysis
+├── 02_preprocess.py              # Script for data cleaning and feature engineering
+├── 03_train_autoformer.py        # Training script for the Autoformer model
+├── 03_train_bayesian_lstm.py     # Training script for the Bayesian Bi-LSTM
+├── 03_train_lightgbm.py          # Training script for LightGBM (point & quantile)
 ├── 03_train_sarimax_resampled.py # Training script for the feasible SARIMAX model
-├── 03_train_transformer.py # Training script for the standard Transformer
-├── 04_ensemble.py # Script to train the final stacked ensemble model
-├── config.py # Central configuration for all parameters
-├── utils.py # Custom Keras layers and helper functions
-├── requirements.txt # All Python dependencies for the project
-└── README.md # This file
+├── 03_train_transformer.py       # Training script for the standard Transformer
+├── 04_ensemble.py                # Script to train the final stacked ensemble model
+├── config.py                    # Central configuration for all parameters
+├── utils.py                     # Custom Keras layers and helper functions
+├── requirements.txt             # All Python dependencies for the project
+└── README.md                    # This file
 
 
 

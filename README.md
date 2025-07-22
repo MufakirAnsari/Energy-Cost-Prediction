@@ -1,5 +1,5 @@
 # ⚡️ Advanced Time Series Forecasting for Electricity Prices
-### A Thesis Project Comparing Deep Learning, Statistical, and Ensemble Models
+### A Project Comparing Deep Learning, Statistical, and Ensemble Models
 
 <p align="center">
   <img src="https://img.shields.io/badge/Python-3.11-blue.svg" alt="Python">
@@ -42,42 +42,42 @@ The primary goal is to determine the most effective modeling techniques by evalu
 
 The project follows a clear, sequential pipeline from raw data to a final trained ensemble model.
 
-```ascii
-+--------------------------+         +--------------------------+         +----------------------------+
-|        Raw Data          |    →    |    02_preprocess.py      |    →    |  processed_data.parquet    |
-|       (CSV files)        |         |  (Clean & Feature Eng.)  |         |   (Ready for Training)     |
-+--------------------------+         +--------------------------+         +----------------------------+
-                                                                                       |
-                                                                                       ↓
-                                         +-------------------------------------------+
-                                         |      Step 3: Train Base Models            |
-                                         |  (LGBM must run before SARIMAX)           |
-                                         |                                           |
-                                         |   • 03_train_lightgbm.py                  |
-                                         |   • 03_train_sarimax_resampled.py         |
-                                         |   • 03_train_transformer.py               |
-                                         |   • 03_train_autoformer.py                |
-                                         |   • 03_train_bayesian_lstm.py             |
-                                         +-------------------------------------------+
-                                                                                       |
-                                                                                       ↓
-                                         +-------------------------------------------+
-                                         |      Saved Base Models                    |
-                                         |      (in /models folder)                  |
-                                         +-------------------------------------------+
-                                                                                       |
-                                                                                       ↓
-                                         +-------------------------------------------+
-                                         |      04_ensemble.py                       |
-                                         | (Train Meta-Learner on Predictions)       |
-                                         +-------------------------------------------+
-                                                                                       |
-                                                                                       ↓
-                                         +-------------------------------------------+
-                                         |      🏆 Final Ensemble Model              |
-                                         | (enhanced_ensemble_model.joblib)          |
-                                         +-------------------------------------------+
 
++------------------+ +------------------------+ +------------------------------+
+| Raw Data | --> | 02_preprocess.py | --> | processed_data.parquet |
+| (CSV files) | | (Clean & Feature Eng.) | | (Ready for Training) |
++------------------+ +------------------------+ +------------------------------+
+|
+|
++-------------------------------------------+
+|
++------------------------v-------------------------+
+| Step 3: Train Base Models (in parallel) |
+| |
+| - 03_train_lightgbm.py |
+| - 03_train_sarimax_resampled.py |
+| - 03_train_transformer.py |
+| - 03_train_autoformer.py |
+| - 03_train_bayesian_lstm.py |
+| |
++------------------------v-------------------------+
+|
+|
++------------------------v-------------------------+
+| Saved Base Models (in /models folder) |
++------------------------v-------------------------+
+|
+|
++------------------------v-------------------------+
+| 04_ensemble.py |
+| (Train Meta-Learner on Base Model Predictions) |
++------------------------v-------------------------+
+|
+|
++------------------------v-------------------------+
+| Final Ensemble Model |
+| (enhanced_ensemble_model.joblib) |
++-------------------------------------------------+
 
 ## 🧠 Models Implemented
 
@@ -108,11 +108,6 @@ A diverse set of models was chosen to cover different forecasting paradigms.
 ---
 
 ## 📁 Project Structure
-IGNORE_WHEN_COPYING_START
-content_copy
-download
-Use code with caution.
-IGNORE_WHEN_COPYING_END
 
 .
 ├── data/
@@ -146,13 +141,8 @@ Follow these steps to set up the environment and run the project.
 
 #### 1. Clone the Repository
 ```bash
-git clone https://github.com/your-username/your-repo-name.git
-cd your-repo-name
-IGNORE_WHEN_COPYING_START
-content_copy
-download
-Use code with caution.
-IGNORE_WHEN_COPYING_END
+git clone https://github.com/MufakirAnsari/Energy-Cost-Prediction.git
+cd Energy-Cost-Prediction
 2. Create and Activate a Virtual Environment
 
 Using a dedicated environment is crucial for reproducibility.
@@ -163,12 +153,7 @@ conda create -n thesis-env python=3.11
 
 # Activate the environment
 conda activate thesis-env
-IGNORE_WHEN_COPYING_START
-content_copy
-download
-Use code with caution.
-Bash
-IGNORE_WHEN_COPYING_END
+
 3. Install Dependencies
 
 All required packages are listed in requirements.txt.```bash
@@ -190,11 +175,7 @@ The scripts are designed to be run in a specific order to ensure dependencies ar
 This script is the foundation for all models. It cleans the raw data, engineers features, and saves the final `processed_data.parquet` file.
 ```bash
 python 02_preprocess.py
-IGNORE_WHEN_COPYING_START
-content_copy
-download
-Use code with caution.
-IGNORE_WHEN_COPYING_END
+
 Step 2: Train the Base Models
 
 Train each of the individual models. Note that LightGBM must be trained before SARIMAX, as SARIMAX uses the trained LightGBM model for its feature selection process.
@@ -210,12 +191,7 @@ python 03_train_sarimax_resampled.py
 python 03_train_transformer.py
 python 03_train_autoformer.py
 python 03_train_bayesian_lstm.py
-IGNORE_WHEN_COPYING_START
-content_copy
-download
-Use code with caution.
-Bash
-IGNORE_WHEN_COPYING_END
+
 
 After this step, your models/ directory will be populated with all the trained base models.
 
@@ -225,12 +201,7 @@ This script loads all the base models trained in the previous step and uses thei
 
 Generated bash
 python 04_ensemble.py
-IGNORE_WHEN_COPYING_START
-content_copy
-download
-Use code with caution.
-Bash
-IGNORE_WHEN_COPYING_END
+
 Step 4: Evaluate and Analyze
 
 With all models trained, the next step is to write an evaluation script (05_evaluation.py) to load them and compare their performance on the held-out test set using metrics like MAE, RMSE, and MAPE.

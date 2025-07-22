@@ -140,7 +140,7 @@ A diverse set of models was chosen to cover different forecasting paradigms.
 └── README.md                    # This file
 
 ````markdown
-🛠️ Setup and Installation
+#### 🛠️ Setup and Installation
 
 Follow these steps to set up the environment and run the project.
 

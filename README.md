@@ -42,45 +42,42 @@ The primary goal is to determine the most effective modeling techniques by evalu
 
 The project follows a clear, sequential pipeline from raw data to a final trained ensemble model.
 
+```ascii
++--------------------------+         +--------------------------+         +----------------------------+
+|        Raw Data          |    →    |    02_preprocess.py      |    →    |  processed_data.parquet    |
+|       (CSV files)        |         |  (Clean & Feature Eng.)  |         |   (Ready for Training)     |
++--------------------------+         +--------------------------+         +----------------------------+
+                                                                                       |
+                                                                                       ↓
+                                         +-------------------------------------------+
+                                         |      Step 3: Train Base Models            |
+                                         |  (LGBM must run before SARIMAX)           |
+                                         |                                           |
+                                         |   • 03_train_lightgbm.py                  |
+                                         |   • 03_train_sarimax_resampled.py         |
+                                         |   • 03_train_transformer.py               |
+                                         |   • 03_train_autoformer.py                |
+                                         |   • 03_train_bayesian_lstm.py             |
+                                         +-------------------------------------------+
+                                                                                       |
+                                                                                       ↓
+                                         +-------------------------------------------+
+                                         |      Saved Base Models                    |
+                                         |      (in /models folder)                  |
+                                         +-------------------------------------------+
+                                                                                       |
+                                                                                       ↓
+                                         +-------------------------------------------+
+                                         |      04_ensemble.py                       |
+                                         | (Train Meta-Learner on Predictions)       |
+                                         +-------------------------------------------+
+                                                                                       |
+                                                                                       ↓
+                                         +-------------------------------------------+
+                                         |      🏆 Final Ensemble Model              |
+                                         | (enhanced_ensemble_model.joblib)          |
+                                         +-------------------------------------------+
 
-+------------------+ +------------------------+ +------------------------------+
-| Raw Data | --> | 02_preprocess.py | --> | processed_data.parquet |
-| (CSV files) | | (Clean & Feature Eng.) | | (Ready for Training) |
-+------------------+ +------------------------+ +------------------------------+
-|
-|
-+-------------------------------------------+
-|
-+------------------------v-------------------------+
-| Step 3: Train Base Models (in parallel) |
-| |
-| - 03_train_lightgbm.py |
-| - 03_train_sarimax_resampled.py |
-| - 03_train_transformer.py |
-| - 03_train_autoformer.py |
-| - 03_train_bayesian_lstm.py |
-| |
-+------------------------v-------------------------+
-|
-|
-+------------------------v-------------------------+
-| Saved Base Models (in /models folder) |
-+------------------------v-------------------------+
-|
-|
-+------------------------v-------------------------+
-| 04_ensemble.py |
-| (Train Meta-Learner on Base Model Predictions) |
-+------------------------v-------------------------+
-|
-|
-+------------------------v-------------------------+
-| Final Ensemble Model |
-| (enhanced_ensemble_model.joblib) |
-+-------------------------------------------------+
-
-Generated code
----
 
 ## 🧠 Models Implemented
 

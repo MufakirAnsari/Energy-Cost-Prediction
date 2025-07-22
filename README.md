@@ -68,29 +68,33 @@ The project follows a clear, modular, and reproducible workflow, from data inges
 
 ---
 
-## Directory Structure
+```bash
 .
-├── 01_eda.py # Exploratory Data Analysis
-├── 02_preprocess.py # Data cleaning and feature engineering
-├── 03_train_lightgbm.py # Train LightGBM model (point + quantile)
-├── 03_train_sarimax_resampled.py# Train SARIMAX model
-├── 03_train_transformer.py # Train Transformer model
-├── 03_train_bayesian_lstm.py # Train Bayesian Bi-LSTM
-├── 03_train_autoformer.py # Train Autoformer model
-├── 04_ensemble.py # Train Stacked Ensemble meta-model
-├── config.py # Global config for all parameters
-├── utils.py # Helper functions, custom layers
-├── requirements.txt # Python dependencies
-├── README.md # This file
-├── data/
-│ ├── energy_dataset.csv # Raw energy price data
-│ └── weather_features.csv # Raw weather data
-├── models/
-│ └── *.keras # Saved deep learning models
-│ └── *.joblib # Saved statistical and tree models
-└── reports/
-├── eda_.png # EDA plots
-└── Workflow for Energy Forecasting.png # Architecture diagram
+├── 01_eda.py                     # Perform Exploratory Data Analysis (EDA)
+├── 02_preprocess.py              # Clean data and engineer features
+├── 03_train_lightgbm.py          # Train LightGBM (point + quantile) models
+├── 03_train_sarimax_resampled.py # Train SARIMAX model on resampled data
+├── 03_train_transformer.py       # Train standard Transformer model
+├── 03_train_bayesian_lstm.py     # Train Bayesian Bi-LSTM (with uncertainty)
+├── 03_train_autoformer.py        # Train Autoformer for long-sequence forecasting
+├── 04_ensemble.py                # Train Stacked Ensemble meta-model
+├── config.py                     # Centralized configuration for all modules
+├── utils.py                      # Utility functions and custom Keras layers
+├── requirements.txt              # List of required Python packages
+├── README.md                     # Project overview and usage guide
+
+├── data/                         # Input datasets
+│   ├── energy_dataset.csv        # Raw energy price data
+│   └── weather_features.csv      # Raw weather data
+
+├── models/                       # Saved model artifacts
+│   ├── *.keras                   # Deep learning models
+│   └── *.joblib                  # Tree-based and statistical models
+
+└── reports/                      # Visual reports and diagrams
+    ├── eda_.png                  # Plots from EDA
+    └── Workflow for Energy Forecasting.png  # Project architecture diagram
+```
 
 
 ---

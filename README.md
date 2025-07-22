@@ -139,8 +139,7 @@ A diverse set of models was chosen to cover different forecasting paradigms.
 ├── requirements.txt             # All Python dependencies for the project
 └── README.md                    # This file
 
-
-
+````markdown
 ## 🛠️ Setup and Installation
 
 Follow these steps to set up the environment and run the project.
@@ -149,26 +148,32 @@ Follow these steps to set up the environment and run the project.
 ```bash
 git clone https://github.com/MufakirAnsari/Energy-Cost-Prediction.git
 cd Energy-Cost-Prediction
+````
 
-2. Create and Activate a Virtual Environment
+#### 2. Create and Activate a Virtual Environment
 
 Using a dedicated environment is crucial for reproducibility.
 
+```bash
 # Create a conda environment
 conda create -n env python=3.11
 
 # Activate the environment
 conda activate env
+```
 
-3. Install Dependencies
+#### 3. Install Dependencies
 
-All required packages are listed in requirements.txt.```bash
+All required packages are listed in `requirements.txt`.
+
+```bash
 pip install -r requirements.txt
+```
 
-Generated code
-> **Note on GPU Support:** The `requirements.txt` file installs the standard TensorFlow package. To leverage an NVIDIA GPU, ensure you have the appropriate NVIDIA drivers and CUDA Toolkit installed on your system that are compatible with your TensorFlow version.
+> **Note on GPU Support:** The `requirements.txt` installs the standard TensorFlow package. To leverage an NVIDIA GPU, ensure you have compatible NVIDIA drivers and CUDA Toolkit installed on your system.
 
 #### 4. Download the Data
+
 Place the raw `energy_dataset.csv` and `weather_features.csv` files into the `data/` directory. These can be sourced from the [Kaggle: Energy & Weather Dataset](https://www.kaggle.com/datasets/nicholasjhana/energy-consumption-generation-prices-and-weather).
 
 ---
@@ -178,15 +183,18 @@ Place the raw `energy_dataset.csv` and `weather_features.csv` files into the `da
 The scripts are designed to be run in a specific order to ensure dependencies are met.
 
 #### Step 1: Preprocessing and Feature Engineering (Mandatory)
+
 This script is the foundation for all models. It cleans the raw data, engineers features, and saves the final `processed_data.parquet` file.
+
 ```bash
 python 02_preprocess.py
+```
 
-Step 2: Train the Base Models
+#### Step 2: Train the Base Models
 
 Train each of the individual models. Note that LightGBM must be trained before SARIMAX, as SARIMAX uses the trained LightGBM model for its feature selection process.
 
-
+```bash
 # 1. Train the powerful tabular baseline (creates point and quantile models)
 python 03_train_lightgbm.py
 
@@ -197,44 +205,54 @@ python 03_train_sarimax_resampled.py
 python 03_train_transformer.py
 python 03_train_autoformer.py
 python 03_train_bayesian_lstm.py
+```
 
+After this step, your `models/` directory will be populated with all the trained base models.
 
-After this step, your models/ directory will be populated with all the trained base models.
-
-Step 3: Train the Ensemble Model
+#### Step 3: Train the Ensemble Model
 
 This script loads all the base models trained in the previous step and uses their predictions on a validation set to train a final meta-learner.
 
+```bash
 python 04_ensemble.py
+```
 
-Step 4: Evaluate and Analyze
+#### Step 4: Evaluate and Analyze
 
-With all models trained, the next step is to write an evaluation script (05_evaluation.py) to load them and compare their performance on the held-out test set using metrics like MAE, RMSE, and MAPE.
+With all models trained, the next step is to write an evaluation script (`05_evaluation.py`) to load them and compare their performance on the held-out test set using metrics like MAE, RMSE, and MAPE.
 
-📝 Methodological Notes
+---
 
-SARIMAX Feasibility Compromise: Initial attempts to train a SARIMAX model on hourly data (m=24) with exogenous features led to recurring Out-Of-Memory errors due to the massive computational resources required. A pragmatic decision was made to resample the data to a 3-hour frequency (m=8), which allows the model to train successfully on consumer-grade hardware while still capturing daily seasonality. This is documented in 03_train_sarimax_resampled.py.
+## 📝 Methodological Notes
 
-Fair Comparison of Deep Learning Models: To ensure a fair and direct architectural comparison, all sequential deep learning models (Transformer, Autoformer, LSTM) are configured in config.py to use the same input sequence length (SEQ_LENGTH = 168 hours).
+* **SARIMAX Feasibility Compromise:** Initial attempts to train SARIMAX on hourly data (`m=24`) with exogenous features led to out-of-memory errors. Resampling to a 3-hour frequency (`m=8`) enables feasible training while preserving daily seasonality (see `03_train_sarimax_resampled.py`).
 
-Hyperparameter Tuning: The parameters in config.py provide a strong and consistent baseline for comparison. For a fully exhaustive study, these parameters should be systematically tuned for each model (e.g., using Optuna or KerasTuner) to optimize performance on the validation set.
+* **Fair Comparison of Deep Learning Models:** All sequential deep learning models (Transformer, Autoformer, LSTM) use the same input sequence length (`SEQ_LENGTH = 168` hours) configured in `config.py`.
 
-🔮 Future Work
+* **Hyperparameter Tuning:** Parameters in `config.py` provide a solid baseline. Full optimization should involve automated tuning (e.g., with Optuna or KerasTuner).
 
-Rigorous Hyperparameter Tuning: Implement an automated hyperparameter search for all models to ensure each is performing at its best.
+---
 
-Comprehensive Evaluation Module: Build out the 05_evaluation.py script to include statistical significance tests (e.g., Diebold-Mariano test) and detailed visualizations of prediction errors.
+## 🔮 Future Work
 
-Economic Simulation: Develop a module to simulate a trading strategy based on the model forecasts, incorporating transaction costs to evaluate the real-world economic value of each model's accuracy and uncertainty estimates.
+* Implement automated hyperparameter search for all models to maximize performance.
+* Develop comprehensive evaluation scripts including statistical tests (e.g., Diebold-Mariano) and rich visualizations.
+* Simulate trading strategies using model forecasts, incorporating transaction costs to assess economic value.
+* Containerize the best model using Docker and deploy as a REST API with Flask or FastAPI.
 
-Deployment: Containerize the best-performing model using Docker and deploy it as a REST API using a framework like Flask or FastAPI.
+---
 
-📄 License
+## 📄 License
 
-This project is licensed under the MIT License. See the LICENSE file for details.
+This project is licensed under the MIT License. See the `LICENSE` file for details.
 
-🙏 Acknowledgments
+---
 
-This work relies on the "Energy consumption, generation, prices and weather" dataset, generously made available on Kaggle.
+## 🙏 Acknowledgments
 
-The development of this project was heavily influenced by the open-source community and the incredible tools they provide.
+This work uses the ["Energy consumption, generation, prices and weather"](https://www.kaggle.com/datasets/nicholasjhana/energy-consumption-generation-prices-and-weather) dataset from Kaggle.
+
+Special thanks to the open-source community for providing invaluable tools and support.
+
+```
+```

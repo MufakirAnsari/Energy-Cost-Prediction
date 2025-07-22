@@ -1,0 +1,20 @@
+# requirements.txt
+# These versions are known to be compatible and resolve the Keras internal attribute error.
+pandas
+numpy
+tensorflow==2.15.0
+keras==2.15.0
+tensorflow-probability==0.23.0
+scikit-learn
+lightgbm
+matplotlib
+seaborn
+statsmodels
+tqdm
+pyarrow
+holidays
+joblib
+
+
+
+

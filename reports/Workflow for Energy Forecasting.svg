@@ -1,0 +1,419 @@
+<svg width="2174pt" height="1894pt" viewBox="0.00 0.00 2173.72 1893.70" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 1889.7)">
+<title>Thesis_Workflow_Conceptual</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-1889.7 2169.72,-1889.7 2169.72,4 -4,4"/>
+<text text-anchor="middle" x="1082.86" y="-16" font-family="Helvetica,sans-Serif" font-size="40.00">Workflow for Energy Forecasting</text>
+<g id="clust1" class="cluster">
+<title>cluster_Phase1</title>
+<polygon fill="#f0f4f7" stroke="black" points="1199,-1397.5 1199,-1877.7 1976,-1877.7 1976,-1397.5 1199,-1397.5"/>
+<text text-anchor="middle" x="1587.5" y="-1837.7" font-family="Helvetica,sans-Serif" font-size="40.00">Phase 1: Data Preparation</text>
+</g>
+<g id="clust3" class="cluster">
+<title>cluster_Phase2</title>
+<polygon fill="#f0f4f7" stroke="black" points="8,-1008.1 8,-1353.5 1816,-1353.5 1816,-1008.1 8,-1008.1"/>
+<text text-anchor="middle" x="912" y="-1313.5" font-family="Helvetica,sans-Serif" font-size="40.00">Phase 2: Model Training</text>
+</g>
+<g id="clust4" class="cluster">
+<title>cluster_Classical</title>
+<polygon fill="#f0f4f7" stroke="black" points="16,-1016.1 16,-1275.1 356,-1275.1 356,-1016.1 16,-1016.1"/>
+<text text-anchor="middle" x="186" y="-1235.1" font-family="Helvetica,sans-Serif" font-size="40.00">Classical Baseline</text>
+</g>
+<g id="clust5" class="cluster">
+<title>cluster_Tree</title>
+<polygon fill="#f0f4f7" stroke="black" points="364,-1016.1 364,-1289.5 992,-1289.5 992,-1016.1 364,-1016.1"/>
+<text text-anchor="middle" x="678" y="-1249.5" font-family="Helvetica,sans-Serif" font-size="40.00">Tree-Based Baseline</text>
+</g>
+<g id="clust7" class="cluster">
+<title>cluster_DL</title>
+<polygon fill="#f0f4f7" stroke="black" points="1000,-1016.1 1000,-1289.5 1808,-1289.5 1808,-1016.1 1000,-1016.1"/>
+<text text-anchor="middle" x="1404" y="-1249.5" font-family="Helvetica,sans-Serif" font-size="40.00">Deep Learning Models</text>
+</g>
+<g id="clust9" class="cluster">
+<title>cluster_Phase3</title>
+<polygon fill="#f0f4f7" stroke="black" points="542,-755.5 542,-1000.1 1069,-1000.1 1069,-755.5 542,-755.5"/>
+<text text-anchor="middle" x="805.5" y="-960.1" font-family="Helvetica,sans-Serif" font-size="40.00">Phase 3: Ensemble Stacking</text>
+</g>
+<g id="clust11" class="cluster">
+<title>cluster_Phase4</title>
+<polygon fill="#f0f4f7" stroke="black" points="889,-374.2 889,-711.5 1431,-711.5 1431,-374.2 889,-374.2"/>
+<text text-anchor="middle" x="1160" y="-671.5" font-family="Helvetica,sans-Serif" font-size="40.00">Phase 4: Rigorous Evaluation</text>
+</g>
+<g id="clust13" class="cluster">
+<title>cluster_Phase5</title>
+<polygon fill="#f0f4f7" stroke="black" points="882,-64 882,-366.2 1438,-366.2 1438,-64 882,-64"/>
+<text text-anchor="middle" x="1160" y="-326.2" font-family="Helvetica,sans-Serif" font-size="40.00">Phase 5: Reporting &amp; Analysis</text>
+</g>
+<!-- RawData -->
+<g id="node1" class="node">
+<title>RawData</title>
+<path fill="#e6f2ff" stroke="#0055cc" d="M1743.04,-1802C1743.04,-1808.46 1687.44,-1813.7 1619,-1813.7 1550.56,-1813.7 1494.96,-1808.46 1494.96,-1802 1494.96,-1802 1494.96,-1696.7 1494.96,-1696.7 1494.96,-1690.24 1550.56,-1685 1619,-1685 1687.44,-1685 1743.04,-1690.24 1743.04,-1696.7 1743.04,-1696.7 1743.04,-1802 1743.04,-1802"/>
+<path fill="none" stroke="#0055cc" d="M1743.04,-1802C1743.04,-1795.54 1687.44,-1790.3 1619,-1790.3 1550.56,-1790.3 1494.96,-1795.54 1494.96,-1802"/>
+<text text-anchor="middle" x="1619" y="-1756.55" font-family="Helvetica,sans-Serif" font-size="24.00">Raw Data Sources</text>
+<text text-anchor="middle" x="1619" y="-1727.75" font-family="Helvetica,sans-Serif" font-size="24.00">(Energy &amp; Weather)</text>
+</g>
+<!-- EDA -->
+<g id="node4" class="node">
+<title>EDA</title>
+<path fill="#d5f5e3" stroke="#0f753e" d="M1956.39,-1642C1956.39,-1642 1669.61,-1642 1669.61,-1642 1663.61,-1642 1657.61,-1636 1657.61,-1630 1657.61,-1630 1657.61,-1589.2 1657.61,-1589.2 1657.61,-1583.2 1663.61,-1577.2 1669.61,-1577.2 1669.61,-1577.2 1956.39,-1577.2 1956.39,-1577.2 1962.39,-1577.2 1968.39,-1583.2 1968.39,-1589.2 1968.39,-1589.2 1968.39,-1630 1968.39,-1630 1968.39,-1636 1962.39,-1642 1956.39,-1642"/>
+<text text-anchor="middle" x="1813" y="-1602.4" font-family="Helvetica,sans-Serif" font-size="24.00">Exploratory Data Analysis</text>
+</g>
+<!-- RawData&#45;&gt;EDA -->
+<g id="edge1" class="edge">
+<title>RawData-&gt;EDA</title>
+<path fill="none" stroke="black" d="M1700.32,-1686.02C1700.32,-1686.02 1700.32,-1653.39 1700.32,-1653.39"/>
+<polygon fill="black" stroke="black" points="1700.32,-1643.39 1704.82,-1653.39 1700.32,-1647.17 1700.32,-1653.39 1700.32,-1653.39 1700.32,-1653.39 1700.32,-1647.17 1695.82,-1653.39 1700.32,-1643.39"/>
+</g>
+<!-- Preprocess -->
+<g id="node5" class="node">
+<title>Preprocess</title>
+<path fill="#d5f5e3" stroke="#0f753e" d="M1631.12,-1642C1631.12,-1642 1218.88,-1642 1218.88,-1642 1212.88,-1642 1206.88,-1636 1206.88,-1630 1206.88,-1630 1206.88,-1589.2 1206.88,-1589.2 1206.88,-1583.2 1212.88,-1577.2 1218.88,-1577.2 1218.88,-1577.2 1631.12,-1577.2 1631.12,-1577.2 1637.12,-1577.2 1643.12,-1583.2 1643.12,-1589.2 1643.12,-1589.2 1643.12,-1630 1643.12,-1630 1643.12,-1636 1637.12,-1642 1631.12,-1642"/>
+<text text-anchor="middle" x="1425" y="-1602.4" font-family="Helvetica,sans-Serif" font-size="24.00">Preprocessing &amp; Feature Engineering</text>
+</g>
+<!-- RawData&#45;&gt;Preprocess -->
+<g id="edge2" class="edge">
+<title>RawData-&gt;Preprocess</title>
+<path fill="none" stroke="black" d="M1544.35,-1685.2C1544.35,-1685.2 1544.35,-1653.71 1544.35,-1653.71"/>
+<polygon fill="black" stroke="black" points="1544.35,-1643.71 1548.85,-1653.71 1544.35,-1647.49 1544.35,-1653.71 1544.35,-1653.71 1544.35,-1653.71 1544.35,-1647.49 1539.85,-1653.71 1544.35,-1643.71"/>
+</g>
+<!-- ProcessedData -->
+<g id="node2" class="node">
+<title>ProcessedData</title>
+<path fill="#e6f2ff" stroke="#0055cc" d="M1580.42,-1522.5C1580.42,-1528.96 1510.76,-1534.2 1425,-1534.2 1339.24,-1534.2 1269.58,-1528.96 1269.58,-1522.5 1269.58,-1522.5 1269.58,-1417.2 1269.58,-1417.2 1269.58,-1410.74 1339.24,-1405.5 1425,-1405.5 1510.76,-1405.5 1580.42,-1410.74 1580.42,-1417.2 1580.42,-1417.2 1580.42,-1522.5 1580.42,-1522.5"/>
+<path fill="none" stroke="#0055cc" d="M1580.42,-1522.5C1580.42,-1516.04 1510.76,-1510.8 1425,-1510.8 1339.24,-1510.8 1269.58,-1516.04 1269.58,-1522.5"/>
+<text text-anchor="middle" x="1425" y="-1477.05" font-family="Helvetica,sans-Serif" font-size="24.00">Master Feature Set</text>
+<text text-anchor="middle" x="1425" y="-1448.25" font-family="Helvetica,sans-Serif" font-size="24.00">(processed_data.parquet)</text>
+</g>
+<!-- TrainSARIMA -->
+<g id="node6" class="node">
+<title>TrainSARIMA</title>
+<path fill="#d5f5e3" stroke="#0f753e" d="M335.7,-1211.1C335.7,-1211.1 98.3,-1211.1 98.3,-1211.1 92.3,-1211.1 86.3,-1205.1 86.3,-1199.1 86.3,-1199.1 86.3,-1158.3 86.3,-1158.3 86.3,-1152.3 92.3,-1146.3 98.3,-1146.3 98.3,-1146.3 335.7,-1146.3 335.7,-1146.3 341.7,-1146.3 347.7,-1152.3 347.7,-1158.3 347.7,-1158.3 347.7,-1199.1 347.7,-1199.1 347.7,-1205.1 341.7,-1211.1 335.7,-1211.1"/>
+<text text-anchor="middle" x="217" y="-1171.5" font-family="Helvetica,sans-Serif" font-size="24.00">Train SARIMA Model</text>
+</g>
+<!-- ProcessedData&#45;&gt;TrainSARIMA -->
+<g id="edge11" class="edge">
+<title>ProcessedData-&gt;TrainSARIMA</title>
+<path fill="none" stroke="black" d="M1269.24,-1491.3C942.83,-1491.3 217,-1491.3 217,-1491.3 217,-1491.3 217,-1222.78 217,-1222.78"/>
+<polygon fill="black" stroke="black" points="217,-1212.78 221.5,-1222.78 217,-1216.56 217,-1222.78 217,-1222.78 217,-1222.78 217,-1216.56 212.5,-1222.78 217,-1212.78"/>
+</g>
+<!-- TrainLightGBM -->
+<g id="node7" class="node">
+<title>TrainLightGBM</title>
+<path fill="#d5f5e3" stroke="#0f753e" d="M964.39,-1225.5C964.39,-1225.5 681.61,-1225.5 681.61,-1225.5 675.61,-1225.5 669.61,-1219.5 669.61,-1213.5 669.61,-1213.5 669.61,-1143.9 669.61,-1143.9 669.61,-1137.9 675.61,-1131.9 681.61,-1131.9 681.61,-1131.9 964.39,-1131.9 964.39,-1131.9 970.39,-1131.9 976.39,-1137.9 976.39,-1143.9 976.39,-1143.9 976.39,-1213.5 976.39,-1213.5 976.39,-1219.5 970.39,-1225.5 964.39,-1225.5"/>
+<text text-anchor="middle" x="823" y="-1185.9" font-family="Helvetica,sans-Serif" font-size="24.00">Train Tree-Based Models</text>
+<text text-anchor="middle" x="823" y="-1157.1" font-family="Helvetica,sans-Serif" font-size="24.00">(Point &amp; Quantile)</text>
+</g>
+<!-- ProcessedData&#45;&gt;TrainLightGBM -->
+<g id="edge12" class="edge">
+<title>ProcessedData-&gt;TrainLightGBM</title>
+<path fill="none" stroke="black" d="M1269.19,-1448.4C1090.82,-1448.4 823,-1448.4 823,-1448.4 823,-1448.4 823,-1237.21 823,-1237.21"/>
+<polygon fill="black" stroke="black" points="823,-1227.21 827.5,-1237.21 823,-1230.99 823,-1237.21 823,-1237.21 823,-1237.21 823,-1230.99 818.5,-1237.21 823,-1227.21"/>
+</g>
+<!-- TrainConstrainedTransformer -->
+<g id="node8" class="node">
+<title>TrainConstrainedTransformer</title>
+<path fill="#d5f5e3" stroke="#0f753e" d="M1754.38,-1225.5C1754.38,-1225.5 1551.62,-1225.5 1551.62,-1225.5 1545.62,-1225.5 1539.62,-1219.5 1539.62,-1213.5 1539.62,-1213.5 1539.62,-1143.9 1539.62,-1143.9 1539.62,-1137.9 1545.62,-1131.9 1551.62,-1131.9 1551.62,-1131.9 1754.38,-1131.9 1754.38,-1131.9 1760.38,-1131.9 1766.38,-1137.9 1766.38,-1143.9 1766.38,-1143.9 1766.38,-1213.5 1766.38,-1213.5 1766.38,-1219.5 1760.38,-1225.5 1754.38,-1225.5"/>
+<text text-anchor="middle" x="1653" y="-1185.9" font-family="Helvetica,sans-Serif" font-size="24.00">Train Constrained</text>
+<text text-anchor="middle" x="1653" y="-1157.1" font-family="Helvetica,sans-Serif" font-size="24.00">Transformer</text>
+</g>
+<!-- ProcessedData&#45;&gt;TrainConstrainedTransformer -->
+<g id="edge13" class="edge">
+<title>ProcessedData-&gt;TrainConstrainedTransformer</title>
+<path fill="none" stroke="black" d="M1560.02,-1408.82C1560.02,-1408.82 1560.02,-1236.98 1560.02,-1236.98"/>
+<polygon fill="black" stroke="black" points="1560.02,-1226.98 1564.52,-1236.98 1560.02,-1230.76 1560.02,-1236.98 1560.02,-1236.98 1560.02,-1236.98 1560.02,-1230.76 1555.52,-1236.98 1560.02,-1226.98"/>
+</g>
+<!-- TrainAutoformer -->
+<g id="node9" class="node">
+<title>TrainAutoformer</title>
+<path fill="#d5f5e3" stroke="#0f753e" d="M1304.03,-1225.5C1304.03,-1225.5 1019.97,-1225.5 1019.97,-1225.5 1013.97,-1225.5 1007.97,-1219.5 1007.97,-1213.5 1007.97,-1213.5 1007.97,-1143.9 1007.97,-1143.9 1007.97,-1137.9 1013.97,-1131.9 1019.97,-1131.9 1019.97,-1131.9 1304.03,-1131.9 1304.03,-1131.9 1310.03,-1131.9 1316.03,-1137.9 1316.03,-1143.9 1316.03,-1143.9 1316.03,-1213.5 1316.03,-1213.5 1316.03,-1219.5 1310.03,-1225.5 1304.03,-1225.5"/>
+<text text-anchor="middle" x="1162" y="-1185.9" font-family="Helvetica,sans-Serif" font-size="24.00">Train Long-Sequence</text>
+<text text-anchor="middle" x="1162" y="-1157.1" font-family="Helvetica,sans-Serif" font-size="24.00">Transformer (Autoformer)</text>
+</g>
+<!-- ProcessedData&#45;&gt;TrainAutoformer -->
+<g id="edge14" class="edge">
+<title>ProcessedData-&gt;TrainAutoformer</title>
+<path fill="none" stroke="black" d="M1285.06,-1409.17C1285.06,-1409.17 1285.06,-1237.1 1285.06,-1237.1"/>
+<polygon fill="black" stroke="black" points="1285.06,-1227.1 1289.56,-1237.1 1285.06,-1230.88 1285.06,-1237.1 1285.06,-1237.1 1285.06,-1237.1 1285.06,-1230.88 1280.56,-1237.1 1285.06,-1227.1"/>
+</g>
+<!-- TrainBayesian -->
+<g id="node10" class="node">
+<title>TrainBayesian</title>
+<path fill="#d5f5e3" stroke="#0f753e" d="M1514.04,-1225.5C1514.04,-1225.5 1341.96,-1225.5 1341.96,-1225.5 1335.96,-1225.5 1329.96,-1219.5 1329.96,-1213.5 1329.96,-1213.5 1329.96,-1143.9 1329.96,-1143.9 1329.96,-1137.9 1335.96,-1131.9 1341.96,-1131.9 1341.96,-1131.9 1514.04,-1131.9 1514.04,-1131.9 1520.04,-1131.9 1526.04,-1137.9 1526.04,-1143.9 1526.04,-1143.9 1526.04,-1213.5 1526.04,-1213.5 1526.04,-1219.5 1520.04,-1225.5 1514.04,-1225.5"/>
+<text text-anchor="middle" x="1428" y="-1185.9" font-family="Helvetica,sans-Serif" font-size="24.00">Train Bayesian</text>
+<text text-anchor="middle" x="1428" y="-1157.1" font-family="Helvetica,sans-Serif" font-size="24.00">Bi-LSTM</text>
+</g>
+<!-- ProcessedData&#45;&gt;TrainBayesian -->
+<g id="edge15" class="edge">
+<title>ProcessedData-&gt;TrainBayesian</title>
+<path fill="none" stroke="black" d="M1395.32,-1405.23C1395.32,-1405.23 1395.32,-1237.16 1395.32,-1237.16"/>
+<polygon fill="black" stroke="black" points="1395.32,-1227.16 1399.82,-1237.16 1395.32,-1230.94 1395.32,-1237.16 1395.32,-1237.16 1395.32,-1237.16 1395.32,-1230.94 1390.82,-1237.16 1395.32,-1227.16"/>
+</g>
+<!-- EvaluateModels -->
+<g id="node12" class="node">
+<title>EvaluateModels</title>
+<path fill="#d5f5e3" stroke="#0f753e" d="M1286.04,-647.5C1286.04,-647.5 1033.96,-647.5 1033.96,-647.5 1027.96,-647.5 1021.96,-641.5 1021.96,-635.5 1021.96,-635.5 1021.96,-565.9 1021.96,-565.9 1021.96,-559.9 1027.96,-553.9 1033.96,-553.9 1033.96,-553.9 1286.04,-553.9 1286.04,-553.9 1292.04,-553.9 1298.04,-559.9 1298.04,-565.9 1298.04,-565.9 1298.04,-635.5 1298.04,-635.5 1298.04,-641.5 1292.04,-647.5 1286.04,-647.5"/>
+<text text-anchor="middle" x="1160" y="-607.9" font-family="Helvetica,sans-Serif" font-size="24.00">Generate Predictions</text>
+<text text-anchor="middle" x="1160" y="-579.1" font-family="Helvetica,sans-Serif" font-size="24.00">&amp; Calculate All Metrics</text>
+</g>
+<!-- ProcessedData&#45;&gt;EvaluateModels -->
+<g id="edge20" class="edge">
+<title>ProcessedData-&gt;EvaluateModels</title>
+<path fill="none" stroke="black" d="M1322.99,-1406.41C1322.99,-1303.22 1322.99,-1110.4 1322.99,-1110.4 1322.99,-1110.4 1241.5,-1110.4 1241.5,-1110.4 1241.5,-1110.4 1241.5,-658.96 1241.5,-658.96"/>
+<polygon fill="black" stroke="black" points="1241.5,-648.96 1246,-658.96 1241.5,-652.74 1241.5,-658.96 1241.5,-658.96 1241.5,-658.96 1241.5,-652.74 1237,-658.96 1241.5,-648.96"/>
+</g>
+<!-- ResultCSVs -->
+<g id="node3" class="node">
+<title>ResultCSVs</title>
+<path fill="#e6f2ff" stroke="#0055cc" d="M1315.38,-499.2C1315.38,-505.66 1245.74,-510.9 1160,-510.9 1074.26,-510.9 1004.62,-505.66 1004.62,-499.2 1004.62,-499.2 1004.62,-393.9 1004.62,-393.9 1004.62,-387.44 1074.26,-382.2 1160,-382.2 1245.74,-382.2 1315.38,-387.44 1315.38,-393.9 1315.38,-393.9 1315.38,-499.2 1315.38,-499.2"/>
+<path fill="none" stroke="#0055cc" d="M1315.38,-499.2C1315.38,-492.74 1245.74,-487.5 1160,-487.5 1074.26,-487.5 1004.62,-492.74 1004.62,-499.2"/>
+<text text-anchor="middle" x="1160" y="-453.75" font-family="Helvetica,sans-Serif" font-size="24.00">Consolidated Results</text>
+<text text-anchor="middle" x="1160" y="-424.95" font-family="Helvetica,sans-Serif" font-size="24.00">(Predictions &amp; PnL CSVs)</text>
+</g>
+<!-- GeneratePlots -->
+<g id="node13" class="node">
+<title>GeneratePlots</title>
+<path fill="#d5f5e3" stroke="#0f753e" d="M1245.38,-302.2C1245.38,-302.2 1074.62,-302.2 1074.62,-302.2 1068.62,-302.2 1062.62,-296.2 1062.62,-290.2 1062.62,-290.2 1062.62,-220.6 1062.62,-220.6 1062.62,-214.6 1068.62,-208.6 1074.62,-208.6 1074.62,-208.6 1245.38,-208.6 1245.38,-208.6 1251.38,-208.6 1257.38,-214.6 1257.38,-220.6 1257.38,-220.6 1257.38,-290.2 1257.38,-290.2 1257.38,-296.2 1251.38,-302.2 1245.38,-302.2"/>
+<text text-anchor="middle" x="1160" y="-262.6" font-family="Helvetica,sans-Serif" font-size="24.00">Generate Final</text>
+<text text-anchor="middle" x="1160" y="-233.8" font-family="Helvetica,sans-Serif" font-size="24.00">Visualizations</text>
+</g>
+<!-- ResultCSVs&#45;&gt;GeneratePlots -->
+<g id="edge29" class="edge">
+<title>ResultCSVs-&gt;GeneratePlots</title>
+<path fill="none" stroke="black" d="M1160,-381.84C1160,-381.84 1160,-313.75 1160,-313.75"/>
+<polygon fill="black" stroke="black" points="1160,-303.75 1164.5,-313.75 1160,-307.53 1160,-313.75 1160,-313.75 1160,-313.75 1160,-307.53 1155.5,-313.75 1160,-303.75"/>
+</g>
+<!-- EDAReport -->
+<g id="node21" class="node">
+<title>EDAReport</title>
+<polygon fill="#f8cecc" stroke="#b81d18" points="1911.03,-1502.25 1708.97,-1502.25 1708.97,-1437.45 1917.03,-1437.45 1917.03,-1496.25 1911.03,-1502.25"/>
+<polyline fill="none" stroke="#b81d18" points="1911.03,-1502.25 1911.03,-1496.25"/>
+<polyline fill="none" stroke="#b81d18" points="1917.03,-1496.25 1911.03,-1496.25"/>
+<text text-anchor="middle" x="1813" y="-1462.65" font-family="Helvetica,sans-Serif" font-size="24.00">Initial EDA Plots</text>
+</g>
+<!-- EDA&#45;&gt;EDAReport -->
+<g id="edge3" class="edge">
+<title>EDA-&gt;EDAReport</title>
+<path fill="none" stroke="black" d="M1813,-1576.83C1813,-1576.83 1813,-1513.63 1813,-1513.63"/>
+<polygon fill="black" stroke="black" points="1813,-1503.63 1817.5,-1513.63 1813,-1507.41 1813,-1513.63 1813,-1513.63 1813,-1513.63 1813,-1507.41 1808.5,-1513.63 1813,-1503.63"/>
+</g>
+<!-- Preprocess&#45;&gt;ProcessedData -->
+<g id="edge4" class="edge">
+<title>Preprocess-&gt;ProcessedData</title>
+<path fill="none" stroke="black" d="M1425,-1576.83C1425,-1576.83 1425,-1545.78 1425,-1545.78"/>
+<polygon fill="black" stroke="black" points="1425,-1535.78 1429.5,-1545.78 1425,-1539.56 1425,-1545.78 1425,-1545.78 1425,-1545.78 1425,-1539.56 1420.5,-1545.78 1425,-1535.78"/>
+</g>
+<!-- SARIMA_Model -->
+<g id="node14" class="node">
+<title>SARIMA_Model</title>
+<polygon fill="#fff2cc" stroke="#d68400" points="332.03,-1088.9 329.03,-1092.9 308.03,-1092.9 305.03,-1088.9 131.97,-1088.9 131.97,-1024.1 332.03,-1024.1 332.03,-1088.9"/>
+<text text-anchor="middle" x="232" y="-1049.3" font-family="Helvetica,sans-Serif" font-size="24.00">SARIMA Model</text>
+</g>
+<!-- TrainSARIMA&#45;&gt;SARIMA_Model -->
+<g id="edge5" class="edge">
+<title>TrainSARIMA-&gt;SARIMA_Model</title>
+<path fill="none" stroke="black" d="M232,-1145.95C232,-1145.95 232,-1100.56 232,-1100.56"/>
+<polygon fill="black" stroke="black" points="232,-1090.56 236.5,-1100.56 232,-1094.34 232,-1100.56 232,-1100.56 232,-1100.56 232,-1094.34 227.5,-1100.56 232,-1090.56"/>
+</g>
+<!-- LGBM_Model -->
+<g id="node15" class="node">
+<title>LGBM_Model</title>
+<polygon fill="#fff2cc" stroke="#d68400" points="648.06,-1088.9 645.06,-1092.9 624.06,-1092.9 621.06,-1088.9 371.94,-1088.9 371.94,-1024.1 648.06,-1024.1 648.06,-1088.9"/>
+<text text-anchor="middle" x="510" y="-1049.3" font-family="Helvetica,sans-Serif" font-size="24.00">LightGBM Point Model</text>
+</g>
+<!-- TrainLightGBM&#45;&gt;LGBM_Model -->
+<g id="edge6" class="edge">
+<title>TrainLightGBM-&gt;LGBM_Model</title>
+<path fill="none" stroke="black" d="M669.25,-1139.1C590.09,-1139.1 510,-1139.1 510,-1139.1 510,-1139.1 510,-1100.36 510,-1100.36"/>
+<polygon fill="black" stroke="black" points="510,-1090.36 514.5,-1100.36 510,-1094.15 510,-1100.36 510,-1100.36 510,-1100.36 510,-1094.15 505.5,-1100.36 510,-1090.36"/>
+</g>
+<!-- LGBM_Quantile_Models -->
+<g id="node16" class="node">
+<title>LGBM_Quantile_Models</title>
+<polygon fill="#fff2cc" stroke="#d68400" points="984.4,-1088.9 981.4,-1092.9 960.4,-1092.9 957.4,-1088.9 661.6,-1088.9 661.6,-1024.1 984.4,-1024.1 984.4,-1088.9"/>
+<text text-anchor="middle" x="823" y="-1049.3" font-family="Helvetica,sans-Serif" font-size="24.00">LightGBM Quantile Models</text>
+</g>
+<!-- TrainLightGBM&#45;&gt;LGBM_Quantile_Models -->
+<g id="edge7" class="edge">
+<title>TrainLightGBM-&gt;LGBM_Quantile_Models</title>
+<path fill="none" stroke="black" d="M823,-1131.45C823,-1131.45 823,-1100.47 823,-1100.47"/>
+<polygon fill="black" stroke="black" points="823,-1090.47 827.5,-1100.47 823,-1094.25 823,-1100.47 823,-1100.47 823,-1100.47 823,-1094.25 818.5,-1100.47 823,-1090.47"/>
+</g>
+<!-- CT_Model -->
+<g id="node17" class="node">
+<title>CT_Model</title>
+<polygon fill="#fff2cc" stroke="#d68400" points="1800.38,-1088.9 1797.38,-1092.9 1776.38,-1092.9 1773.38,-1088.9 1497.62,-1088.9 1497.62,-1024.1 1800.38,-1024.1 1800.38,-1088.9"/>
+<text text-anchor="middle" x="1649" y="-1049.3" font-family="Helvetica,sans-Serif" font-size="24.00">Constrained Transformer</text>
+</g>
+<!-- TrainConstrainedTransformer&#45;&gt;CT_Model -->
+<g id="edge8" class="edge">
+<title>TrainConstrainedTransformer-&gt;CT_Model</title>
+<path fill="none" stroke="black" d="M1653,-1131.45C1653,-1131.45 1653,-1100.47 1653,-1100.47"/>
+<polygon fill="black" stroke="black" points="1653,-1090.47 1657.5,-1100.47 1653,-1094.25 1653,-1100.47 1653,-1100.47 1653,-1100.47 1653,-1094.25 1648.5,-1100.47 1653,-1090.47"/>
+</g>
+<!-- AF_Model -->
+<g id="node18" class="node">
+<title>AF_Model</title>
+<polygon fill="#fff2cc" stroke="#d68400" points="1234.37,-1088.9 1231.37,-1092.9 1210.37,-1092.9 1207.37,-1088.9 1007.63,-1088.9 1007.63,-1024.1 1234.37,-1024.1 1234.37,-1088.9"/>
+<text text-anchor="middle" x="1121" y="-1049.3" font-family="Helvetica,sans-Serif" font-size="24.00">Autoformer Model</text>
+</g>
+<!-- TrainAutoformer&#45;&gt;AF_Model -->
+<g id="edge9" class="edge">
+<title>TrainAutoformer-&gt;AF_Model</title>
+<path fill="none" stroke="black" d="M1121.17,-1131.45C1121.17,-1131.45 1121.17,-1100.47 1121.17,-1100.47"/>
+<polygon fill="black" stroke="black" points="1121.17,-1090.47 1125.67,-1100.47 1121.17,-1094.25 1121.17,-1100.47 1121.17,-1100.47 1121.17,-1100.47 1121.17,-1094.25 1116.67,-1100.47 1121.17,-1090.47"/>
+</g>
+<!-- Bayesian_Model -->
+<g id="node19" class="node">
+<title>Bayesian_Model</title>
+<polygon fill="#fff2cc" stroke="#d68400" points="1483.37,-1088.9 1480.37,-1092.9 1459.37,-1092.9 1456.37,-1088.9 1248.63,-1088.9 1248.63,-1024.1 1483.37,-1024.1 1483.37,-1088.9"/>
+<text text-anchor="middle" x="1366" y="-1049.3" font-family="Helvetica,sans-Serif" font-size="24.00">Bayesian Bi-LSTM</text>
+</g>
+<!-- TrainBayesian&#45;&gt;Bayesian_Model -->
+<g id="edge10" class="edge">
+<title>TrainBayesian-&gt;Bayesian_Model</title>
+<path fill="none" stroke="black" d="M1406.67,-1131.45C1406.67,-1131.45 1406.67,-1100.47 1406.67,-1100.47"/>
+<polygon fill="black" stroke="black" points="1406.67,-1090.47 1411.17,-1100.47 1406.67,-1094.25 1406.67,-1100.47 1406.67,-1100.47 1406.67,-1100.47 1406.67,-1094.25 1402.17,-1100.47 1406.67,-1090.47"/>
+</g>
+<!-- CreateEnsemble -->
+<g id="node11" class="node">
+<title>CreateEnsemble</title>
+<path fill="#d5f5e3" stroke="#0f753e" d="M1045.41,-936.1C1045.41,-936.1 754.59,-936.1 754.59,-936.1 748.59,-936.1 742.59,-930.1 742.59,-924.1 742.59,-924.1 742.59,-883.3 742.59,-883.3 742.59,-877.3 748.59,-871.3 754.59,-871.3 754.59,-871.3 1045.41,-871.3 1045.41,-871.3 1051.41,-871.3 1057.41,-877.3 1057.41,-883.3 1057.41,-883.3 1057.41,-924.1 1057.41,-924.1 1057.41,-930.1 1051.41,-936.1 1045.41,-936.1"/>
+<text text-anchor="middle" x="900" y="-896.5" font-family="Helvetica,sans-Serif" font-size="24.00">Create Stacked Ensemble</text>
+</g>
+<!-- EnsembleModel -->
+<g id="node20" class="node">
+<title>EnsembleModel</title>
+<polygon fill="#fff2cc" stroke="#d68400" points="1060.76,-828.3 1057.76,-832.3 1036.76,-832.3 1033.76,-828.3 731.24,-828.3 731.24,-763.5 1060.76,-763.5 1060.76,-828.3"/>
+<text text-anchor="middle" x="896" y="-788.7" font-family="Helvetica,sans-Serif" font-size="24.00">Enhanced Ensemble Model</text>
+</g>
+<!-- CreateEnsemble&#45;&gt;EnsembleModel -->
+<g id="edge19" class="edge">
+<title>CreateEnsemble-&gt;EnsembleModel</title>
+<path fill="none" stroke="black" d="M900,-871.06C900,-871.06 900,-840.02 900,-840.02"/>
+<polygon fill="black" stroke="black" points="900,-830.02 904.5,-840.02 900,-833.8 900,-840.02 900,-840.02 900,-840.02 900,-833.8 895.5,-840.02 900,-830.02"/>
+</g>
+<!-- EvaluateModels&#45;&gt;ResultCSVs -->
+<g id="edge28" class="edge">
+<title>EvaluateModels-&gt;ResultCSVs</title>
+<path fill="none" stroke="black" d="M1160,-553.61C1160,-553.61 1160,-522.45 1160,-522.45"/>
+<polygon fill="black" stroke="black" points="1160,-512.45 1164.5,-522.45 1160,-516.23 1160,-522.45 1160,-522.45 1160,-522.45 1160,-516.23 1155.5,-522.45 1160,-512.45"/>
+</g>
+<!-- FinalReport -->
+<g id="node22" class="node">
+<title>FinalReport</title>
+<polygon fill="#f8cecc" stroke="#b81d18" points="1288.04,-165.6 1025.96,-165.6 1025.96,-72 1294.04,-72 1294.04,-159.6 1288.04,-165.6"/>
+<polyline fill="none" stroke="#b81d18" points="1288.04,-165.6 1288.04,-159.6"/>
+<polyline fill="none" stroke="#b81d18" points="1294.04,-159.6 1288.04,-159.6"/>
+<text text-anchor="middle" x="1160" y="-126" font-family="Helvetica,sans-Serif" font-size="24.00">Publication-Quality</text>
+<text text-anchor="middle" x="1160" y="-97.2" font-family="Helvetica,sans-Serif" font-size="24.00">Thesis Plots &amp; Tables</text>
+</g>
+<!-- GeneratePlots&#45;&gt;FinalReport -->
+<g id="edge30" class="edge">
+<title>GeneratePlots-&gt;FinalReport</title>
+<path fill="none" stroke="black" d="M1160,-208.39C1160,-208.39 1160,-177.12 1160,-177.12"/>
+<polygon fill="black" stroke="black" points="1160,-167.12 1164.5,-177.12 1160,-170.9 1160,-177.12 1160,-177.12 1160,-177.12 1160,-170.9 1155.5,-177.12 1160,-167.12"/>
+</g>
+<!-- SARIMA_Model&#45;&gt;EvaluateModels -->
+<g id="edge21" class="edge">
+<title>SARIMA_Model-&gt;EvaluateModels</title>
+<path fill="none" stroke="black" d="M232,-1023.94C232,-916.08 232,-577.3 232,-577.3 232,-577.3 1010.35,-577.3 1010.35,-577.3"/>
+<polygon fill="black" stroke="black" points="1020.35,-577.3 1010.35,-581.8 1016.57,-577.3 1010.35,-577.3 1010.35,-577.3 1010.35,-577.3 1016.57,-577.3 1010.35,-572.8 1020.35,-577.3"/>
+</g>
+<!-- LGBM_Model&#45;&gt;CreateEnsemble -->
+<g id="edge16" class="edge">
+<title>LGBM_Model-&gt;CreateEnsemble</title>
+<path fill="none" stroke="black" d="M556.02,-1023.72C556.02,-978.82 556.02,-903.7 556.02,-903.7 556.02,-903.7 730.89,-903.7 730.89,-903.7"/>
+<polygon fill="black" stroke="black" points="740.89,-903.7 730.89,-908.2 737.1,-903.7 730.89,-903.7 730.89,-903.7 730.89,-903.7 737.1,-903.7 730.89,-899.2 740.89,-903.7"/>
+</g>
+<!-- LGBM_Model&#45;&gt;EvaluateModels -->
+<g id="edge22" class="edge">
+<title>LGBM_Model-&gt;EvaluateModels</title>
+<path fill="none" stroke="black" d="M463.98,-1023.72C463.98,-919.21 463.98,-600.7 463.98,-600.7 463.98,-600.7 1010.44,-600.7 1010.44,-600.7"/>
+<polygon fill="black" stroke="black" points="1020.44,-600.7 1010.44,-605.2 1016.66,-600.7 1010.44,-600.7 1010.44,-600.7 1010.44,-600.7 1016.66,-600.7 1010.44,-596.2 1020.44,-600.7"/>
+</g>
+<!-- LGBM_Quantile_Models&#45;&gt;EvaluateModels -->
+<g id="edge23" class="edge">
+<title>LGBM_Quantile_Models-&gt;EvaluateModels</title>
+<path fill="none" stroke="black" d="M696.42,-1023.64C696.42,-922.74 696.42,-624.1 696.42,-624.1 696.42,-624.1 1010.32,-624.1 1010.32,-624.1"/>
+<polygon fill="black" stroke="black" points="1020.32,-624.1 1010.32,-628.6 1016.54,-624.1 1010.32,-624.1 1010.32,-624.1 1010.32,-624.1 1016.54,-624.1 1010.32,-619.6 1020.32,-624.1"/>
+</g>
+<!-- CT_Model&#45;&gt;EvaluateModels -->
+<g id="edge24" class="edge">
+<title>CT_Model-&gt;EvaluateModels</title>
+<path fill="none" stroke="black" d="M1649,-1023.77C1649,-921.76 1649,-616.3 1649,-616.3 1649,-616.3 1309.71,-616.3 1309.71,-616.3"/>
+<polygon fill="black" stroke="black" points="1299.71,-616.3 1309.71,-611.8 1303.49,-616.3 1309.71,-616.3 1309.71,-616.3 1309.71,-616.3 1303.49,-616.3 1309.71,-620.8 1299.71,-616.3"/>
+</g>
+<!-- AF_Model&#45;&gt;CreateEnsemble -->
+<g id="edge17" class="edge">
+<title>AF_Model-&gt;CreateEnsemble</title>
+<path fill="none" stroke="black" d="M1032.52,-1023.72C1032.52,-1023.72 1032.52,-947.64 1032.52,-947.64"/>
+<polygon fill="black" stroke="black" points="1032.52,-937.64 1037.02,-947.64 1032.52,-941.43 1032.52,-947.64 1032.52,-947.64 1032.52,-947.64 1032.52,-941.43 1028.02,-947.64 1032.52,-937.64"/>
+</g>
+<!-- AF_Model&#45;&gt;EvaluateModels -->
+<g id="edge25" class="edge">
+<title>AF_Model-&gt;EvaluateModels</title>
+<path fill="none" stroke="black" d="M1147.57,-1023.72C1147.57,-1023.72 1147.57,-658.97 1147.57,-658.97"/>
+<polygon fill="black" stroke="black" points="1147.57,-648.97 1152.07,-658.97 1147.57,-652.75 1147.57,-658.97 1147.57,-658.97 1147.57,-658.97 1147.57,-652.75 1143.07,-658.97 1147.57,-648.97"/>
+</g>
+<!-- Bayesian_Model&#45;&gt;CreateEnsemble -->
+<g id="edge18" class="edge">
+<title>Bayesian_Model-&gt;CreateEnsemble</title>
+<path fill="none" stroke="black" d="M1265.1,-1023.92C1265.1,-982 1265.1,-914.5 1265.1,-914.5 1265.1,-914.5 1068.97,-914.5 1068.97,-914.5"/>
+<polygon fill="black" stroke="black" points="1058.97,-914.5 1068.97,-910 1062.75,-914.5 1068.97,-914.5 1068.97,-914.5 1068.97,-914.5 1062.75,-914.5 1068.97,-919 1058.97,-914.5"/>
+</g>
+<!-- Bayesian_Model&#45;&gt;EvaluateModels -->
+<g id="edge26" class="edge">
+<title>Bayesian_Model-&gt;EvaluateModels</title>
+<path fill="none" stroke="black" d="M1281.57,-1023.72C1281.57,-1023.72 1281.57,-658.97 1281.57,-658.97"/>
+<polygon fill="black" stroke="black" points="1281.57,-648.97 1286.07,-658.97 1281.57,-652.75 1281.57,-658.97 1281.57,-658.97 1281.57,-658.97 1281.57,-652.75 1277.07,-658.97 1281.57,-648.97"/>
+</g>
+<!-- EnsembleModel&#45;&gt;EvaluateModels -->
+<g id="edge27" class="edge">
+<title>EnsembleModel-&gt;EvaluateModels</title>
+<path fill="none" stroke="black" d="M1041.36,-763.23C1041.36,-763.23 1041.36,-658.97 1041.36,-658.97"/>
+<polygon fill="black" stroke="black" points="1041.36,-648.97 1045.86,-658.97 1041.36,-652.75 1041.36,-658.97 1041.36,-658.97 1041.36,-658.97 1041.36,-652.75 1036.86,-658.97 1041.36,-648.97"/>
+</g>
+<!-- Helpers -->
+<g id="node23" class="node">
+<title>Helpers</title>
+<polygon fill="#eeeeee" stroke="#333333" stroke-dasharray="5,2" points="2165.72,-1796.15 1988.28,-1796.15 1988.28,-1702.55 2165.72,-1702.55 2165.72,-1796.15"/>
+<text text-anchor="middle" x="2077" y="-1756.55" font-family="Helvetica,sans-Serif" font-size="24.00">Shared Code</text>
+<text text-anchor="middle" x="2077" y="-1727.75" font-family="Helvetica,sans-Serif" font-size="24.00">(config, utils)</text>
+</g>
+<!-- Helpers&#45;&gt;Preprocess -->
+<g id="edge31" class="edge">
+<title>Helpers-&gt;Preprocess</title>
+<path fill="none" stroke="#555555" stroke-dasharray="5,2" d="M2013.63,-1702.16C2013.63,-1682.21 2013.63,-1663.5 2013.63,-1663.5 2013.63,-1663.5 1593.73,-1663.5 1593.73,-1663.5 1593.73,-1663.5 1593.73,-1653.42 1593.73,-1653.42"/>
+<polygon fill="#555555" stroke="#555555" points="1593.73,-1643.42 1598.23,-1653.42 1593.73,-1647.2 1593.73,-1653.42 1593.73,-1653.42 1593.73,-1653.42 1593.73,-1647.2 1589.23,-1653.42 1593.73,-1643.42"/>
+</g>
+<!-- Helpers&#45;&gt;TrainAutoformer -->
+<g id="edge32" class="edge">
+<title>Helpers-&gt;TrainAutoformer</title>
+<path fill="none" stroke="#555555" stroke-dasharray="5,2" d="M2038.98,-1702.23C2038.98,-1595.7 2038.98,-1345.5 2038.98,-1345.5 2038.98,-1345.5 1300.54,-1345.5 1300.54,-1345.5 1300.54,-1345.5 1300.54,-1236.83 1300.54,-1236.83"/>
+<polygon fill="#555555" stroke="#555555" points="1300.54,-1226.83 1305.04,-1236.83 1300.54,-1230.61 1300.54,-1236.83 1300.54,-1236.83 1300.54,-1236.83 1300.54,-1230.61 1296.04,-1236.83 1300.54,-1226.83"/>
+</g>
+<!-- Helpers&#45;&gt;TrainBayesian -->
+<g id="edge33" class="edge">
+<title>Helpers-&gt;TrainBayesian</title>
+<path fill="none" stroke="#555555" stroke-dasharray="5,2" d="M2064.33,-1702.32C2064.33,-1584.4 2064.33,-1285.5 2064.33,-1285.5 2064.33,-1285.5 1460.68,-1285.5 1460.68,-1285.5 1460.68,-1285.5 1460.68,-1237.07 1460.68,-1237.07"/>
+<polygon fill="#555555" stroke="#555555" points="1460.68,-1227.07 1465.18,-1237.07 1460.68,-1230.85 1460.68,-1237.07 1460.68,-1237.07 1460.68,-1237.07 1460.68,-1230.85 1456.18,-1237.07 1460.68,-1227.07"/>
+</g>
+<!-- Helpers&#45;&gt;CreateEnsemble -->
+<g id="edge34" class="edge">
+<title>Helpers-&gt;CreateEnsemble</title>
+<path fill="none" stroke="#555555" stroke-dasharray="5,2" d="M2089.67,-1702.08C2089.67,-1522.54 2089.67,-892.9 2089.67,-892.9 2089.67,-892.9 1068.89,-892.9 1068.89,-892.9"/>
+<polygon fill="#555555" stroke="#555555" points="1058.89,-892.9 1068.89,-888.4 1062.67,-892.9 1068.89,-892.9 1068.89,-892.9 1068.89,-892.9 1062.67,-892.9 1068.89,-897.4 1058.89,-892.9"/>
+</g>
+<!-- Helpers&#45;&gt;EvaluateModels -->
+<g id="edge35" class="edge">
+<title>Helpers-&gt;EvaluateModels</title>
+<path fill="none" stroke="#555555" stroke-dasharray="5,2" d="M2115.02,-1702.27C2115.02,-1484.46 2115.02,-585.1 2115.02,-585.1 2115.02,-585.1 1309.58,-585.1 1309.58,-585.1"/>
+<polygon fill="#555555" stroke="#555555" points="1299.58,-585.1 1309.58,-580.6 1303.36,-585.1 1309.58,-585.1 1309.58,-585.1 1309.58,-585.1 1303.36,-585.1 1309.58,-589.6 1299.58,-585.1"/>
+</g>
+<!-- Helpers&#45;&gt;GeneratePlots -->
+<g id="edge36" class="edge">
+<title>Helpers-&gt;GeneratePlots</title>
+<path fill="none" stroke="#555555" stroke-dasharray="5,2" d="M2140.37,-1702.17C2140.37,-1448.23 2140.37,-255.4 2140.37,-255.4 2140.37,-255.4 2140.37,-244.18 2140.37,-244.18"/>
+<polygon fill="#555555" stroke="#555555" points="1258.8,-255.38 1268.75,-250.76 1262.59,-255.34 1268.8,-255.26 1268.8,-255.26 1268.8,-255.26 1262.59,-255.34 1268.86,-259.76 1258.8,-255.38"/>
+</g>
+</g>
+</svg>

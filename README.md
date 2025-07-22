@@ -265,10 +265,3 @@ This project is licensed under the MIT License. See the LICENSE file for details
 This work relies on the "Energy consumption, generation, prices and weather" dataset, generously made available on Kaggle.
 
 The development of this project was heavily influenced by the open-source community and the incredible tools they provide.
-
-Generated code
-IGNORE_WHEN_COPYING_START
-content_copy
-download
-Use code with caution.
-IGNORE_WHEN_COPYING_END

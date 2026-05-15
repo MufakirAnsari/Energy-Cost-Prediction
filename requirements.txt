@@ -1,0 +1,56 @@
+# ============================================================
+# V2 EPF Pipeline — Python Dependencies
+# Probabilistic Electricity Price Forecasting
+# PJM + ERCOT, 2018–2025
+# ============================================================
+
+# ── Core data handling ───────────────────────────────────────
+pandas>=2.1.0
+numpy>=1.26.0
+pyarrow>=14.0.0
+scipy>=1.11.0
+
+# ── Data acquisition ─────────────────────────────────────────
+gridstatus>=0.24.0
+requests>=2.31.0
+
+# ── Feature selection ────────────────────────────────────────
+scikit-learn>=1.4.0
+shap>=0.44.0
+
+# ── Statistical baselines ─────────────────────────────────────
+statsforecast>=1.7.0        # AutoARIMA, MSTL, SeasonalNaive, ETS
+holidays>=0.43
+
+# ── Tree-based models ────────────────────────────────────────
+lightgbm>=4.3.0
+xgboost>=2.0.0
+quantile-forest>=1.3.0      # Quantile Regression Forest
+joblib>=1.3.0
+
+# ── Deep learning (TensorFlow stack) ─────────────────────────
+tensorflow>=2.15.0
+tensorflow-probability>=0.23.0
+
+# ── Deep learning (PyTorch / NeuralForecast) ─────────────────
+torch>=2.2.0
+neuralforecast>=1.7.0       # PatchTST, iTransformer, N-HiTS
+
+# ── Foundation model ─────────────────────────────────────────
+chronos-forecasting>=1.3.0
+
+# ── Conformal prediction ─────────────────────────────────────
+mapie>=0.8.0
+
+# ── Evaluation ───────────────────────────────────────────────
+properscoring>=0.1
+arch>=6.3.0                 # Diebold-Mariano test (dm_test)
+
+# ── Visualization ────────────────────────────────────────────
+matplotlib>=3.8.0
+seaborn>=0.13.0
+
+# ── Utilities ────────────────────────────────────────────────
+tqdm>=4.66.0
+python-dateutil>=2.9.0
+pytz>=2024.1

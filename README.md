@@ -1,7 +1,7 @@
 # Probabilistic Electricity Price Forecasting — V2
 
 > **Research pipeline for EAAI 2025 submission.**
-> First rigorous multi-paradigm probabilistic EPF benchmark on post-2020 US markets (PJM + ERCOT), comparing classical, modern deep learning (PatchTST, iTransformer), and zero-shot foundation model (Chronos-Bolt) baselines under three probabilistic frameworks, with guaranteed-coverage conformal intervals and realistic economic simulation.
+> First rigorous multi-paradigm probabilistic EPF benchmark on post-2020 US markets (PJM + ERCOT), comparing classical, modern deep learning (PatchTST, iTransformer), and zero-shot foundation model (Chronos-Bolt) baselines under three probabilistic frameworks, with conformal prediction intervals and realistic economic simulation.
 
 ---
 
@@ -58,12 +58,12 @@ US electricity markets (PJM, ERCOT) have experienced unprecedented price volatil
 
 ### Chronological 4-Way Split (no data leakage)
 ```
-2019-01-01 ──── 2021-12-31 │ 2022-01-01 ── 2022-12-31 │ 2023-01-01 ── 2023-12-31 │ 2024-01-01 ── 2025-12-31
-       TRAIN (25,548 obs)          CALIBRATION                   VALIDATION                    TEST
-    [base model training]       [conformal only]            [hyperparameter tuning]        [final eval]
+2019-01-01 ── 2021-12-31 │ 2022-01-01 ── 2022-12-31 │ 2023-01-01 ── 2023-12-31 │ 2024-01-01 ── 2025-12-31
+       TRAIN (25,548 obs)          CALIBRATION (CQR)            VALIDATION (ensemble)            TEST (eval)
+    [base model training]       [conformal calibration]     [meta-learner training]        [final evaluation]
 ```
 
-> **Leak-proof protocol:** MinMaxScaler and KNNImputer are fit **only on TRAIN**, then applied to CAL/VAL/TEST without refitting.
+> **Strict half-open interval protocol:** each row belongs to exactly one split (zero overlap). MinMaxScaler and KNNImputer are fit **only on TRAIN**, then applied to CAL/VAL/TEST without refitting.
 
 ### Volatility Regimes
 | Regime | Period | Characteristic |
@@ -109,13 +109,15 @@ US electricity markets (PJM, ERCOT) have experienced unprecedented price volatil
 | Method | Guarantee | Applied To |
 |---|---|---|
 | MC Dropout | Asymptotic | Bayesian Bi-LSTM |
-| **CQR** | **Finite-sample ≥90%** | LightGBM quantile |
+| **CQR** | Finite-sample under exchangeability¹ | LightGBM quantile |
 | Deep Quantile | Asymptotic | PatchTST / iTransformer |
 | **QRF** | Non-parametric | Tabular features |
 
+> ¹ **CQR coverage note:** The finite-sample guarantee (Romano et al., 2019) requires the calibration set to be exchangeable with the test set. The 2022 calibration period (energy crisis) is a different distributional regime from the 2024–2025 test period, so the formal guarantee may not hold. Observed empirical PICP: **PJM 82%, ERCOT 75%** — reported honestly as a distributional-shift finding (Tibshirani et al., 2019).
+
 ### Ensemble
-- **Meta-learner:** LightGBM stacked on {LightGBM + BiLSTM + iTransformer} predictions
-- **Stacking protocol:** Trained on calibration set to avoid data leakage
+- **Meta-learner:** LightGBM stacked on {LightGBM + XGBoost + BiLSTM} predictions
+- **Stacking protocol:** Trained on **validation set (2023)** — the calibration set (2022 energy crisis) is not exchangeable with the test period and degrades meta-learner performance
 
 ---
 
@@ -271,19 +273,25 @@ Metrics: Total P&L · Sharpe · Sortino · Max Drawdown · Win Rate
 
 | Model | MAE (PJM) | MAE (ERCOT) | PICP (PJM) | Winkler (PJM) |
 |---|---|---|---|---|
-| Seasonal Naïve | — | — | — | — |
-| AutoARIMA | — | — | — | — |
-| MSTL | — | — | — | — |
-| LightGBM | — | — | — | — |
-| XGBoost | — | — | — | — |
-| Bayesian Bi-LSTM | — | — | — | — |
-| PatchTST | — | — | — | — |
-| iTransformer | — | — | — | — |
-| N-HiTS | — | — | — | — |
-| Chronos-Bolt | — | — | — | — |
-| CQR | — | — | — | — |
-| QRF | — | — | — | — |
-| **Ensemble** | — | — | — | — |
+| Seasonal Naïve | 14.45 | 11.62 | — | — |
+| AutoARIMA | 12.95 | 13.11 | — | — |
+| MSTL | 14.66 | 11.51 | — | — |
+| LightGBM | 4.01 | **3.62** | 68.78% | 41.04 |
+| XGBoost | **3.95** | 3.76 | — | — |
+| Bayesian Bi-LSTM | 4.44 | **2.68** | 58.33% | 38.77 |
+| PatchTST | 6.75 | 5.33 | — | — |
+| iTransformer | 7.49 | 6.25 | — | — |
+| N-HiTS | 6.74 | 5.11 | — | — |
+| BiTCN | 7.97 | 5.51 | — | — |
+| TFT | 7.96 | 7.05 | — | — |
+| Chronos-Bolt (zero-shot) | 7.10 | 7.90 | 74.47% (80% CI) | 50.94 |
+| CQR (conformal) | 4.02† | 3.36† | 82.02%‡ | 38.22 |
+| **QRF** | 4.49 | 3.68 | **91.10%** | **33.27** |
+| Ensemble | 4.89 | 3.70 | — | — |
+
+† CQR midpoint MAE. ‡ Below 90% target due to 2022 cal/2024-25 test distributional shift (see Section 4.2).
+
+> **Key findings:** BiLSTM achieves SOTA on ERCOT (MAE=2.68). QRF is the only model achieving ≥90% PICP on both markets with train-only data. XGBoost leads on PJM point accuracy.
 
 ---
 

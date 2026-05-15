@@ -221,7 +221,8 @@ def compute_price_stats():
     rows = []
     for market in ["PJM", "ERCOT"]:
         full = load_full_market(market)[config.TARGET_COL].dropna()
-        for regime_name, (r_start, r_end) in list(config.REGIMES.items()) + [("full_dataset", ("2018-01-01", "2025-12-31"))]:
+        for regime_name, (r_start, r_end) in list(config.REGIMES.items()) + \
+                [("full_dataset", (config.DATA_START, config.DATA_END))]:
             mask = (full.index >= pd.Timestamp(r_start, tz="UTC")) & \
                    (full.index <= pd.Timestamp(r_end,   tz="UTC"))
             vals = full[mask]

@@ -2,7 +2,7 @@
 step_00_download_ercot.py  (V2 — FINAL)
 =========================================
 Downloads ERCOT Day-Ahead Market (DAM) Settlement Point Prices
-for HB_HOUSTON and HB_WEST, 2018-01-01 → 2025-12-31.
+for HB_HOUSTON and HB_WEST, 2019-01-01 → 2025-12-31.
 
 ERCOT DATA ARCHITECTURE:
   We use ERCOT's official "Historical DAM Load Zone and Hub Prices" 

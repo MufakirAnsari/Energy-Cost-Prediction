@@ -143,7 +143,7 @@ run_step "09" "step_09_chronos_inference.py" \
     "$SCRIPT_DIR/reports/chronos_preds_pjm.csv"
 
 run_step "10" "step_10_conformal.py" \
-    "CQR — Guaranteed 90% CI via conformal prediction (PJM + ERCOT)" \
+    "CQR — Conformal Quantile Regression (90% nominal CI; coverage under distributional shift documented)" \
     "$SCRIPT_DIR/reports/cqr_preds_pjm.csv"
 
 run_step "10b" "step_10b_alpha_sweep.py" \

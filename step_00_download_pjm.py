@@ -2,7 +2,7 @@
 step_00_download_pjm.py  (V2 — multi-source)
 =============================================
 Downloads PJM Day-Ahead Hourly LMP for the Western Hub node
-from 2018-01-01 through 2025-03-31.
+from 2019-01-01 through 2025-12-31.
 
 Data source priority (auto-selects best available):
   1. gridstatus + PJM_API_KEY env var (fastest, recommended)

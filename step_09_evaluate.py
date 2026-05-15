@@ -439,7 +439,7 @@ def run_evaluation(market: str = "PJM"):
             lgbm_qs["q05"], lgbm_qs["q95"], y_true,
             alpha=0.10, samples=samples_lgbm))
 
-    # ── CQR (Guaranteed 90% CI) ───────────────────────────────────────────────
+    # ── CQR (90% nominal CI; empirical coverage may be lower under distributional shift) ───
     cqr_path = os.path.join(config.REPORT_DIR, f"cqr_preds_{m}.csv")
     cqr_df   = pd.read_csv(cqr_path, index_col=0, parse_dates=True) \
                if os.path.exists(cqr_path) else None
@@ -450,7 +450,7 @@ def run_evaluation(market: str = "PJM"):
         # CQR CRPS: approximate with 11 uniform samples from [lo, hi]
         mask_c = ~np.isnan(y_true) & ~np.isnan(cqr_lo) & ~np.isnan(cqr_hi)
         cqr_samples = np.linspace(cqr_lo, cqr_hi, 11).T  # [n, 11]
-        row_cqr = prob_row("CQR (Guaranteed 90% CI)",
+        row_cqr = prob_row("CQR (90% nominal CI)",
                            cqr_lo, cqr_hi, y_true, alpha=0.10, samples=cqr_samples)
         row_cqr["Correction"] = round(cqr_meta["correction"], 4)
         prob_rows.append(row_cqr)

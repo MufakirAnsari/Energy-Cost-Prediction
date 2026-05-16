@@ -10,6 +10,14 @@ Strategy: Both markets share the same feature engineering pipeline
 (EIA generation mix, gas price, calendar features). Only shared
 feature columns are used for cross-market inference.
 
+NOTE: Only tabular models (LightGBM, XGBoost, QRF) are evaluated
+cross-market. DL models (PatchTST, iTransformer, N-HiTS, BiLSTM) are
+excluded because:
+  1. SHAP feature selection produces different top-50 features per market
+  2. NeuralForecast models are trained on univariate y with architecture-
+     specific input shapes — cross-market transfer requires retraining
+  3. BiLSTM uses market-specific MinMax scaling statistics
+
 Outputs:
   reports/table_rq4_crossmarket.csv
   reports/table_rq4_crossmarket_detail.csv

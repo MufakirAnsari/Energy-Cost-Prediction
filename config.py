@@ -148,7 +148,10 @@ TRADE_VOLUME_MWH         = 1.0     # MWh per trade
 SLIPPAGE_STD_FACTOR      = 0.30    # Execution at predicted ± 0.3 × pred std
 
 # ── Stacked Ensemble ──────────────────────────────────────────
-ENSEMBLE_BASE_MODELS = ["lgbm", "bilstm", "itransformer"]  # One per family
+# Base models: one primary tree, one secondary tree, one DL.
+# iTransformer excluded: NeuralForecast cross_validation only produces
+# test-set predictions — including it as a meta-feature would leak test data.
+ENSEMBLE_BASE_MODELS = ["lgbm", "xgboost", "bilstm"]
 ENSEMBLE_META_PARAMS = {
     "objective":     "regression",
     "metric":        "rmse",

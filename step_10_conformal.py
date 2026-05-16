@@ -139,9 +139,20 @@ def run_conformal(market: str = "PJM"):
     test_q05 = q05_model.predict(X_test)
     test_q95 = q95_model.predict(X_test)
 
-    # CQR corrected intervals: guaranteed coverage
+    # CQR corrected intervals
     cqr_lower = test_q05 - correction
     cqr_upper = test_q95 + correction
+
+    # Enforce interval monotonicity: lower must never exceed upper.
+    # This can occur under extreme distributional shift when raw q05 > q95
+    # for a handful of hours (ERCOT had 2 such rows).
+    crossing_mask = cqr_lower > cqr_upper
+    n_crossing = crossing_mask.sum()
+    if n_crossing > 0:
+        print(f"  ⚠️  {n_crossing} rows with lower > upper — swapping to enforce monotonicity")
+        cqr_lower_fixed = np.minimum(cqr_lower, cqr_upper)
+        cqr_upper_fixed = np.maximum(cqr_lower, cqr_upper)
+        cqr_lower, cqr_upper = cqr_lower_fixed, cqr_upper_fixed
 
     # ── Step 5: Evaluate ─────────────────────────────────────────
     mask = ~np.isnan(y_test)

@@ -299,24 +299,53 @@ def table_crossmarket():
 # Table A1 — Hyperparameters
 # ─────────────────────────────────────────────────────────────────────────────
 def table_hyperparams():
+    # Values sourced directly from config.py and training scripts.
+    # AUDIT FIX: previous values were hardcoded and stale.
     params = {
         "SeasonalNaive":         {"type": "Statistical", "params": "—", "season_length": 168},
         "AutoARIMA":             {"type": "Statistical", "params": "auto", "max_p": 5, "max_q": 5},
         "MSTL":                  {"type": "Statistical", "seasonal_periods": "[24, 168]", "params": "auto"},
-        "LightGBM (point)":      {"type": "Tree", "n_estimators": 1000, "lr": 0.05, "num_leaves": 127},
-        "LightGBM (quantile)":   {"type": "Tree", "n_estimators": 1000, "lr": 0.05, "quantiles": "q05–q95"},
-        "XGBoost":               {"type": "Tree", "n_estimators": 1000, "lr": 0.05, "max_depth": 6},
-        "QRF":                   {"type": "Tree", "n_estimators": 200, "min_samples_leaf": 5, "max_features": "sqrt"},
-        "BiLSTM (MC Dropout)":   {"type": "RNN", "BiLSTM_units": 64, "dense": 32, "dropout": "sweep {0.1–0.4}", "seq_len": 168, "lr": "5e-4", "clipnorm": 1.0},
-        "BiTCN":                 {"type": "CNN", "hidden_size": 128, "max_steps": 1500, "dropout": 0.1, "lr": "1e-3"},
-        "PatchTST":              {"type": "Transformer", "hidden_size": 128, "n_heads": 4, "patch_len": 16, "max_steps": 1500, "lr": "1e-3"},
-        "iTransformer":          {"type": "Transformer", "hidden_size": 128, "n_heads": 8, "max_steps": 1500, "lr": "1e-3"},
-        "TFT":                   {"type": "Transformer", "hidden_size": 32, "n_heads": 2, "input_size": 72, "max_steps": 1500, "batch_size": 64, "lr": "1e-3"},
-        "N-HiTS (MAE)":          {"type": "MLP", "mlp_units": "3×[256,256]", "max_steps": 1500, "dropout": 0.2, "lr": "1e-3"},
-        "N-HiTS (MQLoss 80%CI)": {"type": "MLP", "mlp_units": "3×[256,256]", "max_steps": 1500, "loss": "MQLoss[80]", "lr": "1e-3"},
+        "LightGBM (point)":      {"type": "Tree",
+                                  "n_estimators": config.LGBM_POINT_PARAMS["n_estimators"],  # 2000
+                                  "lr": config.LGBM_POINT_PARAMS["learning_rate"],             # 0.03
+                                  "num_leaves": config.LGBM_POINT_PARAMS["num_leaves"]},       # 63
+        "LightGBM (quantile)":   {"type": "Tree",
+                                  "n_estimators": config.LGBM_POINT_PARAMS["n_estimators"],
+                                  "lr": config.LGBM_POINT_PARAMS["learning_rate"],
+                                  "quantiles": "q05–q95"},
+        "XGBoost":               {"type": "Tree",
+                                  "n_estimators": config.XGB_PARAMS["n_estimators"],           # 2000
+                                  "lr": config.XGB_PARAMS["learning_rate"],                     # 0.03
+                                  "max_depth": config.XGB_PARAMS["max_depth"]},                 # 6
+        "QRF":                   {"type": "Tree", "n_estimators": 500, "min_samples_leaf": 5, "max_features": "sqrt"},
+        "BiLSTM (MC Dropout)":   {"type": "RNN",
+                                  "BiLSTM_units": config.BILSTM_UNITS,         # 128
+                                  "dense": config.BILSTM_DENSE_UNITS,          # 64
+                                  "dropout": "sweep {0.1–0.4}",
+                                  "seq_len": config.SEQ_LEN_DEFAULT,           # 168
+                                  "lr": f"{config.LEARNING_RATE:.0e}",         # 3e-4
+                                  "clipnorm": 1.0},
+        "BiTCN":                 {"type": "CNN", "hidden_size": 128, "max_steps": 1500, "dropout": 0.1, "lr": f"{config.LEARNING_RATE:.0e}"},
+        "PatchTST":              {"type": "Transformer",
+                                  "hidden_size": 64,           # step_06: hidden_size=64
+                                  "linear_hidden_size": 128,   # step_06: linear_hidden_size=128
+                                  "n_heads": 4,                # step_06: n_heads=4
+                                  "patch_len": 24,             # step_06: patch_len=24
+                                  "max_steps": 1500,
+                                  "lr": f"{config.LEARNING_RATE:.0e}"},
+        "iTransformer":          {"type": "Transformer",
+                                  "hidden_size": 64,           # step_07: hidden_size=64
+                                  "n_heads": 4,                # step_07: n_heads=4
+                                  "e_layers": 2,               # step_07: e_layers=2
+                                  "d_ff": 128,                 # step_07: d_ff=128
+                                  "max_steps": 1500,
+                                  "lr": f"{config.LEARNING_RATE:.0e}"},
+        "TFT":                   {"type": "Transformer", "hidden_size": 32, "n_heads": 2, "input_size": 72, "max_steps": 1500, "batch_size": 64, "lr": f"{config.LEARNING_RATE:.0e}"},
+        "N-HiTS (MAE)":          {"type": "MLP", "mlp_units": "3×[256,256]", "max_steps": 1500, "dropout": 0.2, "lr": f"{config.LEARNING_RATE:.0e}"},
+        "N-HiTS (MQLoss 80%CI)": {"type": "MLP", "mlp_units": "3×[256,256]", "max_steps": 1500, "loss": "MQLoss[80]", "lr": f"{config.LEARNING_RATE:.0e}"},
         "Chronos-Bolt (Small)":  {"type": "Foundation", "params": "200M", "context": 168, "horizon": 24, "fine-tune": "None"},
-        "CQR":                   {"type": "Conformal", "base": "LGBM-Q", "alpha": 0.10, "cal_set": "2022"},
-        "Ensemble":              {"type": "Stacked", "base": "LGBM+XGB+BiLSTM", "meta": "LightGBM", "cal_set": "2022"},
+        "CQR":                   {"type": "Conformal", "base": "LGBM-Q", "alpha": config.CONFORMAL_ALPHA, "cal_set": "2022 (dedicated)"},
+        "Ensemble":              {"type": "Stacked", "base": "LGBM+XGB+BiLSTM", "meta": "LightGBM", "train_set": "2023 (val)"},
     }
     df = pd.DataFrame(params).T
     df.index.name = "Model"

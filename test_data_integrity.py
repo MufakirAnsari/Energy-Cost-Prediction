@@ -74,29 +74,21 @@ for market in ["PJM", "ERCOT"]:
           val.index.max().date() <= te.index.min().date(),
           f"{val.index.max().date()} ≤ {te.index.min().date()}")
 
-    # 2. No meaningful timestamp overlap (UTC boundary effect = ≤50 rows is acceptable)
-    # Adjacent splits may share a few hours at the Dec 31/Jan 1 UTC boundary.
-    # Non-adjacent splits (train∩val, train∩test, cal∩test) must have ZERO overlap.
-    UTC_BOUNDARY_TOLERANCE = 50   # max hours shared at year boundary
-
-    for name_a, name_b, a, b, is_adjacent in [
-        ("train", "cal",  tr,  cal, True),    # adjacent → tolerance allowed
-        ("train", "val",  tr,  val, False),   # non-adjacent → must be 0
-        ("train", "test", tr,  te,  False),   # non-adjacent → must be 0
-        ("cal",   "val",  cal, val, True),    # adjacent → tolerance allowed
-        ("cal",   "test", cal, te,  False),   # non-adjacent → must be 0
-        ("val",   "test", val, te,  True),    # adjacent → tolerance allowed
+    # 2. STRICT zero overlap for ALL split pairs (adjacent and non-adjacent).
+    # step_01_preprocess.py now uses half-open intervals [start, end) which
+    # guarantee zero overlap by construction. Any overlap indicates stale data.
+    for name_a, name_b, a, b in [
+        ("train", "cal",  tr,  cal),
+        ("train", "val",  tr,  val),
+        ("train", "test", tr,  te),
+        ("cal",   "val",  cal, val),
+        ("cal",   "test", cal, te),
+        ("val",   "test", val, te),
     ]:
         overlap = len(a.index.intersection(b.index))
-        if is_adjacent:
-            limit = UTC_BOUNDARY_TOLERANCE
-            check(f"[{market}] {name_a} ∩ {name_b} ≤ {limit} rows (UTC boundary)",
-                  overlap <= limit,
-                  f"overlap={overlap} rows")
-        else:
-            check(f"[{market}] {name_a} ∩ {name_b} = ∅ (no leakage)",
-                  overlap == 0,
-                  f"overlap={overlap} rows")
+        check(f"[{market}] {name_a} ∩ {name_b} = ∅ (zero overlap)",
+              overlap == 0,
+              f"overlap={overlap} rows")
 
     # 3. Target column not predictable from same-row features
     # Check that no column has perfect correlation with target (would indicate leakage)

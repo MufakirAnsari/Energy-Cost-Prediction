@@ -49,15 +49,21 @@ except Exception as e:
 section("2. Syntax Check")
 
 STEPS = [
+    "utils.py",
     "step_02_train_baselines.py",
     "step_03_train_lgbm.py",
     "step_04_train_xgboost.py",
     "step_05_train_bilstm.py",
+    "step_05b_retrain_bilstm_ercot.py",
     "step_06_train_patchtst.py",
+    "step_06b_train_bitcn.py",
     "step_07_train_itransformer.py",
+    "step_07b_train_tft.py",
     "step_08_train_nhits.py",
+    "step_08b_nhits_quantile.py",
     "step_09_chronos_inference.py",
     "step_10_conformal.py",
+    "step_10b_alpha_sweep.py",
     "step_11_qrf.py",
     "step_12_ensemble.py",
     "step_09_evaluate.py",    # step_13
@@ -65,6 +71,8 @@ STEPS = [
     "step_15_ablation.py",
     "step_16_stress_test.py",
     "step_17_figures.py",
+    "step_18_paper_tables.py",
+    "step_19_rq4_crossmarket.py",
 ]
 
 base = os.path.dirname(os.path.abspath(__file__))

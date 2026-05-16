@@ -187,19 +187,59 @@ def run_ablation(market: str = "PJM"):
         base_preds_cal["XGB"]   = xgb_model.predict(X_cal)
         base_preds_test["XGB"]  = xgb_model.predict(X_te)
 
-    # BiLSTM cal-set preds (from bilstm_preds csv — covers cal set via batched inference)
-    bl_cal = load_cal_pred(f"bilstm_preds_{m}.csv",
-                           next((c for c in pd.read_csv(
-                               os.path.join(config.REPORT_DIR, f"bilstm_preds_{m}.csv")
-                           ).columns if "pred" in c.lower() or "mean" in c.lower()), ""))
-    if bl_cal is not None:
-        base_preds_cal["BiLSTM"]  = bl_cal
-        bl_test = load_test_pred_csv(f"bilstm_preds_{m}.csv",
-                                      next((c for c in pd.read_csv(
-                                          os.path.join(config.REPORT_DIR, f"bilstm_preds_{m}.csv")
-                                      ).columns if "pred" in c.lower() or "mean" in c.lower()), ""))
-        if bl_test is not None:
-            base_preds_test["BiLSTM"] = bl_test
+    # BiLSTM cal-set predictions: generate on-the-fly from saved model
+    # bilstm_preds CSV only covers the TEST set, so we cannot reindex onto cal_idx.
+    # Instead, load the saved .keras model and run a single forward pass on cal data.
+    bilstm_model_path = os.path.join(config.MODEL_DIR, f"bilstm_{m}.keras")
+    bilstm_meta_path  = os.path.join(config.MODEL_DIR, f"bilstm_{m}_meta.joblib")
+    if os.path.exists(bilstm_model_path) and os.path.exists(bilstm_meta_path):
+        try:
+            import tensorflow as tf
+            tf.get_logger().setLevel("ERROR")
+            bl_model = tf.keras.models.load_model(bilstm_model_path)
+            bl_meta  = joblib.load(bilstm_meta_path)
+
+            # Reconstruct scaling from saved meta
+            col_min, col_max = bl_meta["scaler_min"], bl_meta["scaler_max"]
+            denom  = bl_meta["scaler_denom"]
+            t_idx  = bl_meta["target_idx"]
+            sl     = bl_meta["seq_len"]
+
+            # Build cal sequences using train+cal as history
+            tr_df_bl = pd.read_parquet(config.PJM_TRAIN_PATH if market=="PJM" else config.ERCOT_TRAIN_PATH)
+            history_bl = pd.concat([tr_df_bl, cal_df])
+            scaled_bl  = (history_bl.values.astype(np.float32) - col_min) / denom
+            n_hist = len(tr_df_bl)
+
+            X_cal_bl, y_cal_bl = [], []
+            for i in range(n_hist - sl, n_hist - sl + len(cal_df)):
+                if i + sl < len(scaled_bl):
+                    X_cal_bl.append(scaled_bl[i: i + sl])
+                    y_cal_bl.append(scaled_bl[i + sl, t_idx])
+            X_cal_bl = np.array(X_cal_bl, dtype=np.float32)
+
+            # Single forward pass (no MC dropout — just point prediction for meta-learner)
+            cal_preds_scaled = bl_model(X_cal_bl, training=False).numpy().flatten()
+            cal_preds_price  = cal_preds_scaled * denom[t_idx] + col_min[t_idx]
+
+            # Truncate y_cal to match (sequences may be shorter than cal_df)
+            n_bl = len(cal_preds_price)
+            base_preds_cal["BiLSTM"] = cal_preds_price[:len(y_cal)]
+
+            # Load test predictions from CSV
+            bl_test_col = None
+            bl_test_path = os.path.join(config.REPORT_DIR, f"bilstm_preds_{m}.csv")
+            if os.path.exists(bl_test_path):
+                bl_cols = pd.read_csv(bl_test_path, nrows=0).columns
+                bl_test_col = next((c for c in bl_cols if "pred" in c.lower() or "mean" in c.lower()), None)
+            if bl_test_col:
+                bl_test = load_test_pred_csv(f"bilstm_preds_{m}.csv", bl_test_col)
+                if bl_test is not None:
+                    base_preds_test["BiLSTM"] = bl_test
+
+            print(f"    BiLSTM loaded: cal={n_bl} preds, test={'yes' if 'BiLSTM' in base_preds_test else 'no'}")
+        except Exception as e:
+            print(f"    BiLSTM ablation skipped: {e}")
 
     # Define subsets
     base_names = [b for b in ["LGBM","XGB","BiLSTM"] if b in base_preds_cal]

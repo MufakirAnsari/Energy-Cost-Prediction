@@ -26,9 +26,9 @@ US electricity markets (PJM, ERCOT) have experienced unprecedented price volatil
 
 ### Unique Contributions
 1. **First US dual-market benchmark** (PJM + ERCOT, 2019–2025) covering four volatility regimes: COVID, Uri crisis, gas shock, and high-renewables era
-2. **Three-paradigm unified probabilistic evaluation** at a matched 90% CI — Bayesian MC Dropout, Conformalized Quantile Regression (CQR), and Deep Quantile — with CRPS and Winkler score as proper scoring rules
+2. **Three-paradigm unified probabilistic evaluation** — Bayesian MC Dropout, Conformalized Quantile Regression (CQR), and Deep Quantile — with CRPS and Winkler score as proper scoring rules. 90% CI where architecturally supported; 80% CI for Chronos-Bolt and N-HiTS Quantile (documented).
 3. **Zero-shot foundation model baseline** (Amazon Chronos-Bolt) without retraining — first such comparison in US electricity markets
-4. **Realistic economic validation** with explicit transaction costs ($0.50/MWh), execution slippage, and regime-isolated stress testing
+4. **Realistic economic validation** with explicit transaction costs ($0.50/MWh), execution slippage, and five trading strategies including Risk-Aware Bayesian and CQR confidence filters
 
 ### Research Questions
 | RQ | Question | Primary Metric |
@@ -118,6 +118,7 @@ US electricity markets (PJM, ERCOT) have experienced unprecedented price volatil
 ### Ensemble
 - **Meta-learner:** LightGBM stacked on {LightGBM + XGBoost + BiLSTM} predictions
 - **Stacking protocol:** Trained on **validation set (2023)** — the calibration set (2022 energy crisis) is not exchangeable with the test period and degrades meta-learner performance
+- **iTransformer excluded:** NeuralForecast cross_validation only produces test-set predictions — including it would leak test data into the meta-learner
 
 ---
 
@@ -126,9 +127,11 @@ US electricity markets (PJM, ERCOT) have experienced unprecedented price volatil
 ```
 V2/
 ├── config.py                     # All paths, hyperparameters, split dates
-├── requirements.txt              # Pinned dependencies
+├── utils.py                      # Shared metrics, DM test, data loading helpers
+├── requirements.txt              # Pinned dependencies (==)
 ├── smoke_test.py                 # 79-check pre-flight validation (run first)
-├── run_all.sh                    # Full pipeline orchestration (steps 03–17)
+├── test_data_integrity.py        # Data leakage assertion suite (zero overlap)
+├── run_all.sh                    # Full pipeline orchestration (steps 00–18)
 │
 ├── data/
 │   ├── raw/                      # Downloaded parquets (git-ignored)
@@ -140,25 +143,34 @@ V2/
 ├── step_00_download_eia.py       # EIA API v2 → generation mix + gas price
 │
 ├── step_01_preprocess.py         # Merge, clean, feature-engineer, 4-way split
+├── step_01_eda.py                # EDA — price stats, ACF/PACF, regime violin plots
 ├── step_02_train_baselines.py    # Seasonal Naïve, AutoARIMA, MSTL
 │
 ├── step_03_train_lgbm.py         # LightGBM point + 7-quantile models
 ├── step_04_train_xgboost.py      # XGBoost point forecast
-├── step_05_train_bilstm.py       # Bayesian Bi-LSTM + dropout calibration
-├── step_06_train_patchtst.py     # PatchTST (ICLR 2023)
-├── step_07_train_itransformer.py # iTransformer (ICLR 2024)
-├── step_08_train_nhits.py        # N-HiTS (AAAI 2023)
-├── step_09_chronos_inference.py  # Chronos-Bolt zero-shot (no training)
-├── step_10_conformal.py          # Conformalized Quantile Regression (CQR)
+├── step_05_train_bilstm.py       # Bayesian Bi-LSTM + MC Dropout (ECE-calibrated)
+├── step_05b_retrain_bilstm_ercot.py # ERCOT BiLSTM with log1p+clip fix
+├── step_06_train_patchtst.py     # PatchTST (ICLR 2023, h=24)
+├── step_06b_train_bitcn.py       # BiTCN (neuralforecast, h=24)
+├── step_07_train_itransformer.py # iTransformer (ICLR 2024, h=24)
+├── step_07b_train_tft.py         # TFT (neuralforecast, h=24)
+├── step_08_train_nhits.py        # N-HiTS point (AAAI 2023, h=24)
+├── step_08b_nhits_quantile.py    # N-HiTS quantile — MQLoss 80% CI
+├── step_09_chronos_inference.py  # Chronos-Bolt zero-shot (h=24, 80% CI)
+├── step_10_conformal.py          # CQR on dedicated calibration set (2022)
+├── step_10b_alpha_sweep.py       # Conformal alpha sweep {80,90,95}%
 ├── step_11_qrf.py                # Quantile Regression Forest
 ├── step_12_ensemble.py           # Stacked ensemble meta-learner
 │
-├── step_13_evaluate.py           # All metrics: point + probabilistic + economic
+├── step_09_evaluate.py           # All metrics: point + probabilistic + economic
 ├── step_14_dm_tests.py           # Diebold-Mariano + Benjamini-Hochberg FDR
-├── step_15_ablation.py           # Feature sets, lag windows, dropout rate
-├── step_16_stress_test.py        # Regime-isolated evaluation (Uri, gas shock)
+├── step_15_ablation.py           # Lag window, feature set, dropout, ensemble
+├── step_16_stress_test.py        # OOS regime evaluation (2024–2025)
+├── step_19_rq4_crossmarket.py    # PJM→ERCOT transfer (tree models)
 ├── step_17_figures.py            # Publication figures at 300 DPI
+├── step_18_paper_tables.py       # LaTeX tables (auto-sourced from config.py)
 │
+├── _deprecated/                  # Superseded scripts (archived)
 ├── models/                       # Trained model artifacts (git-ignored)
 └── reports/                      # CSVs, tables, figures (git-ignored)
 ```
@@ -248,10 +260,10 @@ chmod +x run_all.sh
 | **sMAPE** | Symmetric MAPE — handles near-zero prices |
 | **DM test** | Diebold-Mariano with HLN correction + BH FDR adjustment |
 
-### Probabilistic Quality (RQ2) — All at 90% Nominal CI
+### Probabilistic Quality (RQ2) — 90% CI where supported; 80% for Chronos/N-HiTS-Q
 | Metric | Description |
 |---|---|
-| **PICP** | Prediction Interval Coverage Probability (target: ≥90%) |
+| **PICP** | Prediction Interval Coverage Probability (target: ≥90% under exchangeability) |
 | **MPIW** | Mean Prediction Interval Width (sharpness) |
 | **CRPS** | Continuous Ranked Probability Score (proper scoring rule) |
 | **Winkler Score** | Width + coverage violation penalty |
@@ -261,7 +273,7 @@ chmod +x run_all.sh
 ### Economic Utility (RQ3)
 ```
 Transaction cost: $0.50/MWh  |  Volume: 1 MWh/trade  |  Slippage: 0.3σ
-Strategies: Seasonal Naïve · LightGBM · Risk-Aware CQR · Oracle (upper bound)
+Strategies: Seasonal Naïve · LightGBM · Risk-Aware Bayesian (BiLSTM MC) · Risk-Aware CQR · Oracle
 Metrics: Total P&L · Sharpe · Sortino · Max Drawdown · Win Rate
 ```
 
@@ -298,27 +310,27 @@ Metrics: Total P&L · Sharpe · Sortino · Max Drawdown · Win Rate
 ## 9. Requirements
 
 ```
-# Core
-pandas>=2.1.0 · numpy>=1.26.0 · scikit-learn>=1.4.0 · joblib>=1.3.0
+# Core (pinned — see requirements.txt for exact versions)
+pandas==2.3.3 · numpy==2.4.4 · scikit-learn==1.8.0 · scipy==1.15.3
 
 # Statistical models
-statsforecast>=1.7.0
+statsforecast==2.0.3
 
 # Tree-based
-lightgbm>=4.3.0 · xgboost>=2.0.0 · quantile-forest>=1.3.0
+lightgbm==4.6.0 · xgboost==3.2.0 · quantile-forest==1.4.1
 
 # Deep Learning
-tensorflow>=2.15.0 · tensorflow-probability>=0.23.0 · tf-keras
-torch>=2.2.0 · neuralforecast>=1.7.0
+tensorflow==2.21.0 · tensorflow-probability==0.25.0
+torch==2.11.0 · neuralforecast==3.1.8
 
 # Foundation model
-chronos-forecasting>=1.3.0
+chronos-forecasting==2.2.2
 
 # Probabilistic evaluation
-mapie>=0.8.0 · properscoring>=0.1 · shap>=0.44.0 · scipy>=1.11.0
+mapie>=0.9.0 · properscoring>=0.1 · shap==0.51.0 · arch>=7.2.0
 
 # Visualization
-matplotlib>=3.8.0
+matplotlib==3.10.9 · seaborn>=0.13.2
 ```
 
 Full pinned versions: [`requirements.txt`](requirements.txt)

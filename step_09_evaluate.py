@@ -545,6 +545,23 @@ def run_evaluation(market: str = "PJM"):
             cqr_df["cqr_upper"].reindex(y_index),
         )
 
+    # S2: Risk-Aware Bayesian — BiLSTM MC Dropout 90% CI (q05–q95)
+    # Trades only when MC Dropout CI is narrow (high model confidence)
+    bl_eco_path = os.path.join(config.REPORT_DIR, f"bilstm_preds_{m}.csv")
+    if os.path.exists(bl_eco_path):
+        bl_eco_df = pd.read_csv(bl_eco_path, index_col=0, parse_dates=True)
+        bl_eco_df.index = pd.to_datetime(bl_eco_df.index, utc=True)
+        if y_index.tz is None:
+            bl_idx = y_index.tz_localize("UTC")
+        else:
+            bl_idx = y_index.tz_convert("UTC")
+        bl_eco_df = bl_eco_df.reindex(bl_idx)
+        if "q05" in bl_eco_df.columns and "q95" in bl_eco_df.columns:
+            interval_strats["Risk-Aware Bayesian"] = (
+                pd.Series(bl_eco_df["q05"].values, index=y_index),
+                pd.Series(bl_eco_df["q95"].values, index=y_index),
+            )
+
     if point_strats or interval_strats:
         pnl_df = simulate_trading(actual_series, point_strats, interval_strats)
         eco_rows = []

@@ -24,6 +24,11 @@ import joblib
 import warnings
 warnings.filterwarnings("ignore")
 
+# ── TF XLA flags — must be set BEFORE importing tensorflow ─────────────────
+os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
+os.environ["TF_XLA_FLAGS"]         = "--tf_xla_auto_jit=0"
+os.environ["XLA_FLAGS"]            = "--xla_gpu_cuda_data_dir=/usr/lib/cuda"
+
 sys.path.insert(0, os.path.dirname(__file__))
 import config
 
@@ -204,11 +209,16 @@ def run_ablation(market: str = "PJM"):
             denom  = bl_meta["scaler_denom"]
             t_idx  = bl_meta["target_idx"]
             sl     = bl_meta["seq_len"]
+            scaler_type = bl_meta.get("scaler_type", "minmax")
+            use_log1p = "log1p" in scaler_type
 
             # Build cal sequences using train+cal as history
             tr_df_bl = pd.read_parquet(config.PJM_TRAIN_PATH if market=="PJM" else config.ERCOT_TRAIN_PATH)
             history_bl = pd.concat([tr_df_bl, cal_df])
-            scaled_bl  = (history_bl.values.astype(np.float32) - col_min) / denom
+            arr_bl = history_bl.values.astype(np.float32)
+            if use_log1p:
+                arr_bl = np.log1p(np.maximum(arr_bl, 0))
+            scaled_bl  = (arr_bl - col_min) / denom
             n_hist = len(tr_df_bl)
 
             X_cal_bl, y_cal_bl = [], []
@@ -218,9 +228,18 @@ def run_ablation(market: str = "PJM"):
                     y_cal_bl.append(scaled_bl[i + sl, t_idx])
             X_cal_bl = np.array(X_cal_bl, dtype=np.float32)
 
-            # Single forward pass (no MC dropout — just point prediction for meta-learner)
-            cal_preds_scaled = bl_model(X_cal_bl, training=False).numpy().flatten()
-            cal_preds_price  = cal_preds_scaled * denom[t_idx] + col_min[t_idx]
+            # Batched forward pass (GPU OOM with full cal set on GTX 1650)
+            BATCH_SZ = 512
+            cal_chunks = []
+            for b_start in range(0, len(X_cal_bl), BATCH_SZ):
+                chunk = bl_model(X_cal_bl[b_start:b_start+BATCH_SZ], training=False)
+                cal_chunks.append(chunk.numpy().flatten())
+            cal_preds_scaled = np.concatenate(cal_chunks)
+            # Inverse transform: undo MinMax, then undo log1p if applicable
+            if use_log1p:
+                cal_preds_price = np.expm1(cal_preds_scaled * denom[t_idx] + col_min[t_idx])
+            else:
+                cal_preds_price = cal_preds_scaled * denom[t_idx] + col_min[t_idx]
 
             # Truncate y_cal to match (sequences may be shorter than cal_df)
             n_bl = len(cal_preds_price)

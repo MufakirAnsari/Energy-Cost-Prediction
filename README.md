@@ -1,4 +1,4 @@
-# Probabilistic Electricity Price Forecasting — V2
+# Probabilistic Electricity Price Forecasting
 
 > **Research pipeline for EAAI 2025 submission.**
 > First rigorous multi-paradigm probabilistic EPF benchmark on post-2020 US markets (PJM + ERCOT), comparing classical, modern deep learning (PatchTST, iTransformer), and zero-shot foundation model (Chronos-Bolt) baselines under three probabilistic frameworks, with conformal prediction intervals and realistic economic simulation.
@@ -125,7 +125,7 @@ US electricity markets (PJM, ERCOT) have experienced unprecedented price volatil
 ## 4. Repository Structure
 
 ```
-V2/
+/
 ├── config.py                     # All paths, hyperparameters, split dates
 ├── utils.py                      # Shared metrics, DM test, data loading helpers
 ├── requirements.txt              # Pinned dependencies (==)

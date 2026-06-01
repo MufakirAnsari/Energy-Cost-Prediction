@@ -1,0 +1,31 @@
+Check,Status,Detail
+[PJM] train ends ≤ cal start (date-level),✅ PASS,2021-12-30 ≤ 2021-12-31
+[PJM] cal ends ≤ val start (date-level),✅ PASS,2022-12-30 ≤ 2022-12-31
+[PJM] val ends ≤ test start (date-level),✅ PASS,2023-12-30 ≤ 2023-12-31
+[PJM] train ∩ cal = ∅ (zero overlap),✅ PASS,overlap=0 rows
+[PJM] train ∩ val = ∅ (zero overlap),✅ PASS,overlap=0 rows
+[PJM] train ∩ test = ∅ (zero overlap),✅ PASS,overlap=0 rows
+[PJM] cal ∩ val = ∅ (zero overlap),✅ PASS,overlap=0 rows
+[PJM] cal ∩ test = ∅ (zero overlap),✅ PASS,overlap=0 rows
+[PJM] val ∩ test = ∅ (zero overlap),✅ PASS,overlap=0 rows
+[PJM] No feature has correlation > 0.99 with target,✅ PASS,max_corr=0.9657
+[PJM] CQR calibration after training cutoff,✅ PASS,"cal_start=2021-12-31, cal_rows=8508"
+"[PJM] Test set has ≥10,000 rows",✅ PASS,"n=17,041"
+"[PJM] Train set has ≥24,000 rows",✅ PASS,"n=25,540"
+[PJM] Train target NaN < 1%,✅ PASS,nan_frac=0.0000
+[PJM] Test target NaN < 5%,✅ PASS,nan_frac=0.0000
+[ERCOT] train ends ≤ cal start (date-level),✅ PASS,2021-12-30 ≤ 2021-12-31
+[ERCOT] cal ends ≤ val start (date-level),✅ PASS,2022-12-30 ≤ 2022-12-31
+[ERCOT] val ends ≤ test start (date-level),✅ PASS,2023-12-30 ≤ 2023-12-31
+[ERCOT] train ∩ cal = ∅ (zero overlap),✅ PASS,overlap=0 rows
+[ERCOT] train ∩ val = ∅ (zero overlap),✅ PASS,overlap=0 rows
+[ERCOT] train ∩ test = ∅ (zero overlap),✅ PASS,overlap=0 rows
+[ERCOT] cal ∩ val = ∅ (zero overlap),✅ PASS,overlap=0 rows
+[ERCOT] cal ∩ test = ∅ (zero overlap),✅ PASS,overlap=0 rows
+[ERCOT] val ∩ test = ∅ (zero overlap),✅ PASS,overlap=0 rows
+[ERCOT] No feature has correlation > 0.99 with target,✅ PASS,max_corr=0.8576
+[ERCOT] CQR calibration after training cutoff,✅ PASS,"cal_start=2021-12-31, cal_rows=8760"
+"[ERCOT] Test set has ≥10,000 rows",✅ PASS,"n=17,545"
+"[ERCOT] Train set has ≥24,000 rows",✅ PASS,"n=26,280"
+[ERCOT] Train target NaN < 1%,✅ PASS,nan_frac=0.0000
+[ERCOT] Test target NaN < 5%,✅ PASS,nan_frac=0.0000

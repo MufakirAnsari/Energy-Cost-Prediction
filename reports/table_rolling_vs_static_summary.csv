@@ -1,0 +1,5 @@
+Market,Model,Static_MAE,Rolling_MAE,Improvement_%,N_windows
+PJM,LightGBM,4.0158,3.049,24.1,24
+PJM,XGBoost,4.0072,3.0911,22.9,24
+ERCOT,LightGBM,3.3864,2.5846,23.7,24
+ERCOT,XGBoost,3.4525,2.8659,17.0,24

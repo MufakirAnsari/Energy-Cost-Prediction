@@ -1,0 +1,8 @@
+Ablation,config,MAE,RMSE,n_features
+Feature Set,Feature=price_only (10 feats),3.3296,11.15,10
+Feature Set,Feature=price_calendar (29 feats),3.2422,10.7164,29
+Feature Set,Feature=full (50 feats),3.353,10.5112,50
+Lag Window,LagWindow=48h (47 feats),3.1141,10.09,47
+Lag Window,LagWindow=96h (48 feats),3.2372,10.5677,48
+Lag Window,LagWindow=168h (49 feats),3.1668,10.8649,49
+Lag Window,LagWindow=336h (50 feats),3.353,10.5112,50

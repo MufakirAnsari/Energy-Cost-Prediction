@@ -1,0 +1,26 @@
+\begin{table}[htbp]
+\centering
+\small
+\caption{Point forecast accuracy. MAE and RMSE in \$/MWh. $^{\star}$ = significantly worse than best model (Diebold--Mariano test, BH-corrected $\alpha=5\\%$).}
+\label{tab:point_accuracy}
+\begin{tabular}{lrrrr}
+\toprule
+Model & PJM MAE & PJM RMSE & ERCOT MAE & ERCOT RMSE \\
+\midrule
+\textbf{XGBoost & 4.0183 & 12.5186 & 3.4560 & 11.5544} \\
+LightGBM & 4.0259 & 12.3214 & 3.3899 & 10.6421 \\
+QRF & 4.5452$^{\star}$ & 12.2871 & 3.6802$^{\star}$ & 9.8769 \\
+BiLSTM & 4.8399$^{\star}$ & 10.1030 & 3.6492$^{\star}$ & 10.1127 \\
+Ensemble & 4.9294$^{\star}$ & 12.9818 & 3.4432 & 10.3928 \\
+PatchTST & 6.6903$^{\star}$ & 12.9940 & 5.2659$^{\star}$ & 15.1887 \\
+N-HiTS & 6.7453$^{\star}$ & 12.9556 & 5.0552$^{\star}$ & 13.8144 \\
+Chronos-Bolt & 7.0174$^{\star}$ & 13.0760 & 7.7747$^{\star}$ & 21.5417 \\
+iTransformer & 7.4714$^{\star}$ & 14.5672 & 6.0747$^{\star}$ & 16.6489 \\
+TFT & 8.0073$^{\star}$ & 15.4731 & 7.0881$^{\star}$ & 19.4202 \\
+BiTCN & 8.0196$^{\star}$ & 16.1940 & 5.4056$^{\star}$ & 14.7567 \\
+AutoARIMA & 12.7620$^{\star}$ & 24.9359 & 12.5326$^{\star}$ & 34.1295 \\
+MSTL & 14.3998$^{\star}$ & 24.9459 & 11.1574$^{\star}$ & 24.0267 \\
+SeasonalNaive & 14.4488$^{\star}$ & 29.2135 & 11.5901$^{\star}$ & 30.5994 \\
+\bottomrule
+\end{tabular}
+\end{table}

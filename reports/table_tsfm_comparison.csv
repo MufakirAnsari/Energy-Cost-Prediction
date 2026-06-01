@@ -1,0 +1,6 @@
+Model,Type,Exogenous,Evaluated,PJM_MAE,ERCOT_MAE,Notes
+Chronos-Bolt (v1),Zero-shot univariate,No,Yes,7.02,7.77,Pre-trained on generic time series; no exogenous input
+Chronos-2 (2025),Zero-shot multivariate,Yes (in-context),No — released after experiments,,,Supports covariates via in-context learning; future work
+TimesFM (Google),Zero-shot univariate,No,No — API-only at time of study,,,Foundation model; no public weights during study period
+Moirai (Salesforce),Zero-shot univariate,No,No,,,Universal forecasting transformer; future benchmark candidate
+LightGBM (ours),Supervised tabular,Yes (50 features),Yes,4.03,3.39,"Domain-specific; uses weather, load, gas, generation mix"

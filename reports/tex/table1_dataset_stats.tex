@@ -1,0 +1,18 @@
+\begin{table}[htbp]
+\centering
+\small
+\caption{Price statistics by market regime (\$/MWh). Spike\\% = fraction of hours with price $>\mu+2\sigma$.}
+\label{tab:dataset_stats}
+\begin{tabular}{lrrrrrrrrr}
+\toprule
+Regime & N (hrs) & PJM Mean & PJM Std & PJM Max & PJM Spike\% & ERCOT Mean & ERCOT Std & ERCOT Max & ERCOT Spike\% \\
+\midrule
+stable\_baseline & 8501.0000 & 25.4000 & 8.3400 & 123.0900 & 0.0500 & 38.5000 & 68.9200 & 1263.3800 & 0.8800 \\
+covid\_collapse & 9248.0000 & 20.3500 & 6.8100 & 66.9400 & 0.0000 & 21.1200 & 14.2400 & 513.2800 & 0.0100 \\
+uri\_crisis & 644.0000 & 43.0200 & 29.6100 & 169.7600 & 9.3200 & 192.0400 & 830.1200 & 8996.0200 & 7.2400 \\
+gas\_shock & 15635.0000 & 53.8100 & 31.7700 & 431.9300 & 11.0500 & 102.1200 & 274.8200 & 3011.1000 & 4.1300 \\
+new\_normal & 25541.0000 & 34.3500 & 22.4500 & 502.6500 & 2.4300 & 40.9100 & 62.8400 & 1415.1400 & 0.7200 \\
+full\_dataset & 59597.0000 & 36.1000 & 25.4200 & 502.6500 & 4.0500 & 55.2500 & 175.3000 & 8996.0200 & 1.6000 \\
+\bottomrule
+\end{tabular}
+\end{table}

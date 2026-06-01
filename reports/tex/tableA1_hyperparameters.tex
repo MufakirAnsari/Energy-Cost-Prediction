@@ -1,0 +1,29 @@
+\begin{table}[htbp]
+\centering
+\small
+\caption{Hyperparameter summary. All NeuralForecast models: freq=hourly, h=24, scaler=standard, seed=42. BiLSTM: ERCOT retrained with log1p+MinMax scaling and clipnorm=1.0. TFT: memory-optimized for 4\,GB VRAM with 12 hist\\_exog features.}
+\label{tab:hyperparams}
+\begin{tabular}{lccccccccccccccccccccccccccccccccccccc}
+\toprule
+Model & type & params & season\_length & max\_p & max\_q & seasonal\_periods & n\_estimators & lr & num\_leaves & quantiles & max\_depth & min\_samples\_leaf & max\_features & BiLSTM\_units & dense & dropout & seq\_len & clipnorm & hidden\_size & max\_steps & linear\_hidden\_size & n\_heads & patch\_len & e\_layers & d\_ff & input\_size & batch\_size & mlp\_units & loss & context & horizon & fine-tune & base & alpha & cal\_set & meta & train\_set \\
+\midrule
+SeasonalNaive & Statistical & — & 168 & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — \\
+AutoARIMA & Statistical & auto & — & 5 & 5 & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — \\
+MSTL & Statistical & auto & — & — & — & [24, 168] & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — \\
+LightGBM (point) & Tree & — & — & — & — & — & 2000 & 0.0300 & 63 & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — \\
+LightGBM (quantile) & Tree & — & — & — & — & — & 2000 & 0.0300 & — & q05–q95 & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — \\
+XGBoost & Tree & — & — & — & — & — & 2000 & 0.0300 & — & — & 6 & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — \\
+QRF & Tree & — & — & — & — & — & 500 & — & — & — & — & 5 & sqrt & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — \\
+BiLSTM (MC Dropout) & RNN & — & — & — & — & — & — & 3e-04 & — & — & — & — & — & 128 & 64 & sweep {0.1–0.4} & 168 & 1.0000 & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — \\
+BiTCN & CNN & — & — & — & — & — & — & 3e-04 & — & — & — & — & — & — & — & 0.1000 & — & — & 128 & 1500 & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — \\
+PatchTST & Transformer & — & — & — & — & — & — & 3e-04 & — & — & — & — & — & — & — & — & — & — & 64 & 1500 & 128 & 4 & 24 & — & — & — & — & — & — & — & — & — & — & — & — & — & — \\
+iTransformer & Transformer & — & — & — & — & — & — & 3e-04 & — & — & — & — & — & — & — & — & — & — & 64 & 1500 & — & 4 & — & 2 & 128 & — & — & — & — & — & — & — & — & — & — & — & — \\
+TFT & Transformer & — & — & — & — & — & — & 3e-04 & — & — & — & — & — & — & — & — & — & — & 32 & 1500 & — & 2 & — & — & — & 72 & 64 & — & — & — & — & — & — & — & — & — & — \\
+N-HiTS (MAE) & MLP & — & — & — & — & — & — & 3e-04 & — & — & — & — & — & — & — & 0.2000 & — & — & — & 1500 & — & — & — & — & — & — & — & 3×[256,256] & — & — & — & — & — & — & — & — & — \\
+N-HiTS (MQLoss 80\%CI) & MLP & — & — & — & — & — & — & 3e-04 & — & — & — & — & — & — & — & — & — & — & — & 1500 & — & — & — & — & — & — & — & 3×[256,256] & MQLoss[80] & — & — & — & — & — & — & — & — \\
+Chronos-Bolt (Small) & Foundation & 200M & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & 168 & 24 & None & — & — & — & — & — \\
+CQR & Conformal & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & LGBM-Q & 0.1000 & 2022 (dedicated) & — & — \\
+Ensemble & Stacked & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & — & LGBM+XGB+BiLSTM & — & — & LightGBM & 2023 (val) \\
+\bottomrule
+\end{tabular}
+\end{table}

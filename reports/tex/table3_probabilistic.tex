@@ -1,0 +1,24 @@
+\begin{table}[htbp]
+\centering
+\small
+\caption{Probabilistic forecast quality. 90\\% nominal CI (80\\% for N-HiTS-Q \& Chronos-Bolt). PICP = prediction interval coverage probability (\\%). MPIW = mean prediction interval width (\$/MWh). Winkler score at $\alpha=0.10$ (lower = better). CRPS = continuous ranked probability score (lower = better). Pinball loss at boundary quantiles.}
+\label{tab:probabilistic}
+\begin{tabular}{llrrrrrr}
+\toprule
+Model & PICP\_\% & MPIW & Winkler\_α10 & CRPS & Pinball\_lo & Pinball\_hi \\
+\midrule
+('PJM', 'LGBM Quantile (90\% CI)') & 69.7000 & 10.3766 & 42.7730 & 3.3488 & 0.5659 & 1.5728 \\
+('PJM', 'CQR (90\% nominal CI)') & 82.5600 & 12.3561 & 40.1598 & 3.8035 & 0.5157 & 1.4923 \\
+('PJM', 'Chronos-Bolt (80\% CI)') & 73.6300 & 19.7917 & 51.0701 & — & 1.3769 & 2.1662 \\
+('PJM', 'QRF (90\% CI)') & 91.1700 & 20.2854 & 33.3203 & 3.6602 & 0.5213 & 1.1447 \\
+('PJM', 'N-HiTS Quantile (80\% CI)') & 65.4900 & 15.0075 & 56.5604 & 5.3365 & 1.3870 & 2.1914 \\
+('PJM', 'BiLSTM MC Dropout (90\% CI)') & 57.0900 & 9.4932 & 43.3983 & — & 0.6343 & 1.5356 \\
+('ERCOT', 'LGBM Quantile (90\% CI)') & 75.7700 & 17.6020 & 29.4843 & 2.7764 & 0.4443 & 1.0299 \\
+('ERCOT', 'CQR (90\% nominal CI)') & 75.7700 & 17.6020 & 29.4843 & 4.7134 & 0.4443 & 1.0299 \\
+('ERCOT', 'Chronos-Bolt (80\% CI)') & 80.8000 & 23.5357 & 63.3202 & — & 1.2633 & 3.0795 \\
+('ERCOT', 'QRF (90\% CI)') & 95.6500 & 25.5378 & 29.0833 & 3.2378 & 0.5235 & 0.9307 \\
+('ERCOT', 'N-HiTS Quantile (80\% CI)') & 68.3900 & 11.1417 & 46.4149 & 4.1338 & 1.0885 & 1.7893 \\
+('ERCOT', 'BiLSTM MC Dropout (90\% CI)') & 64.3700 & 9.3840 & 32.6686 & 2.9038 & 0.6261 & 1.0074 \\
+\bottomrule
+\end{tabular}
+\end{table}

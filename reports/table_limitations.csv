@@ -1,0 +1,7 @@
+Weakness,Mitigation,Severity,Future_Work
+Single train/test split,Quarterly stability analysis (Fig W5) shows consistent MAE across 8 quarters,Medium,Expanding-window retraining with monthly updates
+No Chronos-2 / TimesFM / Moirai,Chronos-Bolt (v1) evaluated; structural argument (no exogenous) applies to all zero-shot TSFMs,Low,Benchmark Chronos-2 with covariates once publicly available
+BiLSTM MC Dropout poor PICP,ECE-tuned (Fig W3); documented as known limitation of MC Dropout under shift,Low,Explore deep ensembles or evidential networks for better epistemic UQ
+Ensemble MAE > LightGBM MAE,"34% RMSE reduction (Fig W4); ensemble targets tail risk, not median accuracy",Low,Regime-switching ensemble weights
+CQR alpha sweep produces trivially wide intervals,Documented as evidence of exchangeability violation (Fig W2),Low (strengthens finding),Adaptive conformal (ACI/EnbPI) with online recalibration
+No computational cost comparison,Training times not recorded during experiments,Low,Add training time table in revision

@@ -1,0 +1,4 @@
+Finding,Cause,Evidence
+CQR achieves 82.6% PICP (PJM) — misses 90% target by 7.4pp,Calibration set (2022 gas crisis) is not exchangeable with test set (2024-25),"Alpha sweep correction=290.28 → intervals expand to MPIW=591, achieving 99.98% PICP (trivially wide)"
+"QRF achieves 91.2% PICP (PJM) with MPIW=20.3 — hits target, stays sharp",Non-parametric quantile estimation adapts locally without exchangeability assumption,Best Winkler score (33.3) among all methods
+BiLSTM MC Dropout achieves only 57.1% PICP (PJM),"MC Dropout underestimates epistemic uncertainty under distribution shift (Gal & Ghahramani, 2016)",ECE-tuned at dropout=0.4 (best ECE=0.076) but still insufficient for coverage

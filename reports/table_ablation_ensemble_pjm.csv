@@ -1,0 +1,8 @@
+Ablation,config,MAE,RMSE,n_features
+Ensemble Composition,LGBM,4.4058,12.0902,1
+Ensemble Composition,XGB,4.382,11.9901,1
+Ensemble Composition,LGBM+XGB,4.3616,12.0747,2
+Ensemble Composition,BiLSTM,5.0225,8.593,1
+Ensemble Composition,LGBM+BiLSTM,3.9896,7.954,2
+Ensemble Composition,XGB+BiLSTM,3.9748,7.9363,2
+Ensemble Composition,LGBM+XGB+BiLSTM,3.9366,7.9204,3

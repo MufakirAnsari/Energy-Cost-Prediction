@@ -1,0 +1,3 @@
+Model,Period,Note,N_hours,MAE,RMSE,Price_mean,Price_max
+LightGBM,Uri crisis (Feb 2021),[IN-SAMPLE],241,219.15,922.91,356.1,8996.0
+XGBoost,Uri crisis (Feb 2021),[IN-SAMPLE],241,176.45,712.16,356.1,8996.0

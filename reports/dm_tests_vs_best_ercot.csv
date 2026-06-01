@@ -1,0 +1,14 @@
+Model,MAE,DM_stat,p_value,sig_p05,BH_reject
+SeasonalNaive,11.5901,21.2545,0.0,True,True
+AutoARIMA,12.5326,20.2349,0.0,True,True
+MSTL,11.1574,30.7141,0.0,True,True
+XGBoost,3.456,1.1968,0.231396,False,False
+PatchTST,5.2659,13.7694,0.0,True,True
+iTransformer,6.0747,15.9383,0.0,True,True
+N-HiTS,5.0552,13.0551,0.0,True,True
+BiTCN,5.4056,15.6816,0.0,True,True
+TFT,7.0881,21.0205,0.0,True,True
+Chronos-Bolt,7.7747,21.5321,0.0,True,True
+QRF,3.6802,4.8254,1e-06,True,True
+BiLSTM,3.6492,3.9411,8.1e-05,True,True
+Ensemble,3.4432,1.0708,0.284294,False,False

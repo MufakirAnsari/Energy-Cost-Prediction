@@ -1,0 +1,244 @@
+digraph V2_EPF_Pipeline {
+    // ── Global settings ──────────────────────────────────────────
+    rankdir=TB;
+    fontname="Helvetica";
+    fontsize=11;
+    node [fontname="Helvetica", fontsize=10, style="filled,rounded", shape=box];
+    edge [fontname="Helvetica", fontsize=8, color="#555555"];
+    bgcolor="white";
+    label="V2 Electricity Price Forecasting Pipeline\nPJM + ERCOT | 2019–2025 | Hourly Resolution";
+    labelloc=t;
+    labeljust=c;
+    fontsize=14;
+    fontcolor="#1a1a2e";
+
+    // ── Color scheme ─────────────────────────────────────────────
+    // Data:       #e3f2fd (light blue)
+    // Classical:  #fff3e0 (light orange)
+    // Tree:       #e8f5e9 (light green)
+    // DL:         #f3e5f5 (light purple)
+    // Probabilistic: #fce4ec (light pink)
+    // Evaluation: #fff9c4 (light yellow)
+    // Output:     #e0e0e0 (light gray)
+
+    // ════════════════════════════════════════════════════════════
+    // PHASE 0: DATA ACQUISITION
+    // ════════════════════════════════════════════════════════════
+    subgraph cluster_data {
+        label="Phase 0: Data Acquisition";
+        style="dashed,rounded";
+        color="#1565c0";
+        fontcolor="#1565c0";
+
+        raw_pjm [label="step_00_download_pjm\n━━━━━━━━━━━━━━━━━━\nGridStatus API → PJM\nDA-LMP, 61,345 hours", fillcolor="#e3f2fd"];
+        raw_ercot [label="step_00_download_ercot\n━━━━━━━━━━━━━━━━━━\nGridStatus API → ERCOT\nDA-SPP, 61,345 hours", fillcolor="#e3f2fd"];
+        raw_weather [label="step_00_download_weather\n━━━━━━━━━━━━━━━━━━\nNOAA NCEI → 5-city\nTemp, Dew, Wind, Humidity", fillcolor="#e3f2fd"];
+        raw_eia [label="step_00_download_eia\n━━━━━━━━━━━━━━━━━━\nEIA API v2 → Gas price\n+ Generation mix", fillcolor="#e3f2fd"];
+    }
+
+    // ════════════════════════════════════════════════════════════
+    // PHASE 1: PREPROCESSING
+    // ════════════════════════════════════════════════════════════
+    subgraph cluster_preprocess {
+        label="Phase 1: Preprocessing & EDA";
+        style="dashed,rounded";
+        color="#0d47a1";
+        fontcolor="#0d47a1";
+
+        preprocess [label="step_01_preprocess\n━━━━━━━━━━━━━━━━━━\n68 features → SHAP top-50 → 51 final\nMinMaxScaler + KNN imputer (train-only)\nHalf-open [start, end) split logic", fillcolor="#bbdefb"];
+
+        splits [label="4-Way Chronological Split\n━━━━━━━━━━━━━━━━━━━━━━\nTrain: 2019-01-01 → 2021-12-30\n  PJM: 25,540 | ERCOT: 26,280\nCal:   2021-12-31 → 2022-12-30\n  PJM: 8,508  | ERCOT: 8,760\nVal:   2022-12-31 → 2023-12-30\n  PJM: 8,508  | ERCOT: 8,760\nTest:  2023-12-31 → 2025-12-31\n  PJM: 17,041 | ERCOT: 17,545\n━━━━━━━━━━━━━━━━━━━━━━\nZero overlap verified: 30/30 ✓", fillcolor="#bbdefb", shape=note];
+
+        eda [label="step_01_eda\n━━━━━━━━━━━━━━━━━━\nPrice statistics table\nACF/PACF plots\nRegime violin plots\nFeature correlation heatmap\nSpike frequency heatmap", fillcolor="#bbdefb"];
+    }
+
+    // ════════════════════════════════════════════════════════════
+    // PHASE 2: CLASSICAL + TREE MODELS
+    // ════════════════════════════════════════════════════════════
+    subgraph cluster_classical {
+        label="Phase 2: Classical & Tree-Based Models (CPU)";
+        style="dashed,rounded";
+        color="#e65100";
+        fontcolor="#e65100";
+
+        baselines [label="step_02_train_baselines\n━━━━━━━━━━━━━━━━━━\n1. Seasonal Naïve (s=168)\n2. AutoARIMA (s=24, D=1, stepwise)\n3. MSTL ([24,168] + AutoETS)\n━━━━━━━━━━━━━━━━━━\nWalk-forward: weekly refit (h=168)\nExpandable window, checkpointed", fillcolor="#fff3e0"];
+
+        lgbm [label="step_03_train_lgbm\n━━━━━━━━━━━━━━━━━━\nLightGBM Point:\n  n_est=2000, lr=0.03, leaves=63\nLightGBM Quantile (7 levels):\n  τ = {0.025, 0.05, 0.1, 0.5,\n       0.9, 0.95, 0.975}", fillcolor="#e8f5e9"];
+
+        xgboost [label="step_04_train_xgboost\n━━━━━━━━━━━━━━━━━━\nXGBoost Point:\n  n_est=1500, lr=0.03\n  max_depth=7, subsample=0.8\n  colsample=0.8", fillcolor="#e8f5e9"];
+    }
+
+    // ════════════════════════════════════════════════════════════
+    // PHASE 3: DEEP LEARNING MODELS
+    // ════════════════════════════════════════════════════════════
+    subgraph cluster_dl {
+        label="Phase 3: Deep Learning Models (GPU — GTX 1650, 4GB)";
+        style="dashed,rounded";
+        color="#6a1b9a";
+        fontcolor="#6a1b9a";
+
+        bilstm [label="step_05_train_bilstm\n━━━━━━━━━━━━━━━━━━\nBayesian Bi-LSTM (TensorFlow)\n  2×LSTM(128) + Dense(64)\n  MC Dropout (p=0.3, T=100)\n  ECE calibration sweep\n  → point + q05/q95 (90% CI)\nstep_05b: ERCOT retrain\n  (log1p + clipnorm fix)", fillcolor="#f3e5f5"];
+
+        patchtst [label="step_06_train_patchtst\n━━━━━━━━━━━━━━━━━━\nPatchTST (NeuralForecast)\n  hidden=64, patch_len=24\n  n_heads=4, e_layers=2\n  h=24, cross_validation", fillcolor="#f3e5f5"];
+
+        bitcn [label="step_06b_train_bitcn\n━━━━━━━━━━━━━━━━━━\nBiTCN (NeuralForecast)\n  h=24, cross_validation", fillcolor="#f3e5f5"];
+
+        itransformer [label="step_07_train_itransformer\n━━━━━━━━━━━━━━━━━━\niTransformer (NeuralForecast)\n  hidden=64, n_heads=4\n  e_layers=2, d_ff=128\n  h=24, cross_validation", fillcolor="#f3e5f5"];
+
+        tft [label="step_07b_train_tft\n━━━━━━━━━━━━━━━━━━\nTFT (NeuralForecast)\n  h=24, cross_validation", fillcolor="#f3e5f5"];
+
+        nhits [label="step_08_train_nhits\n━━━━━━━━━━━━━━━━━━\nN-HiTS Point (NeuralForecast)\n  h=24, cross_validation\nstep_08b: N-HiTS Quantile\n  MQLoss → 80% CI (q10/q90)", fillcolor="#f3e5f5"];
+    }
+
+    // ════════════════════════════════════════════════════════════
+    // PHASE 4: ZERO-SHOT + PROBABILISTIC WRAPPERS
+    // ════════════════════════════════════════════════════════════
+    subgraph cluster_prob {
+        label="Phase 4: Zero-Shot & Probabilistic Wrappers";
+        style="dashed,rounded";
+        color="#c62828";
+        fontcolor="#c62828";
+
+        chronos [label="step_09_chronos_inference\n━━━━━━━━━━━━━━━━━━\nChronos-Bolt (Amazon)\n  Zero-shot, no training\n  h=24, CPU inference\n  → point + 80% CI (q10/q90)", fillcolor="#fce4ec"];
+
+        cqr [label="step_10_conformal\n━━━━━━━━━━━━━━━━━━\nCQR on calibration set (2022)\n  Base: LightGBM q05/q95\n  Correction: α=0.10 (90% CI)\n  Monotonicity enforced:\n    lower ≤ upper always\nstep_10b: α sweep {80,90,95}%", fillcolor="#fce4ec"];
+
+        qrf [label="step_11_qrf\n━━━━━━━━━━━━━━━━━━\nQuantile Regression Forest\n  n_estimators=500\n  → q05/q95 (90% CI)", fillcolor="#fce4ec"];
+    }
+
+    // ════════════════════════════════════════════════════════════
+    // PHASE 5: ENSEMBLE
+    // ════════════════════════════════════════════════════════════
+    subgraph cluster_ensemble {
+        label="Phase 5: Stacked Ensemble";
+        style="dashed,rounded";
+        color="#2e7d32";
+        fontcolor="#2e7d32";
+
+        ensemble [label="step_12_ensemble\n━━━━━━━━━━━━━━━━━━\nMeta-learner: LightGBM\n  Base models: LGBM + XGB + BiLSTM\n  Trained on VAL set (2023)\n  NOT cal set (regime mismatch)\n━━━━━━━━━━━━━━━━━━\niTransformer excluded:\n  NF cross_validation → test-only\n  (would leak test data)", fillcolor="#c8e6c9"];
+    }
+
+    // ════════════════════════════════════════════════════════════
+    // PHASE 6: EVALUATION & ANALYSIS
+    // ════════════════════════════════════════════════════════════
+    subgraph cluster_eval {
+        label="Phase 6: Evaluation & Analysis";
+        style="dashed,rounded";
+        color="#f57f17";
+        fontcolor="#f57f17";
+
+        evaluate [label="step_09_evaluate\n━━━━━━━━━━━━━━━━━━\nRQ1 Point: MAE, RMSE, sMAPE\nRQ2 Probabilistic: PICP, MPIW,\n  CRPS, Winkler, Pinball, ECE\nRQ3 Economic (5 strategies):\n  1. Seasonal Naïve\n  2. LightGBM\n  3. Risk-Aware Bayesian (BiLSTM MC)\n  4. Risk-Aware CQR\n  5. Oracle\n  Cost=$0.50/MWh, Slippage=0.3σ", fillcolor="#fff9c4"];
+
+        dm_tests [label="step_14_dm_tests\n━━━━━━━━━━━━━━━━━━\nDiebold-Mariano pairwise\n  HLN small-sample correction\n  Benjamini-Hochberg FDR (α=0.05)", fillcolor="#fff9c4"];
+
+        ablation [label="step_15_ablation\n━━━━━━━━━━━━━━━━━━\nA1: Feature set (price-only,\n    +calendar, +exogenous)\nA2: Lag window [48,96,168,336]h\nA3: Dropout rate [0.1–0.4]\nA4: Ensemble (2³−1 = 7 subsets)\nA5: Conformal α sweep", fillcolor="#fff9c4"];
+
+        stress [label="step_16_stress_test\n━━━━━━━━━━━━━━━━━━\nOOS regime evaluation (2024–2025)\n  High-renewables era\n  Post-gas-shock normalization", fillcolor="#fff9c4"];
+
+        rq4 [label="step_19_rq4_crossmarket\n━━━━━━━━━━━━━━━━━━\nPJM → ERCOT transfer\n  Tree models only (31 shared feats)\n  DL excluded: architecture-specific\n  input constraints", fillcolor="#fff9c4"];
+    }
+
+    // ════════════════════════════════════════════════════════════
+    // PHASE 7: OUTPUTS
+    // ════════════════════════════════════════════════════════════
+    subgraph cluster_output {
+        label="Phase 7: Publication Outputs";
+        style="dashed,rounded";
+        color="#37474f";
+        fontcolor="#37474f";
+
+        figures [label="step_17_figures\n━━━━━━━━━━━━━━━━━━\nF1–F11 at 300 DPI\nPNG + PDF", fillcolor="#e0e0e0"];
+
+        tables [label="step_18_paper_tables\n━━━━━━━━━━━━━━━━━━\n6 LaTeX booktabs tables\nHyperparams auto-sourced\nfrom config.py", fillcolor="#e0e0e0"];
+
+        outputs [label="Final Artifacts\n━━━━━━━━━━━━━━━━━━\nreports/tex/*.tex\nreports/figures/*.png\nreports/*.csv\nmodels/*.joblib, *.keras", fillcolor="#e0e0e0", shape=folder];
+    }
+
+    // ════════════════════════════════════════════════════════════
+    // DATA FLOW EDGES
+    // ════════════════════════════════════════════════════════════
+
+    // Raw → Preprocess
+    raw_pjm -> preprocess;
+    raw_ercot -> preprocess;
+    raw_weather -> preprocess;
+    raw_eia -> preprocess;
+
+    // Preprocess → Splits
+    preprocess -> splits;
+    preprocess -> eda;
+
+    // Splits → Models (Train split)
+    splits -> baselines [label="train+val/test"];
+    splits -> lgbm [label="train"];
+    splits -> xgboost [label="train"];
+    splits -> bilstm [label="train (seq_len=168)"];
+    splits -> patchtst [label="train+test (NF CV)"];
+    splits -> bitcn [label="train+test (NF CV)"];
+    splits -> itransformer [label="train+test (NF CV)"];
+    splits -> tft [label="train+test (NF CV)"];
+    splits -> nhits [label="train+test (NF CV)"];
+
+    // Splits → Probabilistic
+    splits -> chronos [label="test (zero-shot)"];
+    splits -> cqr [label="cal set (2022)"];
+    splits -> qrf [label="train"];
+
+    // LightGBM quantiles → CQR
+    lgbm -> cqr [label="q05/q95 base models", style=dashed, color="#c62828"];
+
+    // Model predictions → Ensemble
+    lgbm -> ensemble [label="val+test preds"];
+    xgboost -> ensemble [label="val+test preds"];
+    bilstm -> ensemble [label="val+test preds"];
+
+    // All predictions → Evaluation
+    baselines -> evaluate [label="preds"];
+    lgbm -> evaluate [label="preds + quantiles"];
+    xgboost -> evaluate [label="preds"];
+    bilstm -> evaluate [label="preds + MC CI"];
+    patchtst -> evaluate [label="preds"];
+    itransformer -> evaluate [label="preds"];
+    nhits -> evaluate [label="preds + quantiles"];
+    chronos -> evaluate [label="preds + CI"];
+    cqr -> evaluate [label="corrected CI"];
+    qrf -> evaluate [label="quantile preds"];
+    ensemble -> evaluate [label="stacked preds"];
+
+    // Evaluation → Analysis
+    evaluate -> dm_tests [label="residuals"];
+    evaluate -> ablation;
+    evaluate -> stress [label="test preds"];
+    evaluate -> rq4 [label="PJM models"];
+
+    // Analysis → Outputs
+    evaluate -> figures;
+    evaluate -> tables;
+    dm_tests -> tables;
+    ablation -> tables;
+    stress -> tables;
+    rq4 -> tables;
+    figures -> outputs;
+    tables -> outputs;
+
+    // ════════════════════════════════════════════════════════════
+    // LEGEND
+    // ════════════════════════════════════════════════════════════
+    subgraph cluster_legend {
+        label="Legend";
+        style="rounded";
+        color="#9e9e9e";
+        fontcolor="#616161";
+        fontsize=9;
+
+        leg_data [label="Data", fillcolor="#e3f2fd", shape=box, fontsize=8];
+        leg_classical [label="Statistical", fillcolor="#fff3e0", shape=box, fontsize=8];
+        leg_tree [label="Tree-based", fillcolor="#e8f5e9", shape=box, fontsize=8];
+        leg_dl [label="Deep Learning", fillcolor="#f3e5f5", shape=box, fontsize=8];
+        leg_prob [label="Probabilistic", fillcolor="#fce4ec", shape=box, fontsize=8];
+        leg_eval [label="Evaluation", fillcolor="#fff9c4", shape=box, fontsize=8];
+        leg_out [label="Output", fillcolor="#e0e0e0", shape=box, fontsize=8];
+
+        leg_data -> leg_classical -> leg_tree -> leg_dl -> leg_prob -> leg_eval -> leg_out [style=invis];
+    }
+}

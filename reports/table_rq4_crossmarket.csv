@@ -1,0 +1,7 @@
+Direction,Model,MAE,RMSE,sMAPE
+PJM→ERCOT (cross-market),LightGBM,4.6731,16.7995,12.4656
+PJM→ERCOT (cross-market),XGBoost,4.6863,18.0295,12.1041
+PJM→ERCOT (cross-market),QRF (q50),5.0295,18.2539,13.1856
+ERCOT→ERCOT (in-market),LightGBM,3.3899,10.6421,9.0937
+ERCOT→ERCOT (in-market),XGBoost,3.456,11.5544,9.1953
+ERCOT→ERCOT (in-market),QRF (q50),3.6802,9.8769,10.9293

@@ -201,23 +201,11 @@ V2/
 │
 ├── models/                            # Trained model artifacts (.joblib, .keras)
 ├── reports/
-│   ├── figures/                       # 31 publication-quality figures
-│   ├── tex/                           # Generated LaTeX table fragments
-│   ├── table_*.csv                    # All result tables
-│   └── *_preds_*.csv                  # Model predictions
-│
-└── paper/
-    ├── main.tex                       # Manuscript (Elsevier elsarticle)
-    ├── cover_letter.tex               # Submission cover letter
-    ├── highlights.tex                 # Elsevier highlights (5 bullets)
-    ├── references.bib                 # 22 BibTeX entries
-    └── sections/                      # Modular LaTeX sections
-        ├── introduction.tex
-        ├── literature.tex
-        ├── methodology.tex
-        ├── results.tex
-        ├── conclusion.tex
-        └── appendix.tex
+   ├── figures/                       # 31 publication-quality figures
+   ├── tex/                           # Generated LaTeX table fragments
+   ├── table_*.csv                    # All result tables
+   └── *_preds_*.csv                  # Model predictions
+
 ```
 
 > **Note:** QRF models (~200MB each) exceed GitHub's 100MB limit and are excluded. Regenerate with `python step_11_qrf.py`.

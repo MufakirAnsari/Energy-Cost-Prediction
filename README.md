@@ -11,7 +11,7 @@
 > An 18-configuration benchmark of gradient-boosted trees, deep learning architectures, and time-series foundation models for day-ahead electricity price forecasting across PJM and ERCOT (2019–2025), with conformal prediction, expanding-window retraining, and realistic economic simulation.
 
 <p align="center">
-  <img src="reports/figures/Graphical_Abstract.png" alt="Graphical Abstract" width="900"/>
+  <img src="reports/figures/Graphical_Abstract.pdf" alt="Graphical Abstract" width="900"/>
 </p>
 
 ---

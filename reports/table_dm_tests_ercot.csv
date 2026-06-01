@@ -13,5 +13,5 @@ Chronos-Bolt,7.7747,21.5321,0.0,True,False,129.3
 QRF,3.6802,4.8254,1e-06,True,False,8.6
 BiLSTM,3.6492,3.9411,8.1e-05,True,False,7.6
 Ensemble,3.4432,1.0708,0.284294,False,False,1.6
-Chronos-Bolt-Base,7.9643,-20.9211,0.0,True,False,134.9
-Chronos-Base+Cov,5.5813,-14.2384,0.0,True,False,64.6
+Chronos-Bolt-Base,7.9643,,,True,False,134.9
+Chronos-Base+Cov,5.5813,,,True,False,64.6

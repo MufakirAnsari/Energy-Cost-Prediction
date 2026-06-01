@@ -70,7 +70,7 @@ def generate_figA_shap():
     bars = ax.barh(df["feature"], df["importance"], color=colors, alpha=0.85)
     ax.invert_yaxis()
     ax.set_xlabel("Mean |SHAP| Value")
-    ax.set_title("Figure A: Exogenous Feature Superiority (LightGBM, PJM)", fontweight="bold")
+    ax.set_title("SHAP Feature Importance (LightGBM, PJM)", fontsize=11)
     
     import matplotlib.patches as mpatches
     exo_patch = mpatches.Patch(color="#FF8F00", label="Exogenous (Load, Weather, Gas)")
@@ -133,7 +133,7 @@ def generate_figB_cqr_vs_qrf():
     # Plot Actual
     ax.plot(y_act.index, y_act.values, color="black", lw=1.5, marker=".", label="Actual Price")
     
-    ax.set_title("Figure B: Conformal Prediction Breakdown under Covariate Shift", fontweight="bold")
+    ax.set_title("CQR vs. QRF Prediction Intervals (PJM)", fontsize=11)
     ax.set_ylabel("Price ($/MWh)")
     ax.legend(loc="upper left")
     
@@ -164,7 +164,7 @@ def generate_figC_pnl():
         ls = "--" if col == "Oracle" else "-"
         ax.plot(pnl.index, pnl[col].cumsum(), label=col, lw=1.5, color=c, linestyle=ls)
         
-    ax.set_title("Figure C: Cumulative P&L Trajectory (PJM)", fontweight="bold")
+    ax.set_title("Cumulative Trading P&L (PJM, 2024–2025)", fontsize=11)
     ax.set_ylabel("Cumulative Profit ($)")
     ax.legend()
     ax.axhline(0, color="gray", lw=0.5)
@@ -217,7 +217,7 @@ def generate_figD_error_scatter():
     
     ax.set_xlabel("LightGBM Error ($/MWh)")
     ax.set_ylabel("BiLSTM Error ($/MWh)")
-    ax.set_title("Figure D: Error Complementarity (Trees vs RNN)", fontweight="bold")
+    ax.set_title("LightGBM vs. BiLSTM Error Correlation (PJM)", fontsize=11)
     ax.legend()
     
     fig.tight_layout()
@@ -254,7 +254,7 @@ def generate_figE_cross_market():
     rects2 = ax.bar(x + width/2, mae_cross, width, label='Cross-Market (PJM→ERCOT)', color="#EF5350")
     
     ax.set_ylabel('MAE ($/MWh)')
-    ax.set_title('Figure E: Zero-Shot Spatial Transfer Degradation', fontweight="bold")
+    ax.set_title('Cross-Market Transfer: In-Market vs. PJM→ERCOT', fontsize=11)
     ax.set_xticks(x)
     ax.set_xticklabels(models)
     ax.legend()

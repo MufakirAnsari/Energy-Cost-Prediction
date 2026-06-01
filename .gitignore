@@ -47,5 +47,8 @@ models/qrf_ercot.joblib
 # PyTorch Lightning run logs
 lightning_logs/
 
+# Scripts
+push_to_github.sh
+
 # Antigravity
 .antigravityignore

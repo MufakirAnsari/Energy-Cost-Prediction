@@ -61,8 +61,8 @@ REGIMES = {
 }
 
 # ── Feature Engineering ───────────────────────────────────────
-TARGET_LAGS     = [1, 2, 3, 6, 12, 24, 48, 72, 168, 336]   # hours
-ROLLING_WINDOWS = [6, 12, 24, 48, 168]                       # hours
+TARGET_LAGS     = [24, 48, 72, 96, 168, 336]               # hours (only day-ahead available)
+ROLLING_WINDOWS = [24, 48, 168]                            # hours
 ROLLING_FUNCS   = ["mean", "std", "min", "max"]
 
 # Weather cities
@@ -76,7 +76,7 @@ SHAP_TOP_N_FEATURES = 50
 SEQ_LEN_DEFAULT   = 168    # 7 days (primary window)
 SEQ_LEN_SHORT     = 48     # 2 days
 SEQ_LEN_LONG      = 336    # 14 days
-PRED_LEN          = 1      # 1-step ahead (unified for all models)
+PRED_LEN          = 24     # 24-step day-ahead (unified for all models)
 BATCH_SIZE        = 64
 MAX_EPOCHS        = 100
 LEARNING_RATE     = 3e-4

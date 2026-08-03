@@ -224,10 +224,19 @@ def run_rolling_window(market: str = "PJM"):
     print(f"\n    LGBM: Rolling {'improves' if lgbm_improvement > 0 else 'worsens'} MAE by {abs(lgbm_improvement):.1f}%")
     print(f"    XGB:  Rolling {'improves' if xgb_improvement > 0 else 'worsens'} MAE by {abs(xgb_improvement):.1f}%")
 
-    # Save
+    # Save aggregated metrics
     out_path = os.path.join(config.REPORT_DIR, f"table_rolling_window_{m}.csv")
     results_df.to_csv(out_path, index=False)
-    print(f"\n  ✅ Saved: {out_path}")
+    
+    # Save hourly point predictions for economic evaluation
+    pd.DataFrame({"predicted": all_r_lgbm.values}, index=all_r_lgbm.index).to_csv(
+        os.path.join(config.REPORT_DIR, f"rolling_lgbm_preds_{m}.csv")
+    )
+    pd.DataFrame({"predicted": all_r_xgb.values}, index=all_r_xgb.index).to_csv(
+        os.path.join(config.REPORT_DIR, f"rolling_xgb_preds_{m}.csv")
+    )
+    
+    print(f"\n  ✅ Saved: {out_path} and hourly predictions")
 
     return results_df
 

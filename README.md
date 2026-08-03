@@ -1,4 +1,4 @@
-# 🌲 Trees Still Beat Transformers for Day-Ahead Electricity Price Forecasting
+# Disentangling Architecture from Adaptation in Day-Ahead Electricity Price Forecasting
 
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://python.org)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
@@ -6,7 +6,7 @@
 [![Models: 18](https://img.shields.io/badge/Models-18%20configurations-purple.svg)](#3-model-suite-18-configurations)
 [![Markets: PJM + ERCOT](https://img.shields.io/badge/Markets-PJM%20%2B%20ERCOT-red.svg)](#2-dataset)
 
-> **Applied Energy (2026) — Under Review**
+> **Applied Energy (2026) — Revised and Resubmitted**
 >
 > An 18-configuration benchmark of gradient-boosted trees, deep learning architectures, and time-series foundation models for day-ahead electricity price forecasting across PJM and ERCOT (2019–2025), with conformal prediction, expanding-window retraining, and realistic economic simulation.
 

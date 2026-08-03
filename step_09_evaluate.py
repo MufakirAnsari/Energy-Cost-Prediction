@@ -538,6 +538,15 @@ def run_evaluation(market: str = "PJM"):
     if "SeasonalNaive" in predictions:
         point_strats["Seasonal Naive"] = pd.Series(predictions["SeasonalNaive"], index=y_index)
 
+    roll_lgbm_path = os.path.join(config.REPORT_DIR, f"rolling_lgbm_preds_{m}.csv")
+    if os.path.exists(roll_lgbm_path):
+        roll_df = pd.read_csv(roll_lgbm_path, index_col=0, parse_dates=True)
+        roll_df.index = pd.to_datetime(roll_df.index, utc=True)
+        idx_utc = y_index.tz_localize("UTC") if y_index.tz is None else y_index.tz_convert("UTC")
+        roll_df = roll_df.reindex(idx_utc)
+        roll_df.index = y_index
+        point_strats["Rolling LightGBM"] = roll_df["predicted"]
+
     interval_strats = {}
     if cqr_df is not None:
         interval_strats["Risk-Aware CQR"] = (

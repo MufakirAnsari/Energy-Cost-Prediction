@@ -106,8 +106,8 @@ def engineer_features(price: pd.DataFrame,
     for lag in config.TARGET_LAGS:
         df[f"price_lag_{lag}h"] = df["price"].shift(lag)
 
-    # ── Rolling statistics (shift=1 ensures no leakage) ─────────
-    price_shifted = df["price"].shift(1)
+    # ── Rolling statistics (shift=24 ensures day-ahead availability) ─────────
+    price_shifted = df["price"].shift(24)
     for window in config.ROLLING_WINDOWS:
         roll = price_shifted.rolling(window=window, min_periods=window // 2)
         df[f"price_rmean_{window}h"] = roll.mean()
@@ -118,15 +118,14 @@ def engineer_features(price: pd.DataFrame,
     # ── EIA exogenous features ───────────────────────────────────
     if not eia.empty:
         eia_aligned = eia.reindex(df.index).ffill().bfill()
-        # Lag EIA features by 1h (they're typically available 1h before delivery)
+        # Lag EIA features by 24h (simulate day-ahead availability)
         for col in eia_aligned.columns:
-            df[f"eia_{col}"] = eia_aligned[col].shift(1)
+            df[f"eia_{col}"] = eia_aligned[col].shift(24)
 
     # ── Gas price ────────────────────────────────────────────────
     if not gas.empty:
         gas_aligned = gas.reindex(df.index).ffill().bfill()
-        df["gas_price"] = gas_aligned["gas_price_mmBtu"].shift(1)
-        # Gas price lag 24h (published day-ahead)
+        # Gas price published day-ahead
         df["gas_price_lag_24h"] = gas_aligned["gas_price_mmBtu"].shift(24)
 
     # ── Weather features ─────────────────────────────────────────

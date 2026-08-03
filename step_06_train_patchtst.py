@@ -19,7 +19,8 @@ def to_nf(df):
     return pd.DataFrame({
         "unique_id": "price",
         "ds": pd.to_datetime(df.index, utc=True),
-        "y":  df[config.TARGET_COL].values,
+        # Variance Stabilizing Transformation to fix scale bias
+        "y":  np.arcsinh(df[config.TARGET_COL].values),
     })
 
 
@@ -82,9 +83,11 @@ def train_patchtst(market="PJM"):
     cv = nf.cross_validation(df=all_df, n_windows=n_windows, step_size=24)
     print(f"  CV:  {(time.time()-t0)/60:.1f} min | CV rows: {len(cv):,}")
 
-    # cv already contains 'y' (actual) — no positional slicing needed
+    # cv already contains 'y' (actual) - inverse transform VST
     pred_col = [c for c in cv.columns if "PatchTST" in c][0]
     out_df = cv[["ds", "y", pred_col]].rename(columns={"y": "actual", pred_col: "predicted"})
+    out_df["actual"] = np.sinh(out_df["actual"])
+    out_df["predicted"] = np.sinh(out_df["predicted"])
 
     mask = ~out_df["actual"].isna() & ~out_df["predicted"].isna()
     mae  = np.mean(np.abs(out_df.loc[mask, "actual"] - out_df.loc[mask, "predicted"]))

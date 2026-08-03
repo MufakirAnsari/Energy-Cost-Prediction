@@ -1,6 +1,7 @@
 Strategy,Total_PnL_$,Sharpe,Sortino,Max_Drawdown_$,Win_Rate_pct,Avg_Daily_PnL
-LightGBM,19416.53,15.748,42.409,-68.14,97.5,28.43
+LightGBM,19107.12,14.67,46.05,-72.13,93.7,27.98
 Seasonal Naive,13659.62,10.055,28.762,-236.37,81.0,20.0
-Risk-Aware CQR,1644.8,5.906,3.044,-52.42,18.7,2.41
-Risk-Aware Bayesian,881.27,5.286,7.287,-9.11,14.3,1.29
+Rolling LightGBM,19757.68,14.67,45.139,-67.71,93.4,28.93
+Risk-Aware CQR,2168.33,6.023,14.334,-10.33,18.2,3.17
+Risk-Aware Bayesian,632.46,4.444,4.955,-9.54,9.8,0.93
 Oracle,31601.79,19.446,inf,0.0,100.0,46.27

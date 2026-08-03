@@ -1,0 +1,8 @@
+Model,Training_Time_sec,Inference_Time_sec,Hardware,Rolling_24_Windows_min
+LightGBM,2.77,0.0929,CPU,1.1
+XGBoost,21.45,0.0626,CPU,8.6
+LEAR (LassoCV),0.18,0.0088,CPU,0.1
+Bayesian Bi-LSTM,1200.0,10.0,GPU (estimated),480.0
+PatchTST,450.0,5.0,GPU (estimated),180.0
+iTransformer,300.0,4.0,GPU (estimated),120.0
+Chronos-Bolt,1800.0,15.0,GPU (estimated),720.0

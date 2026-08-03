@@ -76,6 +76,12 @@ def load_and_scale_sequences(market: str, seq_len: int):
         config.PJM_VAL_PATH if market == "PJM" else config.ERCOT_VAL_PATH
     )
 
+    target_idx = list(tr_df.columns).index(config.TARGET_COL)
+    
+    # Variance Stabilizing Transformation (arcsinh) on target
+    tr_df.iloc[:, target_idx] = np.arcsinh(tr_df.iloc[:, target_idx])
+    v_df.iloc[:, target_idx]  = np.arcsinh(v_df.iloc[:, target_idx])
+
     # Fit scaler on TRAIN only (no leakage)
     arr_tr   = tr_df.values.astype(np.float32)
     col_min  = arr_tr.min(axis=0)
@@ -85,7 +91,6 @@ def load_and_scale_sequences(market: str, seq_len: int):
     def scale(df):
         return (df.values.astype(np.float32) - col_min) / denom
 
-    target_idx = list(tr_df.columns).index(config.TARGET_COL)
     n_features = tr_df.shape[1]
 
     def make_seqs(scaled):
@@ -266,6 +271,10 @@ def predict_on_test(model, market: str, scaler_stats, seq_len: int) -> pd.DataFr
     # Build test sequences using train+cal+val as history (chronologically continuous)
     history = pd.concat([tr_df, cal_df, v_df])
     all_data = pd.concat([history, te_df])
+    
+    # Apply VST to target column
+    all_data.iloc[:, target_idx] = np.arcsinh(all_data.iloc[:, target_idx].values)
+    
     scaled   = (all_data.values.astype(np.float32) - col_min) / denom
 
     n_hist = len(history)
@@ -290,23 +299,24 @@ def predict_on_test(model, market: str, scaler_stats, seq_len: int) -> pd.DataFr
         all_preds.append(mc)
     all_preds = np.concatenate(all_preds, axis=1)  # [MC_SAMPLES, n_test]
 
-    mean_s = all_preds.mean(axis=0)
-    std_s  = all_preds.std(axis=0)
-    q05_s  = np.percentile(all_preds, 5, axis=0)
-    q95_s  = np.percentile(all_preds, 95, axis=0)
-
-    # Inverse-scale to original units
+    # Inverse scale all MC samples (MinMax -> VST inverse)
     price_min   = col_min[target_idx]
     price_range = denom[target_idx]
+    
+    all_preds_inv = np.sinh(all_preds * price_range + price_min)
+    actual_inv    = np.sinh(y_te * price_range + price_min)
 
-    def inv(x): return x * price_range + price_min
+    mean_s = all_preds_inv.mean(axis=0)
+    std_s  = all_preds_inv.std(axis=0)
+    q05_s  = np.percentile(all_preds_inv, 5, axis=0)
+    q95_s  = np.percentile(all_preds_inv, 95, axis=0)
 
     results = pd.DataFrame({
-        "actual":    inv(y_te),
-        "mean_pred": inv(mean_s),
-        "std_pred":  std_s * price_range,
-        "q05":       inv(q05_s),
-        "q95":       inv(q95_s),
+        "actual":    actual_inv,
+        "mean_pred": mean_s,
+        "std_pred":  std_s,
+        "q05":       q05_s,
+        "q95":       q95_s,
     }, index=te_df.index[-n_test:])
 
     mask = ~np.isnan(results["actual"])

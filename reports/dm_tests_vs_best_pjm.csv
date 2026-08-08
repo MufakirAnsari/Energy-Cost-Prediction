@@ -2,13 +2,16 @@ Model,MAE,DM_stat,p_value,sig_p05,BH_reject
 SeasonalNaive,14.4488,19.7393,0.0,True,True
 AutoARIMA,12.762,19.1148,0.0,True,True
 MSTL,14.3998,24.5387,0.0,True,True
-LightGBM,7.7103,15.648,0.0,True,True
-XGBoost,7.904,16.0285,0.0,True,True
+LightGBM (static),7.7103,15.648,0.0,True,True
+XGBoost (static),7.904,16.0285,0.0,True,True
 PatchTST,6.5219,12.8004,0.0,True,True
 iTransformer,7.1217,16.7012,0.0,True,True
 N-HiTS,6.7097,13.4662,0.0,True,True
 BiTCN,8.0196,15.6964,0.0,True,True
 TFT,8.0073,21.0202,0.0,True,True
-Chronos-Bolt,7.0174,15.8426,0.0,True,True
+Chronos-Bolt (v1),7.0174,15.8426,0.0,True,True
+Chronos-Base+Cov,7.3002,13.8566,0.0,True,True
 QRF,8.0696,15.2709,0.0,True,True
-Ensemble,8.9436,13.9793,0.0,True,True
+Ensemble,6.2118,10.1634,0.0,True,True
+LightGBM (rolling),6.7026,14.178,0.0,True,True
+XGBoost (rolling),6.7877,14.1642,0.0,True,True

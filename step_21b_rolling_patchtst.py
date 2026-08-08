@@ -60,6 +60,18 @@ def run_rolling_patchtst(market: str = "PJM"):
     
     # Load static model predictions if available
     m = market.lower()
+    out_path = os.path.join(config.REPORT_DIR, f"table_rolling_patchtst_{m}.csv")
+    
+    completed_months = set()
+    if os.path.exists(out_path):
+        try:
+            existing_df = pd.read_csv(out_path)
+            for _, row in existing_df.iterrows():
+                completed_months.add(row['Month'])
+            results = existing_df.to_dict('records')
+        except Exception:
+            pass
+
     static_preds_path = os.path.join(config.REPORT_DIR, f"patchtst_preds_{m}.csv")
     static_preds = None
     if os.path.exists(static_preds_path):
@@ -71,6 +83,11 @@ def run_rolling_patchtst(market: str = "PJM"):
     t0 = time.time()
     
     for i, month_start in enumerate(months):
+        month_str = month_start.strftime("%Y-%m")
+        if month_str in completed_months:
+            print(f"  [{i+1:2d}/{len(months)}] {month_str} already processed, skipping.")
+            continue
+            
         if month_start.month == 12:
             month_end = pd.Timestamp(f"{month_start.year + 1}-01-01", tz="UTC")
         else:
@@ -87,29 +104,34 @@ def run_rolling_patchtst(market: str = "PJM"):
         # Prepare NF dataframe for training
         nf_train = to_nf(train_data)
         
-        # Train fresh model for this window (using 1000 steps instead of 1500 for speed in rolling)
-        model = PatchTST(
-            h=24,
-            input_size=config.SEQ_LEN_DEFAULT,
-            patch_len=24,
-            stride=12,
-            hidden_size=64,
-            linear_hidden_size=128,
-            n_heads=4,
-            encoder_layers=2,
-            dropout=0.2,
-            head_dropout=0.1,
-            learning_rate=config.LEARNING_RATE,
-            max_steps=1000,
-            batch_size=config.BATCH_SIZE,
-            loss=MAE(),
-            valid_loss=MAE(),
-            val_monitor="train_loss",
-            scaler_type="standard",
-            random_seed=config.RANDOM_SEED,
-        )
-        
-        nf = NeuralForecast(models=[model], freq="h")
+        # Warm-start from static pre-trained model to prevent degradation
+        model_dir = os.path.join(config.MODEL_DIR, f"patchtst_{market.lower()}")
+        if os.path.exists(model_dir):
+            nf = NeuralForecast.load(model_dir)
+            # PatchTST in NeuralForecast allows continuing training if we call fit again.
+            # We don't override max_steps to avoid breaking Lightning internals.
+        else:
+            model = PatchTST(
+                h=24,
+                input_size=config.SEQ_LEN_DEFAULT,
+                patch_len=24,
+                stride=12,
+                hidden_size=64,
+                linear_hidden_size=128,
+                n_heads=4,
+                encoder_layers=2,
+                dropout=0.2,
+                head_dropout=0.1,
+                learning_rate=config.LEARNING_RATE,
+                max_steps=1000,
+                batch_size=config.BATCH_SIZE,
+                loss=MAE(),
+                valid_loss=MAE(),
+                val_monitor="train_loss",
+                scaler_type="standard",
+                random_seed=config.RANDOM_SEED,
+            )
+            nf = NeuralForecast(models=[model], freq="h")
         
         # Temporarily suppress NF output to keep logs clean
         nf.fit(df=nf_train, val_size=val_size)
@@ -152,13 +174,14 @@ def run_rolling_patchtst(market: str = "PJM"):
         
         row = {
             "Market": market,
-            "Month": month_start.strftime("%Y-%m"),
+            "Month": month_str,
             "Rolling_PatchTST_MAE": round(mae, 4),
             "Rolling_PatchTST_RMSE": round(rmse, 4),
             "Static_PatchTST_MAE": round(static_mae, 4),
             "Static_PatchTST_RMSE": round(static_rmse, 4),
         }
         results.append(row)
+        pd.DataFrame(results).to_csv(out_path, index=False)
         
         elapsed = time.time() - t0
         print(f"  [{i+1:2d}/{len(months)}] {row['Month']} | "
@@ -166,8 +189,6 @@ def run_rolling_patchtst(market: str = "PJM"):
               f"MAE: {mae:.2f} (roll) vs {static_mae:.2f} (static) | {elapsed:.0f}s")
               
     results_df = pd.DataFrame(results)
-    out_path = os.path.join(config.REPORT_DIR, f"table_rolling_patchtst_{m}.csv")
-    results_df.to_csv(out_path, index=False)
     print(f"\n  ✅ Saved: {out_path}")
     
     return results_df

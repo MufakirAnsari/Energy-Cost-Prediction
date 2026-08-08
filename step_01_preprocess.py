@@ -249,6 +249,7 @@ def leak_proof_impute(train: pd.DataFrame,
 # ─────────────────────────────────────────────────────────────────────────────
 
 def select_features_shap(train: pd.DataFrame,
+                         market: str,
                          top_n: int = config.SHAP_TOP_N_FEATURES,
                          target_col: str = "price") -> list:
     """
@@ -284,7 +285,7 @@ def select_features_shap(train: pd.DataFrame,
     print(f"  Top-5 features by SHAP: {top_features[:5]}")
 
     # Save SHAP importance for figure generation
-    shap_path = os.path.join(config.REPORT_DIR, "shap_importance.csv")
+    shap_path = os.path.join(config.REPORT_DIR, f"shap_importance_{market.lower()}.csv")
     mean_abs_shap.to_csv(shap_path)
     print(f"  SHAP importances saved to: {shap_path}")
 
@@ -336,7 +337,7 @@ def run_preprocessing(market: str = "PJM"):
     )
 
     # SHAP feature selection (on train only)
-    selected_cols = select_features_shap(train, top_n=config.SHAP_TOP_N_FEATURES)
+    selected_cols = select_features_shap(train, market=market, top_n=config.SHAP_TOP_N_FEATURES)
     train = train[selected_cols]
     cal   = cal[selected_cols]
     val   = val[selected_cols]

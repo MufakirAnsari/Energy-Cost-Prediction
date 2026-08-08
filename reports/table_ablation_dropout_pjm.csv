@@ -1,5 +1,5 @@
 Ablation,config,ECE
-Dropout Rate,dropout=0.1,0.1404
-Dropout Rate,dropout=0.2,0.127
-Dropout Rate,dropout=0.3,0.1012
-Dropout Rate,dropout=0.4,0.0758
+Dropout Rate,dropout=0.1,0.0362666666666666
+Dropout Rate,dropout=0.2,0.023
+Dropout Rate,dropout=0.3,0.0894
+Dropout Rate,dropout=0.4,0.0692

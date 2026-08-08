@@ -86,8 +86,11 @@ def get_bilstm_preds(market: str, split_df: pd.DataFrame,
         denom      = scaler_max - scaler_min
         denom[denom == 0] = 1.0
 
-        scaled     = (split_df.values.astype(np.float32) - scaler_min) / denom
         target_idx = meta["target_idx"]
+        raw_vals   = split_df.values.astype(np.float32).copy()
+        raw_vals[:, target_idx] = np.arcsinh(raw_vals[:, target_idx])
+
+        scaled     = (raw_vals - scaler_min) / denom
 
         X = []
         for i in range(seq_len, len(scaled)):
@@ -106,8 +109,8 @@ def get_bilstm_preds(market: str, split_df: pd.DataFrame,
             chunks.append(np.array(out).flatten())
         preds_scaled = np.concatenate(chunks)
 
-        # Inverse scale
-        preds = preds_scaled * denom[target_idx] + scaler_min[target_idx]
+        # Inverse scale (MinMax -> VST inverse)
+        preds = np.sinh(preds_scaled * denom[target_idx] + scaler_min[target_idx])
 
         # Pad first seq_len rows with NaN
         full_preds = np.full(len(split_df), np.nan)
@@ -252,18 +255,26 @@ def run_ensemble(market: str = "PJM"):
 
     # ── Predict on test ───────────────────────────────────────────
     ensemble_preds = np.full(len(test_df), np.nan)
+    ensemble_mean = np.full(len(test_df), np.nan)
+    ensemble_median = np.full(len(test_df), np.nan)
     if test_mask.sum() > 0:
-        ensemble_preds[test_mask] = meta_model.predict(
-            X_test_meta.values[test_mask]
-        )
+        test_vals = X_test_meta.values[test_mask]
+        ensemble_preds[test_mask] = meta_model.predict(test_vals)
+        ensemble_mean[test_mask] = np.mean(test_vals, axis=1)
+        ensemble_median[test_mask] = np.median(test_vals, axis=1)
 
     # ── Evaluate ──────────────────────────────────────────────────
     eval_mask = ~np.isnan(y_test) & ~np.isnan(ensemble_preds)
     mae  = np.mean(np.abs(y_test[eval_mask] - ensemble_preds[eval_mask]))
     rmse = np.sqrt(np.mean((y_test[eval_mask] - ensemble_preds[eval_mask])**2))
+    
+    mae_mean = np.mean(np.abs(y_test[eval_mask] - ensemble_mean[eval_mask]))
+    mae_median = np.mean(np.abs(y_test[eval_mask] - ensemble_median[eval_mask]))
 
     print(f"\n  Ensemble Test Results ({market}):")
-    print(f"    Ensemble  MAE={mae:.4f}  RMSE={rmse:.4f}")
+    print(f"    Ensemble (Stack)  MAE={mae:.4f}  RMSE={rmse:.4f}")
+    print(f"    Ensemble (Mean)   MAE={mae_mean:.4f}")
+    print(f"    Ensemble (Median) MAE={mae_median:.4f}")
     for col in cal_feats:
         p = test_feats.get(col)
         if p is not None:
@@ -275,6 +286,8 @@ def run_ensemble(market: str = "PJM"):
     results = pd.DataFrame({
         "actual":   y_test,
         "ensemble": ensemble_preds,
+        "ensemble_mean": ensemble_mean,
+        "ensemble_median": ensemble_median,
         **{c: test_feats.get(c, [np.nan]*len(test_df)) for c in cal_feats}
     }, index=test_df.index)
 

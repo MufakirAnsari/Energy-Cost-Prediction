@@ -1,92 +1,137 @@
 Model_A,Model_B,DM_stat,p_value,BH_reject_5pct,significant
 SeasonalNaive,AutoARIMA,4.2734,1.9e-05,True,True
 SeasonalNaive,MSTL,0.1297,0.896779,False,False
-SeasonalNaive,LightGBM,14.5835,0.0,True,True
-SeasonalNaive,XGBoost,14.2916,0.0,True,True
+SeasonalNaive,LightGBM (static),14.5835,0.0,True,True
+SeasonalNaive,XGBoost (static),14.2916,0.0,True,True
 SeasonalNaive,PatchTST,16.2812,0.0,True,True
 SeasonalNaive,iTransformer,15.8669,0.0,True,True
 SeasonalNaive,N-HiTS,16.3319,0.0,True,True
 SeasonalNaive,BiTCN,14.4498,0.0,True,True
 SeasonalNaive,TFT,13.3095,0.0,True,True
-SeasonalNaive,Chronos-Bolt,15.0165,0.0,True,True
+SeasonalNaive,Chronos-Bolt (v1),15.0165,0.0,True,True
+SeasonalNaive,Chronos-Base+Cov,13.6875,0.0,True,True
 SeasonalNaive,QRF,14.3045,0.0,True,True
 SeasonalNaive,BiLSTM,19.7393,0.0,True,True
-SeasonalNaive,Ensemble,10.7636,0.0,True,True
+SeasonalNaive,Ensemble,16.3693,0.0,True,True
+SeasonalNaive,LightGBM (rolling),16.1493,0.0,True,True
+SeasonalNaive,XGBoost (rolling),16.2551,0.0,True,True
 AutoARIMA,MSTL,-7.6905,0.0,True,True
-AutoARIMA,LightGBM,12.7119,0.0,True,True
-AutoARIMA,XGBoost,12.2269,0.0,True,True
+AutoARIMA,LightGBM (static),12.7119,0.0,True,True
+AutoARIMA,XGBoost (static),12.2269,0.0,True,True
 AutoARIMA,PatchTST,14.9853,0.0,True,True
 AutoARIMA,iTransformer,14.1255,0.0,True,True
 AutoARIMA,N-HiTS,15.2633,0.0,True,True
 AutoARIMA,BiTCN,12.6324,0.0,True,True
 AutoARIMA,TFT,12.0269,0.0,True,True
-AutoARIMA,Chronos-Bolt,13.5387,0.0,True,True
+AutoARIMA,Chronos-Bolt (v1),13.5387,0.0,True,True
+AutoARIMA,Chronos-Base+Cov,12.237,0.0,True,True
 AutoARIMA,QRF,12.1471,0.0,True,True
 AutoARIMA,BiLSTM,19.1148,0.0,True,True
-AutoARIMA,Ensemble,8.0483,0.0,True,True
-MSTL,LightGBM,17.9003,0.0,True,True
-MSTL,XGBoost,17.4254,0.0,True,True
+AutoARIMA,Ensemble,15.3082,0.0,True,True
+AutoARIMA,LightGBM (rolling),14.6276,0.0,True,True
+AutoARIMA,XGBoost (rolling),14.7167,0.0,True,True
+MSTL,LightGBM (static),17.9003,0.0,True,True
+MSTL,XGBoost (static),17.4254,0.0,True,True
 MSTL,PatchTST,20.1769,0.0,True,True
 MSTL,iTransformer,19.5157,0.0,True,True
 MSTL,N-HiTS,20.5365,0.0,True,True
 MSTL,BiTCN,17.8534,0.0,True,True
 MSTL,TFT,17.2899,0.0,True,True
-MSTL,Chronos-Bolt,18.4825,0.0,True,True
+MSTL,Chronos-Bolt (v1),18.4825,0.0,True,True
+MSTL,Chronos-Base+Cov,16.5929,0.0,True,True
 MSTL,QRF,17.5207,0.0,True,True
 MSTL,BiLSTM,24.5387,0.0,True,True
-MSTL,Ensemble,12.1028,0.0,True,True
-LightGBM,XGBoost,-3.5294,0.000418,True,True
-LightGBM,PatchTST,6.2461,0.0,True,True
-LightGBM,iTransformer,3.5149,0.000441,True,True
-LightGBM,N-HiTS,5.4107,0.0,True,True
-LightGBM,BiTCN,-1.8107,0.070198,False,False
-LightGBM,TFT,-1.5884,0.112204,False,False
-LightGBM,Chronos-Bolt,3.1675,0.00154,True,True
-LightGBM,QRF,-4.061,4.9e-05,True,True
-LightGBM,BiLSTM,15.648,0.0,True,True
-LightGBM,Ensemble,-3.7838,0.000155,True,True
-XGBoost,PatchTST,7.2597,0.0,True,True
-XGBoost,iTransformer,4.6655,3e-06,True,True
-XGBoost,N-HiTS,6.4167,0.0,True,True
-XGBoost,BiTCN,-0.6894,0.490567,False,False
-XGBoost,TFT,-0.5562,0.57808,False,False
-XGBoost,Chronos-Bolt,4.0623,4.9e-05,True,True
-XGBoost,QRF,-2.3577,0.018401,True,True
-XGBoost,BiLSTM,16.0285,0.0,True,True
-XGBoost,Ensemble,-3.1936,0.001408,True,True
+MSTL,Ensemble,20.1571,0.0,True,True
+MSTL,LightGBM (rolling),19.6344,0.0,True,True
+MSTL,XGBoost (rolling),19.8987,0.0,True,True
+LightGBM (static),XGBoost (static),-3.5294,0.000418,True,True
+LightGBM (static),PatchTST,6.2461,0.0,True,True
+LightGBM (static),iTransformer,3.5149,0.000441,True,True
+LightGBM (static),N-HiTS,5.4107,0.0,True,True
+LightGBM (static),BiTCN,-1.8107,0.070198,False,False
+LightGBM (static),TFT,-1.5884,0.112204,False,False
+LightGBM (static),Chronos-Bolt (v1),3.1675,0.00154,True,True
+LightGBM (static),Chronos-Base+Cov,1.5665,0.117246,False,False
+LightGBM (static),QRF,-4.061,4.9e-05,True,True
+LightGBM (static),BiLSTM,15.648,0.0,True,True
+LightGBM (static),Ensemble,7.3987,0.0,True,True
+LightGBM (static),LightGBM (rolling),8.2572,0.0,True,True
+LightGBM (static),XGBoost (rolling),9.1894,0.0,True,True
+XGBoost (static),PatchTST,7.2597,0.0,True,True
+XGBoost (static),iTransformer,4.6655,3e-06,True,True
+XGBoost (static),N-HiTS,6.4167,0.0,True,True
+XGBoost (static),BiTCN,-0.6894,0.490567,False,False
+XGBoost (static),TFT,-0.5562,0.57808,False,False
+XGBoost (static),Chronos-Bolt (v1),4.0623,4.9e-05,True,True
+XGBoost (static),Chronos-Base+Cov,2.2908,0.021988,True,True
+XGBoost (static),QRF,-2.3577,0.018401,True,True
+XGBoost (static),BiLSTM,16.0285,0.0,True,True
+XGBoost (static),Ensemble,8.1393,0.0,True,True
+XGBoost (static),LightGBM (rolling),9.2212,0.0,True,True
+XGBoost (static),XGBoost (rolling),10.6549,0.0,True,True
 PatchTST,iTransformer,-6.9686,0.0,True,True
 PatchTST,N-HiTS,-1.9003,0.057412,False,False
 PatchTST,BiTCN,-8.2296,0.0,True,True
 PatchTST,TFT,-11.5988,0.0,True,True
-PatchTST,Chronos-Bolt,-4.1377,3.5e-05,True,True
+PatchTST,Chronos-Bolt (v1),-4.1377,3.5e-05,True,True
+PatchTST,Chronos-Base+Cov,-4.3673,1.3e-05,True,True
 PatchTST,QRF,-7.8144,0.0,True,True
 PatchTST,BiLSTM,12.8004,0.0,True,True
-PatchTST,Ensemble,-7.7019,0.0,True,True
+PatchTST,Ensemble,1.7779,0.075442,False,False
+PatchTST,LightGBM (rolling),-1.4066,0.159577,False,False
+PatchTST,XGBoost (rolling),-2.0029,0.045202,False,True
 iTransformer,N-HiTS,3.852,0.000118,True,True
 iTransformer,BiTCN,-5.7101,0.0,True,True
 iTransformer,TFT,-7.0854,0.0,True,True
-iTransformer,Chronos-Bolt,0.8594,0.39015,False,False
+iTransformer,Chronos-Bolt (v1),0.8594,0.39015,False,False
+iTransformer,Chronos-Base+Cov,-0.9998,0.317435,False,False
 iTransformer,QRF,-5.5195,0.0,True,True
 iTransformer,BiLSTM,16.7012,0.0,True,True
-iTransformer,Ensemble,-5.9983,0.0,True,True
+iTransformer,Ensemble,4.992,1e-06,True,True
+iTransformer,LightGBM (rolling),3.3151,0.000918,True,True
+iTransformer,XGBoost (rolling),2.7097,0.006742,True,True
 N-HiTS,BiTCN,-9.2374,0.0,True,True
 N-HiTS,TFT,-8.9556,0.0,True,True
-N-HiTS,Chronos-Bolt,-2.1412,0.032273,True,True
+N-HiTS,Chronos-Bolt (v1),-2.1412,0.032273,True,True
+N-HiTS,Chronos-Base+Cov,-3.1655,0.001551,True,True
 N-HiTS,QRF,-7.1617,0.0,True,True
 N-HiTS,BiLSTM,13.4662,0.0,True,True
-N-HiTS,Ensemble,-7.1839,0.0,True,True
+N-HiTS,Ensemble,2.7567,0.005844,True,True
+N-HiTS,LightGBM (rolling),0.0624,0.95027,False,False
+N-HiTS,XGBoost (rolling),-0.5068,0.612329,False,False
 BiTCN,TFT,0.064,0.949006,False,False
-BiTCN,Chronos-Bolt,4.6746,3e-06,True,True
+BiTCN,Chronos-Bolt (v1),4.6746,3e-06,True,True
+BiTCN,Chronos-Base+Cov,2.9781,0.002904,True,True
 BiTCN,QRF,-0.3221,0.747389,False,False
 BiTCN,BiLSTM,15.6964,0.0,True,True
-BiTCN,Ensemble,-2.7965,0.005171,True,True
-TFT,Chronos-Bolt,6.9066,0.0,True,True
+BiTCN,Ensemble,7.938,0.0,True,True
+BiTCN,LightGBM (rolling),7.1157,0.0,True,True
+BiTCN,XGBoost (rolling),7.3032,0.0,True,True
+TFT,Chronos-Bolt (v1),6.9066,0.0,True,True
+TFT,Chronos-Base+Cov,3.5928,0.000328,True,True
 TFT,QRF,-0.3233,0.746448,False,False
 TFT,BiLSTM,21.0202,0.0,True,True
-TFT,Ensemble,-2.954,0.003141,True,True
-Chronos-Bolt,QRF,-4.5341,6e-06,True,True
-Chronos-Bolt,BiLSTM,15.8426,0.0,True,True
-Chronos-Bolt,Ensemble,-6.3499,0.0,True,True
+TFT,Ensemble,9.8605,0.0,True,True
+TFT,LightGBM (rolling),8.7779,0.0,True,True
+TFT,XGBoost (rolling),8.2159,0.0,True,True
+Chronos-Bolt (v1),Chronos-Base+Cov,-1.9497,0.051226,False,False
+Chronos-Bolt (v1),QRF,-4.5341,6e-06,True,True
+Chronos-Bolt (v1),BiLSTM,15.8426,0.0,True,True
+Chronos-Bolt (v1),Ensemble,4.3689,1.3e-05,True,True
+Chronos-Bolt (v1),LightGBM (rolling),1.9929,0.04629,False,True
+Chronos-Bolt (v1),XGBoost (rolling),1.3861,0.165734,False,False
+Chronos-Base+Cov,QRF,-2.7793,0.005454,True,True
+Chronos-Base+Cov,BiLSTM,13.8566,0.0,True,True
+Chronos-Base+Cov,Ensemble,4.8653,1e-06,True,True
+Chronos-Base+Cov,LightGBM (rolling),2.9624,0.003056,True,True
+Chronos-Base+Cov,XGBoost (rolling),2.4241,0.015355,True,True
 QRF,BiLSTM,15.2709,0.0,True,True
-QRF,Ensemble,-2.5922,0.009543,True,True
-BiLSTM,Ensemble,-13.9793,0.0,True,True
+QRF,Ensemble,8.3339,0.0,True,True
+QRF,LightGBM (rolling),8.9037,0.0,True,True
+QRF,XGBoost (rolling),10.0226,0.0,True,True
+BiLSTM,Ensemble,-10.1634,0.0,True,True
+BiLSTM,LightGBM (rolling),-14.178,0.0,True,True
+BiLSTM,XGBoost (rolling),-14.1642,0.0,True,True
+Ensemble,LightGBM (rolling),-2.9526,0.003155,True,True
+Ensemble,XGBoost (rolling),-3.3379,0.000846,True,True
+LightGBM (rolling),XGBoost (rolling),-2.0558,0.039816,True,True

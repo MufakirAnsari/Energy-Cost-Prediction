@@ -149,8 +149,8 @@ def draw_coverage_gauges(ax_sub):
 
     # Draw gauges for CQR and QRF
     for i, (label, picp, target, color) in enumerate([
-        ("CQR", 82.6, 90, C["red"]),
-        ("QRF", 91.2, 90, C["green"]),
+        ("CQR", 80.1, 90, C["red"]),
+        ("QRF", 90.2, 90, C["green"]),
     ]):
         cx = -0.7 + i * 1.4
         # Background arc
@@ -247,11 +247,11 @@ def create_graphical_abstract():
     # ══════════════════════════════════════════════════════════
     draw_gradient_header(ax, (0.3, 8.0), 15.4, 0.85,
                          "#1E40AF", "#7C3AED",
-                         "Trees Still Beat Transformers for Day-Ahead Electricity Price Forecasting",
-                         fontsize=16)
+                         "Disentangling Architecture, Strategy, and Adaptation in Day-Ahead Electricity Price Forecasting",
+                         fontsize=13)
 
     # Subtitle / Authors
-    ax.text(8.0, 7.65, "M. Q. Ansari & M. Q. Ansari  •  PJM & ERCOT  •  2019–2025  •  18 Models  •  Applied Energy",
+    ax.text(8.0, 7.65, "M. Q. Ansari & M. Q. Ansari  •  PJM & ERCOT  •  2019–2025  •  19 Models  •  Applied Energy",
             ha="center", va="center", fontsize=8, color=C["text_dim"], zorder=15)
 
     # ══════════════════════════════════════════════════════════
@@ -267,8 +267,8 @@ def create_graphical_abstract():
             "icon": "◆"
         },
         {
-            "x": 4.15, "title": "18 CONFIGURATIONS", "color": C["orange"],
-            "items": ["3 Trees · 6 DL · 2 Foundation", "Chronos-Bolt v1 & v2+Cov", "Rolling retraining (24 mo)"],
+            "x": 4.15, "title": "19 CONFIGURATIONS", "color": C["orange"],
+            "items": ["4 Stat · 3 Trees · 6 DL · 2 FM", "Chronos-Bolt v1 & v2+Cov", "Rolling retraining (24 mo)"],
             "icon": "◆"
         },
         {
@@ -323,21 +323,21 @@ def create_graphical_abstract():
 
     # ── Finding 1: MAE Bar Chart ──
     draw_rounded_rect(ax, (0.4, 2.85), 3.75, 2.75, r=0.15,
-                     fc=C["bg_card"], ec=C["green"], lw=1.0, alpha=0.9, zorder=5)
+                     fc=C["bg_card"], ec=C["blue"], lw=1.0, alpha=0.9, zorder=5)
 
-    draw_section_label(ax, 0.7, 5.3, "●", "Trees Dominate", C["green"])
+    draw_section_label(ax, 0.7, 5.3, "●", "BiLSTM Dominates", C["blue"])
 
     # Embedded bar chart — raised and shortened to avoid overlapping stat text
     ax_bar = fig.add_axes([0.04, 0.40, 0.2, 0.21])  # [left, bottom, width, height]
 
-    mae_data = [3.05, 3.48, 4.84, 6.69, 7.02, 7.47]
-    mae_labels = ["LGBM (rolling)", "Chronos+Cov", "BiLSTM", "PatchTST", "Chronos v1", "iTransformer"]
-    mae_colors = [C["green"], C["orange"], C["blue"], C["blue"], C["orange"], C["blue"]]
+    mae_data = [4.57, 6.69, 6.69, 7.30, 7.47, 7.71]
+    mae_labels = ["BiLSTM", "LGBM (rolling)", "PatchTST", "Chronos+Cov", "iTransformer", "LGBM (static)"]
+    mae_colors = [C["blue"], C["green"], C["blue"], C["orange"], C["blue"], C["green"]]
 
     draw_mini_bar_chart(ax_bar, mae_data, mae_colors, mae_labels, r"MAE (\$/MWh) — PJM")
 
     # Stats below chart — lowered to y=3.10 for clearance
-    draw_stat_box(ax, 2.27, 3.10, "3.05", r"MAE \$/MWh (PJM)", C["green"], fontsize_val=16)
+    draw_stat_box(ax, 2.27, 3.10, "4.57", r"MAE \$/MWh (PJM)", C["blue"], fontsize_val=16)
 
     # ── Finding 2: Feature Engineering > Architecture ──
     draw_rounded_rect(ax, (4.45, 2.85), 3.45, 2.75, r=0.15,
@@ -356,15 +356,15 @@ def create_graphical_abstract():
 
     ax.text(6.17, 4.1, "Adding Covariates", ha="center", va="center",
             fontsize=6.5, color=C["text_dim"], zorder=15)
-    ax.text(6.17, 3.8, "v2 → v2+Cov:  −49%", ha="center", va="center",
-            fontsize=11, fontweight="bold", color=C["orange"], zorder=15)
+    ax.text(6.17, 3.8, "v2 → v2+Cov:  +6.5%", ha="center", va="center",
+            fontsize=11, fontweight="bold", color=C["red"], zorder=15)
 
     # Arrow emphasis
     ax.annotate("", xy=(6.17, 3.45), xytext=(6.17, 3.6),
-                arrowprops=dict(arrowstyle="-|>", color=C["orange"], lw=2, mutation_scale=15),
+                arrowprops=dict(arrowstyle="-|>", color=C["red"], lw=2, mutation_scale=15),
                 zorder=10)
-    ax.text(6.17, 3.2, r"6.85 → 3.48 \$/MWh", ha="center", va="center",
-            fontsize=8, fontweight="bold", color=C["yellow"], zorder=15)
+    ax.text(6.17, 3.2, r"6.85 → 7.30 \$/MWh", ha="center", va="center",
+            fontsize=8, fontweight="bold", color=C["red"], zorder=15)
 
     # ── Finding 3: PnL Trajectory ──
     draw_rounded_rect(ax, (8.2, 2.85), 3.55, 2.75, r=0.15,
@@ -377,9 +377,9 @@ def create_graphical_abstract():
     draw_pnl_sparklines(ax_pnl)
 
     # Key stats — placed below the chart
-    ax.text(9.97, 3.15, r"\$19,417", ha="center", va="center",
+    ax.text(9.97, 3.15, r"\$19,107", ha="center", va="center",
             fontsize=14, fontweight="bold", color=C["yellow"], zorder=15)
-    ax.text(9.97, 2.93, "PnL  •  Sharpe 15.75  •  97.5% Win", ha="center", va="center",
+    ax.text(9.97, 2.93, "LGBM PnL  •  Sharpe 14.67  •  93.7% Win", ha="center", va="center",
             fontsize=7, color=C["text_dim"], zorder=15)
 
     # ── Finding 4: UQ / Coverage Gauges ──
@@ -387,7 +387,7 @@ def create_graphical_abstract():
                      fc=C["bg_card"], ec=C["red"], lw=1.0, alpha=0.9, zorder=5)
 
     draw_section_label(ax, 12.35, 5.3, "●", "Conformal Failure", C["red"])
-    ax.text(13.82, 5.05, "Prediction Interval Coverage (PJM)", ha="center", va="center",
+    ax.text(13.82, 5.05, "Prediction Interval Coverage (ERCOT)", ha="center", va="center",
             fontsize=7, color=C["text_dim"], zorder=15)
 
     # Embedded gauge — shifted down for clearance from label
@@ -408,22 +408,22 @@ def create_graphical_abstract():
 
     # Main conclusion
     ax.text(8.0, 2.05,
-            r"Rolling LightGBM:  MAE = 3.05 \$/MWh (PJM)  │  2.58 \$/MWh (ERCOT)",
+            r"Static BiLSTM:  MAE = 4.57 \$/MWh (PJM)  │  3.64 \$/MWh (ERCOT)",
             ha="center", va="center", fontsize=15, fontweight="bold",
             color=C["white"], zorder=15,
             path_effects=[pe.withStroke(linewidth=2, foreground="#00000055")])
 
     ax.text(8.0, 1.6,
-            "Outperforming 17 alternatives including Chronos-2, PatchTST, iTransformer & TFT  │  p < 0.01 (DM + BH)",
+            "Outperforming all 17 alternatives including Rolling LightGBM, Chronos-Bolt & PatchTST  │  p < 0.01 (DM + BH)",
             ha="center", va="center", fontsize=9, color=C["text_mid"], zorder=15)
 
     # 4 stat pills across the bottom
     pill_y = 0.95
     pill_data = [
-        ("24.1%", "Retraining gain", C["green"]),
-        ("49%", "Covariate gain", C["orange"]),
-        (r"\$19,417", "Trading PnL", C["yellow"]),
-        ("91.2%", "QRF coverage", C["purple"]),
+        ("-41%", "BiLSTM advantage", C["blue"]),
+        ("-6.5%", "Covariate gain", C["orange"]),
+        (r"\$19,107", "Trading PnL (LGBM)", C["yellow"]),
+        ("90.2%", "QRF coverage", C["purple"]),
     ]
 
     pill_positions = [2.3, 5.8, 9.8, 13.5]

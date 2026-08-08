@@ -76,7 +76,8 @@ def run_single_window(market, current_month_str):
         return model
 
     df = load_and_combine_data(market)
-    features_cols = [c for c in df.columns if c not in ['datetime', config.TARGET_COL]]
+    features_cols = [c for c in df.columns if c != 'datetime']
+    target_idx = features_cols.index(config.TARGET_COL)
     
     current_month = pd.Timestamp(current_month_str)
     next_month = current_month + relativedelta(months=1)
@@ -90,11 +91,15 @@ def run_single_window(market, current_month_str):
     if len(train_df) == 0:
         return json.dumps({"error": "No training data"})
         
-    X_train_raw = train_df[features_cols].values
-    y_train_raw = train_df[config.TARGET_COL].values
+    X_train_raw = train_df[features_cols].values.astype(np.float32)
+    y_train_raw = train_df[config.TARGET_COL].values.astype(np.float32)
     
-    X_full_raw = full_df[features_cols].values
-    y_full_raw = full_df[config.TARGET_COL].values
+    X_full_raw = full_df[features_cols].values.astype(np.float32)
+    y_full_raw = full_df[config.TARGET_COL].values.astype(np.float32)
+    
+    # Apply arcsinh to the target column in X
+    X_train_raw[:, target_idx] = np.arcsinh(X_train_raw[:, target_idx])
+    X_full_raw[:, target_idx] = np.arcsinh(X_full_raw[:, target_idx])
     
     y_train_arcsinh = np.arcsinh(y_train_raw)
     y_full_arcsinh = np.arcsinh(y_full_raw)
@@ -127,7 +132,14 @@ def run_single_window(market, current_month_str):
     X_t, y_t = X_train_seq[:val_split_idx], y_train_seq[:val_split_idx]
     X_v, y_v = X_train_seq[val_split_idx:], y_train_seq[val_split_idx:]
     
-    model = build_bilstm_model(lookback, len(features_cols))
+    model_path = os.path.join(config.MODEL_DIR, f"bilstm_{market.lower()}.keras")
+    if os.path.exists(model_path):
+        model = tf.keras.models.load_model(model_path)
+        # Fine-tune with a smaller learning rate
+        model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=config.LEARNING_RATE * 0.1), loss='mae')
+    else:
+        model = build_bilstm_model(lookback, len(features_cols))
+        
     es = EarlyStopping(monitor='val_loss', patience=10, restore_best_weights=True)
     
     model.fit(X_t, y_t, validation_data=(X_v, y_v), epochs=30, batch_size=config.BATCH_SIZE, callbacks=[es], verbose=0)
@@ -159,6 +171,19 @@ def main():
     # Controller mode
     results = []
     
+    os.makedirs(config.REPORT_DIR, exist_ok=True)
+    out_path = os.path.join(config.REPORT_DIR, 'rolling_bilstm_results.csv')
+    
+    completed_runs = set()
+    if os.path.exists(out_path):
+        try:
+            existing_df = pd.read_csv(out_path)
+            for _, row in existing_df.iterrows():
+                completed_runs.add((row['Market'], row['Month']))
+            results = existing_df.to_dict('records')
+        except Exception:
+            pass
+
     for market in ['PJM', 'ERCOT']:
         print(f"--- Running Rolling BiLSTM for {market} ---")
         start_month = pd.Timestamp('2024-01-01')
@@ -168,6 +193,12 @@ def main():
         while current_month <= end_month:
             month_str = current_month.strftime('%Y-%m-%d')
             display_month = current_month.strftime('%Y-%m')
+            
+            if (market, display_month) in completed_runs:
+                print(f"[{market}] {display_month} already processed, skipping.")
+                current_month += relativedelta(months=1)
+                continue
+                
             print(f"[{market}] Training up to {display_month}, Testing on {display_month}")
             
             # Call itself as a subprocess
@@ -185,12 +216,15 @@ def main():
                 
                 if res_dict and "MAE" in res_dict:
                     print(f"[{market}] {display_month} MAE: {res_dict['MAE']:.2f}, RMSE: {res_dict['RMSE']:.2f}")
-                    results.append({
+                    new_res = {
                         'Market': market,
                         'Month': display_month,
                         'MAE': res_dict['MAE'],
                         'RMSE': res_dict['RMSE']
-                    })
+                    }
+                    results.append(new_res)
+                    # Save incrementally
+                    pd.DataFrame(results).to_csv(out_path, index=False)
                 elif res_dict and "error" in res_dict:
                     print(f"[{market}] {display_month} Error: {res_dict['error']}")
                 else:
@@ -202,9 +236,6 @@ def main():
             current_month += relativedelta(months=1)
             
     all_results = pd.DataFrame(results)
-    os.makedirs(config.REPORT_DIR, exist_ok=True)
-    out_path = os.path.join(config.REPORT_DIR, 'rolling_bilstm_results.csv')
-    all_results.to_csv(out_path, index=False)
     
     print("\n--- Aggregate Results ---")
     agg = all_results.groupby('Market')[['MAE', 'RMSE']].mean()

@@ -47,32 +47,7 @@ CONTEXT_LEN  = 168   # 7-day context (same as Chronos-Bolt v1)
 PRED_HORIZON = 24    # day-ahead prediction
 N_SAMPLES    = 20    # for sampling-based models
 
-# Top covariates from SHAP analysis (used in covariate mode)
-# These are features available in the processed parquet files
-COVARIATE_COLS = [
-    "price_lag_1h",
-    "price_lag_24h",
-    "hour_cos",
-    "hour_sin",
-    "wx_philadelphia_temp_c",  # PJM — will gracefully skip if missing for ERCOT
-]
-
-ERCOT_COVARIATE_COLS = [
-    "price_lag_1h",
-    "price_lag_24h",
-    "hour_cos",
-    "hour_sin",
-    "wx_houston_temp_c",  # ERCOT equivalent
-]
-
-
-def get_covariates(market: str):
-    """Return covariate columns for the given market."""
-    if market.upper() == "PJM":
-        return COVARIATE_COLS
-    else:
-        return ERCOT_COVARIATE_COLS
-
+# Dynamic covariates will be determined at runtime from dataframe columns
 
 def load_model():
     """Load Chronos-2 model. Try chronos-bolt-v2, fallback to v1."""
@@ -173,9 +148,8 @@ def run_chronos2_inference(market: str = "PJM"):
     n_days = n_test // PRED_HORIZON
 
     # Identify covariates available in the data
-    cov_cols = get_covariates(market)
-    available_covs = [c for c in cov_cols if c in te_df.columns]
-    print(f"  Covariates found: {available_covs}")
+    available_covs = [c for c in te_df.columns if c != config.TARGET_COL]
+    print(f"  Covariates found: {len(available_covs)} features")
 
     # Build covariate history
     cov_hist = hist_df[available_covs] if available_covs else None
@@ -250,11 +224,13 @@ def run_chronos2_inference(market: str = "PJM"):
         # This approximation works with Chronos-Bolt.
 
         from sklearn.linear_model import Ridge
+        from sklearn.preprocessing import StandardScaler
+        from sklearn.pipeline import make_pipeline
 
         # Train ridge on covariates → price
         X_cov_train = hist_df[available_covs].dropna()
         y_cov_train = hist_df.loc[X_cov_train.index, config.TARGET_COL]
-        ridge = Ridge(alpha=1.0)
+        ridge = make_pipeline(StandardScaler(), Ridge(alpha=1.0))
         ridge.fit(X_cov_train, y_cov_train)
         print(f"    Ridge R² on train: {ridge.score(X_cov_train, y_cov_train):.4f}")
 

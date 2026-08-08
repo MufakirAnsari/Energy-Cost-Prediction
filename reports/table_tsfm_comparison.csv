@@ -1,8 +1,8 @@
 Model,Type,Exogenous,Evaluated,PJM_MAE,ERCOT_MAE,Notes
 Chronos-Bolt (v1),Zero-shot univariate,No,Yes,7.02,7.77,Pre-trained on generic time series; no exogenous input
 Chronos-Bolt-Base (v2),Zero-shot univariate,No,Yes,6.85,7.96,Updated architecture; marginal 2.3% improvement over v1
-Chronos-Base+Cov (v2),Covariate-enhanced,Yes (5 SHAP features via Ridge residuals),Yes,3.48,5.58,49% MAE reduction vs univariate v2 on PJM; beats static XGBoost (p=0.003)
+Chronos-Base+Cov (v2),Covariate-enhanced,Yes (5 SHAP features via Ridge residuals),Yes,7.3,11.84,Degrades performance vs univariate; Ridge residuals overfit and corrupt input
 TimesFM (Google),Zero-shot univariate,No,No — API-only at time of study,,,Foundation model; no public weights during study period
 Moirai (Salesforce),Zero-shot univariate,No,No,,,Universal forecasting transformer; future benchmark candidate
-LightGBM (ours),Supervised tabular,Yes (50 features),Yes,4.03,3.39,"Domain-specific; uses weather, load, gas, generation mix"
-LightGBM rolling (ours),Supervised tabular,Yes (50 features),Yes,3.05,2.58,Monthly expanding-window retraining; best overall
+LightGBM (ours),Supervised tabular,Yes (50 features),Yes,7.71,8.55,"Domain-specific; uses weather, load, gas, generation mix"
+LightGBM rolling (ours),Supervised tabular,Yes (50 features),Yes,6.7,7.6,Monthly expanding-window retraining; best overall

@@ -1,3 +1,3 @@
 Regime,Model,N_hours,MAE,RMSE,sMAPE
-validation_2023,LightGBM,8508,1.9958,6.3588,5.7558
-validation_2023,XGBoost,8508,2.0098,6.4439,5.8162
+validation_2023,LightGBM,8508,4.2779,9.6374,13.2206
+validation_2023,XGBoost,8508,4.3055,9.7776,13.2471

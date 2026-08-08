@@ -229,20 +229,19 @@ def simulate_trading(
             ci_thresh = ci_trailing.reindex(idx).iloc[0] if len(idx) > 0 else ci_series.median()
             if pd.isna(ci_thresh):              # first day: no prior history
                 ci_thresh = ci_series.median() # fallback to global (only day 1)
-            if ci_width > ci_thresh:
-                results[name].append(0.0)   # Skip day — too uncertain
-                continue
+            # Continuous risk-aware scaling: trade smaller volume when uncertainty is high
+            volume_scalar = np.clip(ci_thresh / ci_width, 0.0, 1.0) if ci_width > 0 else 1.0
 
             # Buy when lower bound is lowest (confident low), sell when upper is highest
             buy_hour  = lower_g.idxmin()
             sell_hour = upper_g.idxmax()
-            if buy_hour == sell_hour:
+            if buy_hour == sell_hour or volume_scalar < 0.01:
                 results[name].append(0.0)
                 continue
             slippage = slippage_factor * price_rolling_std.reindex(idx).mean()
             buy_price  = actual[buy_hour]  + slippage
             sell_price = actual[sell_hour] - slippage
-            pnl = (sell_price - buy_price - 2 * transaction_cost) * config.TRADE_VOLUME_MWH
+            pnl = (sell_price - buy_price - 2 * transaction_cost) * (config.TRADE_VOLUME_MWH * volume_scalar)
             results[name].append(pnl)
 
     pnl_df = pd.DataFrame(results, index=pd.DatetimeIndex(dates))
@@ -376,7 +375,13 @@ def run_evaluation(market: str = "PJM"):
     # Ensemble (step 12)
     ens_col = load_col(f"ensemble_preds_{m}.csv", "ensemble")
     if ens_col is not None:
-        predictions["Ensemble"] = ens_col.reindex(y_index).values
+        predictions["Ensemble (Stacking)"] = ens_col.reindex(y_index).values
+    ens_mean_col = load_col(f"ensemble_preds_{m}.csv", "ensemble_mean")
+    if ens_mean_col is not None:
+        predictions["Ensemble (Mean)"] = ens_mean_col.reindex(y_index).values
+    ens_med_col = load_col(f"ensemble_preds_{m}.csv", "ensemble_median")
+    if ens_med_col is not None:
+        predictions["Ensemble (Median)"] = ens_med_col.reindex(y_index).values
 
     print(f"\n  Models loaded: {list(predictions.keys())}")
 
@@ -537,6 +542,8 @@ def run_evaluation(market: str = "PJM"):
         point_strats["LightGBM"] = pd.Series(predictions["LightGBM"], index=y_index)
     if "SeasonalNaive" in predictions:
         point_strats["Seasonal Naive"] = pd.Series(predictions["SeasonalNaive"], index=y_index)
+    if "BiLSTM" in predictions:
+        point_strats["BiLSTM"] = pd.Series(predictions["BiLSTM"], index=y_index)
 
     roll_lgbm_path = os.path.join(config.REPORT_DIR, f"rolling_lgbm_preds_{m}.csv")
     if os.path.exists(roll_lgbm_path):

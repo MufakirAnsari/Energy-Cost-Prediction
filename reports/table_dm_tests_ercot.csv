@@ -1,15 +1,19 @@
-Model,DM_stat,p_value,significant,is_reference
-SeasonalNaive,19.627593473822007,7.30421472666616e-85,True,False
-AutoARIMA,18.750795547008636,1.095580983755152e-77,True,False
-MSTL,26.960656644631275,6.641426450004548e-157,True,False
-LightGBM,18.71365082369725,2.1714108649797626e-77,True,False
-XGBoost,18.57371587214043,2.8244890658002296e-76,True,False
-PatchTST,,,False,False
-iTransformer,,,False,False
-N-HiTS,,,False,False
-BiTCN,,,False,False
-TFT,,,False,False
-BiLSTM,0.0,1.0,False,True
-Chronos-Bolt,,,False,False
-QRF,17.341394272773886,8.262020429938748e-67,True,False
-Ensemble,,,False,False
+Model,MAE,DM_stat,p_value,significant,is_reference,MAE_vs_ref_%
+BiLSTM,3.6416,0.0,1.0,False,True,0.0
+SeasonalNaive,11.5901,19.6276,0.0,True,False,218.3
+AutoARIMA,12.5326,18.7508,0.0,True,False,244.2
+MSTL,11.1574,26.9607,0.0,True,False,206.4
+LightGBM (static),8.5518,18.7137,0.0,True,False,134.8
+XGBoost (static),8.4156,18.5737,0.0,True,False,131.1
+PatchTST,5.0178,9.0783,0.0,True,False,37.8
+iTransformer,5.5084,11.6859,0.0,True,False,51.3
+N-HiTS,4.8343,8.9778,0.0,True,False,32.8
+BiTCN,5.4056,11.6688,0.0,True,False,48.4
+TFT,7.0881,16.7651,0.0,True,False,94.6
+Chronos-Bolt (v1),7.7747,17.5469,0.0,True,False,113.5
+Chronos-Base+Cov,11.8424,20.7566,0.0,True,False,225.2
+QRF,7.6403,17.3414,0.0,True,False,109.8
+Ensemble,3.9717,6.7773,0.0,True,False,9.1
+LightGBM (rolling),7.5957,16.5561,0.0,True,False,108.6
+XGBoost (rolling),7.6193,16.6411,0.0,True,False,109.2
+Chronos-Bolt-Base,7.9643,,,True,False,118.7

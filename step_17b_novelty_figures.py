@@ -46,11 +46,11 @@ def save_fig(fig, name: str):
     print(f"Saved: {name}")
     plt.close(fig)
 
-def generate_figA_shap():
-    print("Generating Figure A: SHAP Feature Superiority...")
-    path = os.path.join(config.REPORT_DIR, "shap_importance.csv")
+def generate_figA_shap(market: str = "pjm"):
+    print(f"Generating Figure A: SHAP Feature Superiority ({market.upper()})...")
+    path = os.path.join(config.REPORT_DIR, f"shap_importance_{market.lower()}.csv")
     if not os.path.exists(path):
-        print("  Missing shap_importance.csv")
+        print(f"  Missing {path}")
         return
     
     df = pd.read_csv(path, index_col=0, header=0)
@@ -70,7 +70,7 @@ def generate_figA_shap():
     bars = ax.barh(df["feature"], df["importance"], color=colors, alpha=0.85)
     ax.invert_yaxis()
     ax.set_xlabel("Mean |SHAP| Value")
-    ax.set_title("SHAP Feature Importance (LightGBM, PJM)", fontsize=11)
+    ax.set_title(f"SHAP Feature Importance (LightGBM, {market.upper()})", fontsize=11)
     
     import matplotlib.patches as mpatches
     exo_patch = mpatches.Patch(color="#FF8F00", label="Exogenous (Load, Weather, Gas)")
@@ -78,7 +78,7 @@ def generate_figA_shap():
     ax.legend(handles=[exo_patch, ar_patch], loc="lower right")
     
     fig.tight_layout()
-    save_fig(fig, "FigA_SHAP_Superiority")
+    save_fig(fig, f"FigA_SHAP_Superiority_{market.upper()}")
 
 def generate_figB_cqr_vs_qrf():
     print("Generating Figure B: CQR vs QRF Interval Breakdown...")
@@ -275,7 +275,8 @@ def generate_figE_cross_market():
     save_fig(fig, "FigE_CrossMarket_Topology")
 
 if __name__ == "__main__":
-    generate_figA_shap()
+    generate_figA_shap("pjm")
+    generate_figA_shap("ercot")
     generate_figB_cqr_vs_qrf()
     generate_figC_pnl()
     generate_figD_error_scatter()

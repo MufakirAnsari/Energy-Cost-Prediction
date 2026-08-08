@@ -99,8 +99,8 @@ def run_dm_tests(market: str = "PJM"):
             predictions[model_name] = col
 
     for path_name, col_name in [
-        (f"lgbm_point_{m}.joblib",      "LightGBM"),
-        (f"xgboost_point_{m}.joblib",   "XGBoost"),
+        (f"lgbm_point_{m}.joblib",      "LightGBM (static)"),
+        (f"xgboost_point_{m}.joblib",   "XGBoost (static)"),
     ]:
         full_path = os.path.join(config.MODEL_DIR, path_name)
         if os.path.exists(full_path):
@@ -124,10 +124,13 @@ def run_dm_tests(market: str = "PJM"):
         ("N-HiTS",       f"nhits_preds_{m}.csv",         "predicted"),
         ("BiTCN",        f"bitcn_preds_{m}.csv",         "predicted"),
         ("TFT",          f"tft_preds_{m}.csv",           "predicted"),
-        ("Chronos-Bolt", f"chronos_preds_{m}.csv",       "chronos_point"),
+        ("Chronos-Bolt (v1)", f"chronos_preds_{m}.csv",  "chronos_point"),
+        ("Chronos-Base+Cov", f"chronos2_preds_{m}.csv", "c2_cov_point"),
         ("QRF",          f"qrf_preds_{m}.csv",           "q50"),
         ("BiLSTM",       f"bilstm_preds_{m}.csv",        None),   # auto-detect
         ("Ensemble",     f"ensemble_preds_{m}.csv",      "ensemble"),
+        ("LightGBM (rolling)", f"rolling_lgbm_preds_{m}.csv", "predicted"),
+        ("XGBoost (rolling)", f"rolling_xgb_preds_{m}.csv", "predicted"),
     ]:
         csv_path = os.path.join(config.REPORT_DIR, csv_name)
         if not os.path.exists(csv_path):

@@ -1,4 +1,4 @@
-# Disentangling Architecture from Adaptation in Day-Ahead Electricity Price Forecasting
+# Disentangling Architecture, Strategy, and Adaptation in Day-Ahead Electricity Price Forecasting: A Multi-Model Benchmark on Volatile US Markets
 
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://python.org)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
@@ -430,10 +430,9 @@ Full pinned versions → [`requirements.txt`](requirements.txt)
 
 ```bibtex
 @article{ansari2026trees,
-  title   = {Trees Still Beat Transformers for Day-Ahead Electricity
-             Price Forecasting},
+  title   = {Disentangling Architecture, Strategy, and Adaptation in Day-Ahead Electricity Price Forecasting: A Multi-Model Benchmark on Volatile US Markets},
   author  = {Ansari, Mufakir Qamar and Ansari, Mudabir Qamar},
-  journal = {Applied Energy},
+  journal = {Expert Systems},
   year    = {2026},
   note    = {Under review}
 }

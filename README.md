@@ -432,7 +432,7 @@ Full pinned versions → [`requirements.txt`](requirements.txt)
 @article{ansari2026trees,
   title   = {Disentangling Architecture, Strategy, and Adaptation in Day-Ahead Electricity Price Forecasting: A Multi-Model Benchmark on Volatile US Markets},
   author  = {Ansari, Mufakir Qamar and Ansari, Mudabir Qamar},
-  journal = {Expert Systems},
+  journal = {Computational Economics (Springer Nature)},
   year    = {2026},
   note    = {Under review}
 }
